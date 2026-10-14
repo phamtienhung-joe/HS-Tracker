@@ -224,7 +224,7 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       const categories = [
         { key: 'SHIPPED', label: 'SHIPPED (Fulfilled)', cls: 'row-shipped', fillCls: 'fill-shipped' },
         { key: 'OB', label: 'ORDER BOOK (OB)', cls: 'row-ob', fillCls: 'fill-ob' },
-        { key: 'NOR', label: 'NOTICE OF READINESS (NOR)', cls: 'row-nor', fillCls: 'fill-nor' },
+        { key: 'NOR', label: 'NEW ORDER REQUEST (NOR)', cls: 'row-nor', fillCls: 'fill-nor' },
         { key: 'FC', label: 'FORECAST (FC)', cls: 'row-fc', fillCls: 'fill-fc' }
       ];
 
