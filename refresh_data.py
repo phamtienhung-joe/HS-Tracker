@@ -17,7 +17,21 @@ warnings.filterwarnings('ignore')
 MASTER_PATH = r"C:\Users\hung.phamtien\Rochdale Spears Co\COMMERCIAL WORKSPACE - 1.5_TRACKERS\HS GENERAL TRACKER.xlsx"
 LOCAL_PATH = "HS GENERAL TRACKER.xlsx"
 
-EXCEL_FILE = MASTER_PATH if os.path.exists(MASTER_PATH) else LOCAL_PATH
+if os.path.exists(MASTER_PATH):
+    EXCEL_FILE = MASTER_PATH
+    try:
+        if os.path.exists(LOCAL_PATH) and os.stat(MASTER_PATH).st_ino != os.stat(LOCAL_PATH).st_ino:
+            os.remove(LOCAL_PATH)
+            try:
+                os.link(MASTER_PATH, LOCAL_PATH)
+            except Exception:
+                import shutil
+                shutil.copy2(MASTER_PATH, LOCAL_PATH)
+    except Exception:
+        pass
+else:
+    EXCEL_FILE = LOCAL_PATH
+
 print(f"Loading data from: {EXCEL_FILE}")
 
 # 1. Read Detail_New

@@ -989,7 +989,7 @@
     "customer": "BENJAMIN",
     "type": "NON RH",
     "stage": "NPI",
-    "sku": 23,
+    "sku": 122,
     "pic": "BIEN",
     "sw": "TBC - TBC",
     "drawing": "Not Started",
@@ -1896,7 +1896,7 @@
     "drawing": "Approved",
     "veneer": "Approved",
     "metal": "Approved",
-    "market": "Spain",
+    "market": "US",
     "total_val": 6068.79,
     "monthly": {
       "2026/M12": 6068.79
