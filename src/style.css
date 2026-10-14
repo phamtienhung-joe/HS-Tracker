@@ -175,6 +175,28 @@
   .pbi-tab:hover { color: white; background: #383838; }
   .pbi-tab.active { background: var(--pbi-canvas); color: var(--pbi-navy); font-weight: 600; border-top: 2px solid var(--pbi-gold); }
   .pbi-footer-controls { display: flex; align-items: center; gap: 12px; color: #8A8886; font-size: 11px; }
+  .footer-divider-dim { opacity: 0.2; }
+  .author-watermark {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    letter-spacing: 0.2px;
+    color: #9CA3AF;
+    opacity: 0.22;
+    transition: opacity 0.25s ease, color 0.25s ease;
+    user-select: none;
+    cursor: default;
+    font-weight: 400;
+  }
+  .author-watermark:hover {
+    opacity: 0.8;
+    color: #E5E7EB;
+  }
+  .author-watermark svg {
+    flex-shrink: 0;
+    color: #D97757;
+  }
 
   .page-view { display: none; }
   .page-view.active { display: flex; flex-direction: column; gap: 16px; }
