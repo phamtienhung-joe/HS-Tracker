@@ -1,0 +1,105 @@
+"""Automated Data Refresh for index.html (Official GitHub version).
+
+Reads directly from the master tracker in COMMERCIAL WORKSPACE - 1.5_TRACKERS,
+filters out 'KA' and 'LOCAL', updates data payload inside index.html,
+and preserves the self-contained standalone structure for GitHub / GitHub Pages.
+"""
+import os
+import json
+import re
+import datetime
+import subprocess
+import pandas as pd
+import warnings
+
+warnings.filterwarnings('ignore')
+
+MASTER_PATH = r"C:\Users\hung.phamtien\Rochdale Spears Co\COMMERCIAL WORKSPACE - 1.5_TRACKERS\HS GENERAL TRACKER.xlsx"
+LOCAL_PATH = "HS GENERAL TRACKER.xlsx"
+
+EXCEL_FILE = MASTER_PATH if os.path.exists(MASTER_PATH) else LOCAL_PATH
+print(f"Loading data from: {EXCEL_FILE}")
+
+# 1. Read Detail_New
+df = pd.read_excel(EXCEL_FILE, sheet_name='Detail_New', skiprows=1)
+df = df.dropna(subset=['PROJECT NAME'])
+
+# 2. Filter out KA and LOCAL
+df['PROJECT TYPE CLEAN'] = df['PROJECT TYPE'].astype(str).str.strip().str.upper()
+df = df[~df['PROJECT TYPE CLEAN'].isin(['KA', 'LOCAL'])]
+
+df['BREAK_VAL'] = pd.to_numeric(df['PROJECT BREAK VALUE'], errors='coerce').fillna(0)
+df['PROJECT SKU'] = pd.to_numeric(df['PROJECT SKU'], errors='coerce').fillna(0)
+df['STATUS'] = df['STATUS'].astype(str).str.strip()
+
+
+def clean(v):
+    return str(v).strip() if pd.notna(v) else 'TBC'
+
+
+# 3. Aggregate at (PROJECT NAME, STATUS) grain
+records = {}
+for _, r in df.iterrows():
+    key = (str(r['PROJECT NAME']).strip(), str(r['STATUS']).strip())
+    if key not in records:
+        records[key] = {
+            'name': key[0],
+            'status': key[1],
+            'customer': clean(r['CUSTOMER SHORTEN NAME']),
+            'type': clean(r['PROJECT TYPE']),
+            'stage': clean(r['STAGE']),
+            'sku': int(r['PROJECT SKU']),
+            'pic': clean(r['PIC']),
+            'sw': f"{clean(r.get('CONFIRMED FIRST SW'))} - {clean(r.get('CONFIRMED LAST SW'))}",
+            'drawing': clean(r.get('DRAWING\nSTATUS')),
+            'veneer': clean(r.get('VENEER/WOOD\nSTATUS')),
+            'metal': clean(r.get('METAL\nSTATUS')),
+            'market': clean(r.get('MARKET')),
+            'total_val': 0.0,
+            'monthly': {},
+        }
+    rec = records[key]
+    rec['total_val'] += float(r['BREAK_VAL'])
+    m = clean(r['SHIP MONTH FC'])
+    if m and m != 'TBC' and m != 'nan':
+        rec['monthly'][m] = round(rec['monthly'].get(m, 0.0) + float(r['BREAK_VAL']), 2)
+
+for rec in records.values():
+    rec['total_val'] = round(rec['total_val'], 2)
+
+lst = list(records.values())
+
+# 4. Save to projects_data.json
+with open('projects_data.json', 'w', encoding='utf-8') as f:
+    json.dump(lst, f, ensure_ascii=False, indent=2)
+print(f"Exported {len(lst)} records to projects_data.json")
+
+# 5. Update index.html directly (preserving standalone self-contained format)
+with open('index.html', 'r', encoding='utf-8') as f:
+    html = f.read()
+
+payload_str = 'const rawProjects = ' + json.dumps(lst, ensure_ascii=False, separators=(',', ':')) + ';'
+html = re.sub(r'const rawProjects = \[.*?\];', payload_str, html, flags=re.DOTALL)
+
+mtime = datetime.datetime.fromtimestamp(os.stat(EXCEL_FILE).st_mtime)
+stamp = mtime.strftime('%b %d, %Y').replace(' 0', ' ')
+html = re.sub(r'Refreshed: [A-Za-z]{3} \d{1,2}, \d{4}', f'Refreshed: {stamp}', html)
+
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(html)
+print(f"Updated index.html successfully (Refresh stamp: {stamp})")
+
+# 6. Rebuild dist/ if dist folder exists
+if os.path.exists('package.json'):
+    try:
+        # Also sync src/main.js payload
+        if os.path.exists('src/main.js'):
+            with open('src/main.js', 'r', encoding='utf-8') as f:
+                js = f.read()
+            js = re.sub(r'const rawProjects = \[.*?\];', payload_str, js, flags=re.DOTALL)
+            with open('src/main.js', 'w', encoding='utf-8') as f:
+                f.write(js)
+        subprocess.run(['npm', 'run', 'build'], shell=True, capture_output=True, text=True)
+        print("Updated dist/ bundle for Cloudflare Pages")
+    except Exception as e:
+        pass
