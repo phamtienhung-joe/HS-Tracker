@@ -3,105 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Power BI - HS Order Book (OB) & Forecast (FC) Executive Tracker</title>
+<title>HS Order Book (OB) & Forecast (FC) Executive Dashboard</title>
 <style>
 :root {
-    --pbi-gold: #F2C811;
-    --pbi-bg: #EAEAEA;
-    --pbi-canvas: #F8F9FA;
-    --pbi-card-bg: #FFFFFF;
-    --pbi-text: #212529;
-    --pbi-text-muted: #6C757D;
-    --pbi-border: #E0E0E0;
-    --pbi-navy: #1B365D;
-    --pbi-blue: #0078D4;
-    --pbi-blue-light: #EFF6FC;
-    --pbi-green: #107C41;
-    --pbi-green-light: #E7F6ED;
-    --pbi-amber: #D83B01;
-    --pbi-amber-light: #FFF4CE;
-    --pbi-purple: #5C2D91;
-    --pbi-purple-light: #F3EDF9;
-    --pbi-teal: #038387;
+    --theme-gold: #F2C811;
+    --theme-bg: #EAEAEA;
+    --theme-canvas: #F8F9FA;
+    --theme-card-bg: #FFFFFF;
+    --theme-text: #212529;
+    --theme-text-muted: #6C757D;
+    --theme-border: #E0E0E0;
+    --theme-navy: #1B365D;
+    --theme-blue: #0078D4;
+    --theme-blue-light: #EFF6FC;
+    --theme-green: #107C41;
+    --theme-green-light: #E7F6ED;
+    --theme-amber: #D83B01;
+    --theme-amber-light: #FFF4CE;
+    --theme-purple: #5C2D91;
+    --theme-purple-light: #F3EDF9;
+    --theme-teal: #038387;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
-  body { background-color: var(--pbi-bg); color: var(--pbi-text); height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+  body { background-color: var(--theme-bg); color: var(--theme-text); height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-  /* Power BI Service Header */
-  .pbi-header { background-color: #2B2B2B; color: white; padding: 0 16px; height: 48px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; border-bottom: 1px solid #404040; flex-shrink: 0; }
-  .pbi-header-left { display: flex; align-items: center; gap: 12px; }
-  .pbi-logo { display: flex; align-items: center; gap: 8px; font-weight: 600; color: white; text-decoration: none; }
-  .pbi-logo-icon { width: 22px; height: 22px; background: var(--pbi-gold); border-radius: 4px; display: flex; align-items: flex-end; padding: 3px 2px; gap: 2px; }
-  .pbi-logo-icon span { background: #2B2B2B; border-radius: 1px; display: inline-block; }
-  .pbi-logo-icon span:nth-child(1) { width: 4px; height: 7px; }
-  .pbi-logo-icon span:nth-child(2) { width: 4px; height: 11px; }
-  .pbi-logo-icon span:nth-child(3) { width: 4px; height: 16px; }
-  .pbi-workspace-tag { color: #A6A6A6; padding-left: 8px; border-left: 1px solid #505050; }
-  .pbi-report-title { font-weight: 600; font-size: 14px; color: #FFFFFF; }
-  .pbi-header-right { display: flex; align-items: center; gap: 14px; }
-  .pbi-btn-ghost { background: transparent; border: 1px solid transparent; color: #E1DFDD; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; }
-  .pbi-btn-ghost:hover { background: rgba(255,255,255,0.1); color: white; }
+  /* Application Header */
+  .app-header { background-color: #2B2B2B; color: white; padding: 0 16px; height: 48px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; border-bottom: 1px solid #404040; flex-shrink: 0; }
+  .app-header-left { display: flex; align-items: center; gap: 12px; }
+  .app-logo { display: flex; align-items: center; gap: 8px; font-weight: 600; color: white; text-decoration: none; }
+  .app-logo-icon { width: 22px; height: 22px; background: var(--theme-gold); border-radius: 4px; display: flex; align-items: flex-end; padding: 3px 2px; gap: 2px; }
+  .app-logo-icon span { background: #2B2B2B; border-radius: 1px; display: inline-block; }
+  .app-logo-icon span:nth-child(1) { width: 4px; height: 7px; }
+  .app-logo-icon span:nth-child(2) { width: 4px; height: 11px; }
+  .app-logo-icon span:nth-child(3) { width: 4px; height: 16px; }
+  .app-workspace-tag { color: #A6A6A6; padding-left: 8px; border-left: 1px solid #505050; }
+  .app-report-title { font-weight: 600; font-size: 14px; color: #FFFFFF; }
+  .app-header-right { display: flex; align-items: center; gap: 14px; }
+  .app-btn-ghost { background: transparent; border: 1px solid transparent; color: #E1DFDD; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; }
+  .app-btn-ghost:hover { background: rgba(255,255,255,0.1); color: white; }
   .badge-refresh { background: #3B3A39; padding: 4px 10px; border-radius: 12px; font-size: 11px; color: #C8C6C4; display: flex; align-items: center; gap: 6px; }
   .badge-refresh::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #107C41; }
 
   /* Toolbar */
-  .pbi-toolbar { background: #FFFFFF; border-bottom: 1px solid var(--pbi-border); padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--pbi-text-muted); flex-shrink: 0; }
-  .pbi-breadcrumbs span.active { color: var(--pbi-navy); font-weight: 600; }
+  .app-toolbar { background: #FFFFFF; border-bottom: 1px solid var(--theme-border); padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--theme-text-muted); flex-shrink: 0; }
+  .app-breadcrumbs span.active { color: var(--theme-navy); font-weight: 600; }
 
   /* Viewport */
-  .pbi-main-viewport { flex: 1; overflow-y: auto; padding: 16px 20px; background: #F0F2F5; }
-  .pbi-canvas-container { max-width: 1600px; margin: 0 auto; background: var(--pbi-canvas); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+  .app-main-viewport { flex: 1; overflow-y: auto; padding: 16px 20px; background: #F0F2F5; }
+  .dashboard-container { max-width: 1600px; margin: 0 auto; background: var(--theme-canvas); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
   /* Slicers */
-  .slicer-card { background: white; border-radius: 6px; padding: 12px 16px; border: 1px solid var(--pbi-border); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+  .slicer-card { background: white; border-radius: 6px; padding: 12px 16px; border: 1px solid var(--theme-border); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
   .slicer-group { display: flex; align-items: center; gap: 8px; }
-  .slicer-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--pbi-navy); }
+  .slicer-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--theme-navy); }
   .slicer-pill-box { display: flex; background: #F3F4F6; border-radius: 4px; padding: 2px; border: 1px solid #E5E7EB; }
   .slicer-btn { padding: 4px 12px; font-size: 12px; border: none; background: transparent; cursor: pointer; border-radius: 3px; font-weight: 500; color: #4B5563; }
-  .slicer-btn.active { background: var(--pbi-blue); color: white; font-weight: 600; }
+  .slicer-btn.active { background: var(--theme-blue); color: white; font-weight: 600; }
 
   /* Top Executive KPI Cards (Idea 1) */
   .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-  .kpi-card { background: white; border-radius: 6px; padding: 14px 16px; border: 1px solid var(--pbi-border); border-left: 4px solid var(--pbi-navy); box-shadow: 0 1px 3px rgba(0,0,0,0.03); cursor: pointer; transition: transform 0.15s; }
+  .kpi-card { background: white; border-radius: 6px; padding: 14px 16px; border: 1px solid var(--theme-border); border-left: 4px solid var(--theme-navy); box-shadow: 0 1px 3px rgba(0,0,0,0.03); cursor: pointer; transition: transform 0.15s; }
   .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-  .kpi-card.shipped { border-left-color: var(--pbi-green); }
-  .kpi-card.ob { border-left-color: var(--pbi-blue); }
-  .kpi-card.nor { border-left-color: var(--pbi-amber); }
-  .kpi-card.fc { border-left-color: var(--pbi-purple); }
-  .kpi-card.total { border-left-color: var(--pbi-navy); }
-  .kpi-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--pbi-text-muted); display: flex; justify-content: space-between; }
+  .kpi-card.shipped { border-left-color: var(--theme-green); }
+  .kpi-card.ob { border-left-color: var(--theme-blue); }
+  .kpi-card.nor { border-left-color: var(--theme-amber); }
+  .kpi-card.fc { border-left-color: var(--theme-purple); }
+  .kpi-card.total { border-left-color: var(--theme-navy); }
+  .kpi-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--theme-text-muted); display: flex; justify-content: space-between; }
   .kpi-badge { font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: 600; }
-  .kpi-card.shipped .kpi-badge { background: var(--pbi-green-light); color: var(--pbi-green); }
-  .kpi-card.ob .kpi-badge { background: var(--pbi-blue-light); color: var(--pbi-blue); }
-  .kpi-card.nor .kpi-badge { background: var(--pbi-amber-light); color: var(--pbi-amber); }
-  .kpi-card.fc .kpi-badge { background: var(--pbi-purple-light); color: var(--pbi-purple); }
-  .kpi-card.total .kpi-badge { background: #E9ECEF; color: var(--pbi-navy); }
-  .kpi-value { font-size: 24px; font-weight: 700; color: var(--pbi-navy); margin: 6px 0 2px 0; }
-  .kpi-meta { font-size: 11px; color: var(--pbi-text-muted); display: flex; justify-content: space-between; }
+  .kpi-card.shipped .kpi-badge { background: var(--theme-green-light); color: var(--theme-green); }
+  .kpi-card.ob .kpi-badge { background: var(--theme-blue-light); color: var(--theme-blue); }
+  .kpi-card.nor .kpi-badge { background: var(--theme-amber-light); color: var(--theme-amber); }
+  .kpi-card.fc .kpi-badge { background: var(--theme-purple-light); color: var(--theme-purple); }
+  .kpi-card.total .kpi-badge { background: #E9ECEF; color: var(--theme-navy); }
+  .kpi-value { font-size: 24px; font-weight: 700; color: var(--theme-navy); margin: 6px 0 2px 0; }
+  .kpi-meta { font-size: 11px; color: var(--theme-text-muted); display: flex; justify-content: space-between; }
 
   /* Visual Cards */
-  .visual-card { background: white; border-radius: 6px; border: 1px solid var(--pbi-border); padding: 16px; }
+  .visual-card { background: white; border-radius: 6px; border: 1px solid var(--theme-border); padding: 16px; }
   .visual-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #F0F0F0; }
-  .visual-title { font-size: 14px; font-weight: 700; color: var(--pbi-navy); }
-  .visual-subtitle { font-size: 11px; color: var(--pbi-text-muted); font-weight: normal; margin-left: 6px; }
+  .visual-title { font-size: 14px; font-weight: 700; color: var(--theme-navy); }
+  .visual-subtitle { font-size: 11px; color: var(--theme-text-muted); font-weight: normal; margin-left: 6px; }
 
   /* Monthly Matrix Table (Idea 1) */
   .matrix-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .matrix-table th { background: #F8F9FA; color: var(--pbi-navy); font-weight: 600; text-align: center; padding: 8px 4px; border: 1px solid #E5E7EB; font-size: 11px; }
+  .matrix-table th { background: #F8F9FA; color: var(--theme-navy); font-weight: 600; text-align: center; padding: 8px 4px; border: 1px solid #E5E7EB; font-size: 11px; }
   .matrix-table th.col-rowheader { text-align: left; padding-left: 12px; width: 180px; }
   .matrix-table th.col-total { width: 110px; background: #EEF2F6; }
   .matrix-table td { border: 1px solid #E5E7EB; padding: 8px 6px; text-align: right; font-size: 11.5px; }
   .matrix-table td.cell-rowheader { text-align: left; padding-left: 12px; font-weight: 600; }
   .matrix-table td.cell-total { font-weight: 700; background: #FAFBFD; }
-  .matrix-table tr.row-grandtotal { background: #F1F4F9; font-weight: 700; border-top: 2px solid var(--pbi-navy); }
+  .matrix-table tr.row-grandtotal { background: #F1F4F9; font-weight: 700; border-top: 2px solid var(--theme-navy); }
   .cell-bar-container { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
   .cell-bar-wrap { width: 100%; height: 4px; background: #EAEAEA; border-radius: 2px; overflow: hidden; }
   .cell-bar-fill { height: 100%; border-radius: 2px; }
-  .fill-shipped { background: var(--pbi-green); }
-  .fill-ob { background: var(--pbi-blue); }
-  .fill-nor { background: var(--pbi-amber); }
-  .fill-fc { background: var(--pbi-purple); }
+  .fill-shipped { background: var(--theme-green); }
+  .fill-ob { background: var(--theme-blue); }
+  .fill-nor { background: var(--theme-amber); }
+  .fill-fc { background: var(--theme-purple); }
 
   /* Hand-drawn brackets representation from Idea 1 */
   .timeline-bracket-row { display: grid; grid-template-columns: 180px repeat(12, 1fr) 110px; gap: 0; margin-top: 6px; padding: 6px 0; font-size: 10px; border-top: 1px dashed #D0D7DE; }
@@ -113,10 +113,10 @@
   .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .hbar-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
   .hbar-item { display: grid; grid-template-columns: 140px 1fr 100px; align-items: center; gap: 12px; font-size: 12px; }
-  .hbar-name { font-weight: 600; color: var(--pbi-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hbar-name { font-weight: 600; color: var(--theme-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .hbar-track { height: 16px; background: #F0F2F5; border-radius: 3px; overflow: hidden; }
   .hbar-fill { height: 100%; border-radius: 3px; }
-  .hbar-val { text-align: right; font-weight: 600; color: var(--pbi-navy); }
+  .hbar-val { text-align: right; font-weight: 600; color: var(--theme-navy); }
 
   /* Idea 2 Gantt Table Container & Sticky Header */
   .gantt-table-container {
@@ -138,7 +138,7 @@
     top: 0;
     z-index: 10;
     background: #F4F6F9;
-    color: var(--pbi-navy);
+    color: var(--theme-navy);
     padding: 8px 6px;
     border-bottom: 2px solid #CBD5E1;
     border-right: 1px solid #E0E0E0;
@@ -166,54 +166,55 @@
 
   .gantt-bar-cell { padding: 3px !important; text-align: center; min-width: 46px; }
   .gantt-active-block { color: white; font-size: 9.5px; font-weight: 600; padding: 4px 2px; border-radius: 3px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
-  .gantt-active-block.st-shipped { background: var(--pbi-green); }
-  .gantt-active-block.st-ob { background: var(--pbi-blue); }
-  .gantt-active-block.st-nor { background: var(--pbi-amber); }
-  .gantt-active-block.st-fc { background: var(--pbi-purple); }
+  .gantt-active-block.st-shipped { background: var(--theme-green); }
+  .gantt-active-block.st-ob { background: var(--theme-blue); }
+  .gantt-active-block.st-nor { background: var(--theme-amber); }
+  .gantt-active-block.st-fc { background: var(--theme-purple); }
 
   .milestone-pill { display: inline-flex; align-items: center; font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #F3F4F6; color: #4B5563; font-weight: 500; }
   .milestone-pill.approved { background: #E7F6ED; color: #107C41; font-weight: 600; }
   .milestone-pill.in-progress { background: #FFF4CE; color: #8A6D3B; }
 
   /* Page Tabs at Bottom */
-  .pbi-footer-tabs { background: #2B2B2B; border-top: 1px solid #404040; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; height: 40px; font-size: 12px; flex-shrink: 0; }
+  .app-footer-tabs { background: #2B2B2B; border-top: 1px solid #404040; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; height: 40px; font-size: 12px; flex-shrink: 0; }
   .tab-buttons { display: flex; height: 100%; }
-  .pbi-tab { background: transparent; border: none; color: #A6A6A6; padding: 0 18px; height: 100%; cursor: pointer; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; border-right: 1px solid #404040; }
-  .pbi-tab:hover { color: white; background: #383838; }
-  .pbi-tab.active { background: var(--pbi-canvas); color: var(--pbi-navy); font-weight: 600; border-top: 2px solid var(--pbi-gold); }
-  .pbi-footer-controls { display: flex; align-items: center; gap: 12px; color: #8A8886; font-size: 11px; }
+  .nav-tab { background: transparent; border: none; color: #A6A6A6; padding: 0 18px; height: 100%; cursor: pointer; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; border-right: 1px solid #404040; }
+  .nav-tab:hover { color: white; background: #383838; }
+  .nav-tab.active { background: var(--theme-canvas); color: var(--theme-navy); font-weight: 600; border-top: 2px solid var(--theme-gold); }
+  .app-footer-controls { display: flex; align-items: center; gap: 12px; color: #8A8886; font-size: 11px; }
 
   .page-view { display: none; }
   .page-view.active { display: flex; flex-direction: column; gap: 16px; }
 
-  .pbi-search { padding: 5px 10px; border: 1px solid #D1D5DB; border-radius: 4px; font-size: 12px; width: 220px; outline: none; }
+  .search-input { padding: 5px 10px; border: 1px solid #D1D5DB; border-radius: 4px; font-size: 12px; width: 220px; outline: none; }
 
 </style>
 </head>
 <body>
 
   <!-- Top Ribbon -->
-  <header class="pbi-header">
-    <div class="pbi-header-left">
-      <a href="#" class="pbi-logo">
-        <div class="pbi-logo-icon"><span></span><span></span><span></span></div>
-        <span>Power BI</span>
-      </a>
-      <span class="pbi-workspace-tag">Hospitality Division Workspace</span>
-      <span style="color: #605E5C;">/</span>
-      <span class="pbi-report-title">HS Order Book (OB) & Forecast (FC) Executive Report</span>
+  <header class="app-header">
+        <div class="app-header-left">
+      <div class="app-logo">
+        <div class="app-logo-badge">RSC</div>
+        <span style="font-weight: 700; letter-spacing: 0.3px;">Rochdale Spears</span>
+      </div>
+      <span style="color: #605E5C; margin: 0 4px;">/</span>
+      <span class="app-workspace-tag">Hospitality Division (HS)</span>
+      <span style="color: #605E5C; margin: 0 4px;">/</span>
+      <span class="app-report-title">Order Book (OB) & Forecast (FC) Executive Dashboard</span>
     </div>
-    <div class="pbi-header-right">
+    <div class="app-header-right">
       <div class="badge-refresh">Data Source: HS GENERAL TRACKER | Refreshed: Oct 14, 2026</div>
-      <button class="pbi-btn-ghost" onclick="resetFilters()">↺ Reset Filters</button>
-      <button class="pbi-btn-ghost">⎙ Export PDF</button>
-      <button class="pbi-btn-ghost">↗ Share</button>
+      <button class="app-btn-ghost" onclick="resetFilters()">↺ Reset Filters</button>
+      <button class="app-btn-ghost" onclick="window.print()">⎙ Print / Save PDF</button>
+      
     </div>
   </header>
 
   <!-- Context Toolbar -->
-  <div class="pbi-toolbar">
-    <div class="pbi-breadcrumbs">
+  <div class="app-toolbar">
+    <div class="app-breadcrumbs">
       <span>Rochdale Spears Co.</span> &gt;
       <span>Hospitality Division (HS)</span> &gt;
       <span class="active" id="toolbar-page-title">1. Executive Overview (OB vs FC)</span>
@@ -221,8 +222,8 @@
   </div>
 
   <!-- Canvas -->
-  <main class="pbi-main-viewport">
-    <div class="pbi-canvas-container">
+  <main class="app-main-viewport">
+    <div class="dashboard-container">
 
       <!-- Slicer Bar -->
       <section class="slicer-card">
@@ -275,7 +276,7 @@
           <div class="kpi-value" id="kpi-shipped-val">$7.31M</div>
           <div class="kpi-meta">
             <span id="kpi-shipped-count">43 Projects</span>
-            <span style="color: var(--pbi-green);" id="kpi-shipped-period">Ship Year 2026</span>
+            <span style="color: var(--theme-green);" id="kpi-shipped-period">Ship Year 2026</span>
           </div>
         </div>
 
@@ -287,7 +288,7 @@
           <div class="kpi-value" id="kpi-ob-val">$1.86M</div>
           <div class="kpi-meta">
             <span id="kpi-ob-count">31 Projects</span>
-            <span style="color: var(--pbi-blue);">PO & Deposit In Hand</span>
+            <span style="color: var(--theme-blue);">PO & Deposit In Hand</span>
           </div>
         </div>
 
@@ -299,7 +300,7 @@
           <div class="kpi-value" id="kpi-nor-val">$420.1K</div>
           <div class="kpi-meta">
             <span id="kpi-nor-count">6 Projects</span>
-            <span style="color: var(--pbi-amber);">Pending Deposit / PO</span>
+            <span style="color: var(--theme-amber);">Pending Deposit / PO</span>
           </div>
         </div>
 
@@ -311,7 +312,7 @@
           <div class="kpi-value" id="kpi-fc-val">$22.23M</div>
           <div class="kpi-meta">
             <span id="kpi-fc-count">26 Projects</span>
-            <span style="color: var(--pbi-purple);">Design & Quotation</span>
+            <span style="color: var(--theme-purple);">Design & Quotation</span>
           </div>
         </div>
 
@@ -323,7 +324,7 @@
           <div class="kpi-value" id="kpi-total-val">$31.82M</div>
           <div class="kpi-meta">
             <span id="kpi-total-count">106 Projects Active</span>
-            <span style="color: var(--pbi-navy);">Shipped + OB + NOR + FC</span>
+            <span style="color: var(--theme-navy);">Shipped + OB + NOR + FC</span>
           </div>
         </div>
       </section>
@@ -337,7 +338,7 @@
                 Monthly Order Status Runway (M01 - M12)
               </span>
             </div>
-            <div style="font-size: 11px; color: var(--pbi-text-muted);">
+            <div style="font-size: 11px; color: var(--theme-text-muted);">
               Values in USD ($). Filter dynamically by Year and Project Type above.
             </div>
           </div>
@@ -389,7 +390,7 @@
             </div>
             <div class="hbar-list" id="mix-list">
             </div>
-            <div id="mix-footer" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #E5E7EB; font-size: 11.5px; color: var(--pbi-text-muted); display: flex; justify-content: space-between;">
+            <div id="mix-footer" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #E5E7EB; font-size: 11.5px; color: var(--theme-text-muted); display: flex; justify-content: space-between;">
             </div>
           </div>
 
@@ -414,8 +415,8 @@
               </span>
             </div>
             <div style="display: flex; gap: 8px;">
-              <input type="text" id="project-search" class="pbi-search" placeholder="Search project or client..." oninput="filterProjects()">
-              <select id="stage-filter-select" class="pbi-search" style="width: 140px;" onchange="filterProjects()">
+              <input type="text" id="project-search" class="search-input" placeholder="Search project or client..." oninput="filterProjects()">
+              <select id="stage-filter-select" class="search-input" style="width: 140px;" onchange="filterProjects()">
                 <option value="All">All Stages (NPD/NPI)</option>
                 <option value="NPD">NPD Only</option>
                 <option value="NPI">NPI Only</option>
@@ -470,35 +471,35 @@
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;">
             <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB;">
               <div style="font-size: 11px; font-weight: 700; color: #4B5563; text-transform: uppercase;">1. Design & Costing</div>
-              <div style="font-size: 18px; font-weight: 700; color: var(--pbi-purple); margin: 4px 0;" id="funnel-fc-val">$22.23M</div>
-              <div style="font-size: 11px; color: var(--pbi-text-muted);" id="funnel-fc-n">26 Forecast (FC) Projects</div>
+              <div style="font-size: 18px; font-weight: 700; color: var(--theme-purple); margin: 4px 0;" id="funnel-fc-val">$22.23M</div>
+              <div style="font-size: 11px; color: var(--theme-text-muted);" id="funnel-fc-n">26 Forecast (FC) Projects</div>
             </div>
             <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB;">
               <div style="font-size: 11px; font-weight: 700; color: #4B5563; text-transform: uppercase;">2. Pre-Production</div>
-              <div style="font-size: 18px; font-weight: 700; color: var(--pbi-amber); margin: 4px 0;" id="funnel-nor-val">$420.1K</div>
-              <div style="font-size: 11px; color: var(--pbi-text-muted);" id="funnel-nor-n">Waiting for PO / Deposit (NOR)</div>
+              <div style="font-size: 18px; font-weight: 700; color: var(--theme-amber); margin: 4px 0;" id="funnel-nor-val">$420.1K</div>
+              <div style="font-size: 11px; color: var(--theme-text-muted);" id="funnel-nor-n">Waiting for PO / Deposit (NOR)</div>
             </div>
             <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB;">
               <div style="font-size: 11px; font-weight: 700; color: #4B5563; text-transform: uppercase;">3. Production Backlog</div>
-              <div style="font-size: 18px; font-weight: 700; color: var(--pbi-blue); margin: 4px 0;" id="funnel-ob-val">$1.86M</div>
-              <div style="font-size: 11px; color: var(--pbi-text-muted);" id="funnel-ob-n">Confirmed Order Book (OB)</div>
+              <div style="font-size: 18px; font-weight: 700; color: var(--theme-blue); margin: 4px 0;" id="funnel-ob-val">$1.86M</div>
+              <div style="font-size: 11px; color: var(--theme-text-muted);" id="funnel-ob-n">Confirmed Order Book (OB)</div>
             </div>
             <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB;">
               <div style="font-size: 11px; font-weight: 700; color: #4B5563; text-transform: uppercase;">4. Shipped / Fulfilled</div>
-              <div style="font-size: 18px; font-weight: 700; color: var(--pbi-green); margin: 4px 0;" id="funnel-sh-val">$7.31M</div>
-              <div style="font-size: 11px; color: var(--pbi-text-muted);" id="funnel-sh-n">Delivered Revenue FY2026</div>
+              <div style="font-size: 18px; font-weight: 700; color: var(--theme-green); margin: 4px 0;" id="funnel-sh-val">$7.31M</div>
+              <div style="font-size: 11px; color: var(--theme-text-muted);" id="funnel-sh-n">Delivered Revenue FY2026</div>
             </div>
           </div>
 
           <div class="dual-grid">
             <div style="border: 1px solid #E5E7EB; border-radius: 6px; padding: 14px;">
-              <h4 style="font-size: 13px; color: var(--pbi-navy); margin-bottom: 10px;">Market Distribution (Destination)</h4>
+              <h4 style="font-size: 13px; color: var(--theme-navy); margin-bottom: 10px;">Market Distribution (Destination)</h4>
               <div class="hbar-list" id="market-list">
               </div>
             </div>
 
             <div style="border: 1px solid #E5E7EB; border-radius: 6px; padding: 14px;">
-              <h4 style="font-size: 13px; color: var(--pbi-navy); margin-bottom: 10px;">PIC Workload Distribution</h4>
+              <h4 style="font-size: 13px; color: var(--theme-navy); margin-bottom: 10px;">PIC Workload Distribution</h4>
               <div class="hbar-list" id="pic-list">
               </div>
             </div>
@@ -510,20 +511,20 @@
   </main>
 
   <!-- Bottom Page Navigation Tabs -->
-  <footer class="pbi-footer-tabs">
+  <footer class="app-footer-tabs">
     <div class="tab-buttons">
-      <button class="pbi-tab active" id="tab-btn-1" onclick="switchPage(1, '1. Executive Overview (OB vs FC)')">
+      <button class="nav-tab active" id="tab-btn-1" onclick="switchPage(1, '1. Executive Overview (OB vs FC)')">
         📊 1. Executive Summary (OB vs FC)
       </button>
-      <button class="pbi-tab" id="tab-btn-2" onclick="switchPage(2, '2. Project Schedule & Milestones')">
+      <button class="nav-tab" id="tab-btn-2" onclick="switchPage(2, '2. Project Schedule & Milestones')">
         📅 2. Project Schedule & Milestones
       </button>
-      <button class="pbi-tab" id="tab-btn-3" onclick="switchPage(3, '3. Commercial Portfolio & Pipeline')">
+      <button class="nav-tab" id="tab-btn-3" onclick="switchPage(3, '3. Commercial Portfolio & Pipeline')">
         🏢 3. Commercial & Customer Portfolio
       </button>
     </div>
-    <div class="pbi-footer-controls">
-      <span>16:9 Canvas</span>
+    <div class="app-footer-controls">
+      <span>Executive View</span>
       <span>|</span>
       <span>Fit to Page</span>
       <span>|</span>
@@ -543,7 +544,7 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
 
     function switchPage(pageNum, title) {
       document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.pbi-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
 
       document.getElementById('page-' + pageNum).classList.add('active');
       document.getElementById('tab-btn-' + pageNum).classList.add('active');
@@ -681,7 +682,7 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       document.getElementById('mix-list').innerHTML = `
         <div class="hbar-item">
           <span class="hbar-name">Non-RH Accounts</span>
-          <div class="hbar-track"><div class="hbar-fill" style="width: ${share(nonRh).toFixed(1)}%; background: var(--pbi-navy);"></div></div>
+          <div class="hbar-track"><div class="hbar-fill" style="width: ${share(nonRh).toFixed(1)}%; background: var(--theme-navy);"></div></div>
           <span class="hbar-val">${formatCurrency(nonRh)} (${share(nonRh).toFixed(1)}%)</span>
         </div>
         <div class="hbar-item">
@@ -701,7 +702,7 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       document.getElementById('top5-list').innerHTML = top.map(([name, v], i) => `
         <div class="hbar-item">
           <span class="hbar-name">${name}</span>
-          <div class="hbar-track"><div class="hbar-fill" style="width: ${(v / topMax * 100).toFixed(1)}%; background: ${i === 0 ? '#C5A059' : 'var(--pbi-navy)'};"></div></div>
+          <div class="hbar-track"><div class="hbar-fill" style="width: ${(v / topMax * 100).toFixed(1)}%; background: ${i === 0 ? '#C5A059' : 'var(--theme-navy)'};"></div></div>
           <span class="hbar-val">${formatCurrency(v)}</span>
         </div>`).join('');
 
@@ -727,7 +728,7 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       const restCount = mk.slice(4).reduce((s, [, n]) => s + n, 0);
       if (restCount > 0) topMarkets.push(['Other', restCount]);
       const totalRows = data.length || 1;
-      const mkColors = ['var(--pbi-navy)', 'var(--pbi-blue)', 'var(--pbi-teal)', 'var(--pbi-purple)', '#6B7280'];
+      const mkColors = ['var(--theme-navy)', 'var(--theme-blue)', 'var(--theme-teal)', 'var(--theme-purple)', '#6B7280'];
       document.getElementById('market-list').innerHTML = topMarkets.map(([name, n], i) => `
         <div class="hbar-item">
           <span class="hbar-name">${name}</span>
@@ -743,7 +744,7 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       document.getElementById('pic-list').innerHTML = picTop.map(([name, n]) => `
         <div class="hbar-item">
           <span class="hbar-name">${name}</span>
-          <div class="hbar-track"><div class="hbar-fill" style="width: ${(n / picMax * 100).toFixed(0)}%; background: var(--pbi-navy);"></div></div>
+          <div class="hbar-track"><div class="hbar-fill" style="width: ${(n / picMax * 100).toFixed(0)}%; background: var(--theme-navy);"></div></div>
           <span class="hbar-val">${n} Projects</span>
         </div>`).join('');
     }
@@ -877,8 +878,8 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
 
         let html = `
           <td>
-            <div style="font-weight: 600; color: var(--pbi-navy);">${p.name}</div>
-            <div style="font-size: 10.5px; color: var(--pbi-text-muted);">${subline}</div>
+            <div style="font-weight: 600; color: var(--theme-navy);">${p.name}</div>
+            <div style="font-size: 10.5px; color: var(--theme-text-muted);">${subline}</div>
           </td>
           <td style="font-size: 11px; font-weight: 600;">${p.type}</td>
           <td><span style="font-size: 10.5px; font-weight: 600; color: #4B5563;">${p.stage}</span></td>
@@ -907,7 +908,7 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
         html += `
           <td><span class="milestone-pill ${drawClass}">${p.drawing !== 'nan' ? p.drawing : 'TBC'}</span></td>
           <td><span class="milestone-pill ${veneerClass}">${p.veneer !== 'nan' ? p.veneer : 'TBC'}</span></td>
-          <td style="font-weight: 600; color: var(--pbi-navy); font-size: 10.5px;">${p.pic}</td>
+          <td style="font-weight: 600; color: var(--theme-navy); font-size: 10.5px;">${p.pic}</td>
         `;
 
         tr.innerHTML = html;
