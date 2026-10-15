@@ -1,0 +1,6 @@
+node_modules
+dist
+.DS_Store
+logs/
+build_report.py
+hs_pbi_report_draft.html
