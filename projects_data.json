@@ -818,7 +818,7 @@
   },
   {
     "name": "2026-BROOKFIELD-PARK HYATT VANCOUVER",
-    "status": "FC",
+    "status": "DROPPED",
     "customer": "BROOKFIELD",
     "type": "NON RH",
     "stage": "NPI",
@@ -887,26 +887,9 @@
     "veneer": "Pending Approval",
     "metal": "Pending Approval",
     "market": "US",
-    "total_val": 6614.04,
+    "total_val": 1506614.04,
     "monthly": {
-      "2026/M09": 6614.04
-    }
-  },
-  {
-    "name": "2026-L&S-HARD ROCK SAN JUAN",
-    "status": "FC",
-    "customer": "L&S",
-    "type": "NON RH",
-    "stage": "NPI",
-    "sku": 5,
-    "pic": "THAO",
-    "sw": "TBC - TBC",
-    "drawing": "In Progress",
-    "veneer": "In Progress",
-    "metal": "TBC",
-    "market": "US",
-    "total_val": 1500000.0,
-    "monthly": {
+      "2026/M09": 6614.04,
       "2027/M09": 750000.0,
       "2027/M10": 750000.0
     }
@@ -1510,24 +1493,6 @@
     "market": "CA",
     "total_val": 79655.52,
     "monthly": {}
-  },
-  {
-    "name": "2026-L&S-THE STANDARD MIAMI HOTEL",
-    "status": "CANCELLED",
-    "customer": "L&S",
-    "type": "NON RH",
-    "stage": "NPD",
-    "sku": 3,
-    "pic": "DUNG",
-    "sw": "2026/W35 - 2026/W35",
-    "drawing": "In Progress",
-    "veneer": "In Progress",
-    "metal": "In Progress",
-    "market": "US",
-    "total_val": 2142.3,
-    "monthly": {
-      "2026/M08": 2142.3
-    }
   },
   {
     "name": "2026-L&S-THE STANDARD MIAMI HOTEL",
