@@ -214,8 +214,8 @@
     "sku": 1,
     "pic": "DUY",
     "sw": "2027/W04 - 2027/W04",
-    "drawing": "Pending Approval",
-    "veneer": "Pending Approval",
+    "drawing": "In Progress",
+    "veneer": "Approved",
     "metal": "TBC",
     "market": "PT",
     "total_val": 2190.15,
@@ -667,22 +667,20 @@
     }
   },
   {
-    "name": "Removed-AHMADIAH-MARRIOTT KHOBAR",
+    "name": "2026-AHMADIAH-MARRIOTT KHOBAR",
     "status": "REMOVED",
     "customer": "AHMADIAH",
     "type": "NON RH",
     "stage": "NPI",
     "sku": 35,
     "pic": "THU",
-    "sw": "2026/W14 - 2026/W14",
+    "sw": "TBC - TBC",
     "drawing": "TBC",
     "veneer": "TBC",
     "metal": "TBC",
     "market": "SA",
     "total_val": 0.0,
-    "monthly": {
-      "Removed": 0.0
-    }
+    "monthly": {}
   },
   {
     "name": "2025-MOHI-MOHI APPELLATION",
@@ -705,7 +703,7 @@
   },
   {
     "name": "2026-MOHI-MOHI APPELLATION",
-    "status": "OB",
+    "status": "SHIPPED",
     "customer": "MOHI",
     "type": "NON RH",
     "stage": "NPI",
@@ -1698,7 +1696,7 @@
     "pic": "DUY",
     "sw": "2027/W02 - 2027/W02",
     "drawing": "Pending Approval",
-    "veneer": "In Progress",
+    "veneer": "Pending Approval",
     "metal": "TBC",
     "market": "EU",
     "total_val": 8455.52,
@@ -2197,7 +2195,7 @@
   },
   {
     "name": "2026-MJM-CABIN PROJECT",
-    "status": "DROPPED",
+    "status": "CANCELLED",
     "customer": "MJM",
     "type": "NON RH",
     "stage": "NPI",

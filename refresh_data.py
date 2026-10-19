@@ -106,13 +106,14 @@ print(f"Updated index.html successfully (Refresh stamp: {stamp})")
 # 6. Rebuild dist/ if dist folder exists
 if os.path.exists('package.json'):
     try:
-        # Also sync src/main.js payload
-        if os.path.exists('src/main.js'):
-            with open('src/main.js', 'r', encoding='utf-8') as f:
-                js = f.read()
-            js = re.sub(r'const rawProjects = \[.*?\];', payload_str, js, flags=re.DOTALL)
-            with open('src/main.js', 'w', encoding='utf-8') as f:
-                f.write(js)
+        # Also sync src/main.js and main.js payload
+        for js_path in ['src/main.js', 'main.js']:
+            if os.path.exists(js_path):
+                with open(js_path, 'r', encoding='utf-8') as f:
+                    js = f.read()
+                js = re.sub(r'const rawProjects = \[.*?\];', payload_str, js, flags=re.DOTALL)
+                with open(js_path, 'w', encoding='utf-8') as f:
+                    f.write(js)
         subprocess.run(['npm', 'run', 'build'], shell=True, capture_output=True, text=True)
         print("Updated dist/ bundle for Cloudflare Pages")
     except Exception as e:
