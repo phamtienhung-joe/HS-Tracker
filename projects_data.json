@@ -123,7 +123,7 @@
     "stage": "NPI",
     "sku": 12,
     "pic": "DUNG",
-    "sw": "2026/W27 - 2026/W28",
+    "sw": "2027/W27 - 2027/W28",
     "drawing": "Approved",
     "veneer": "Approved",
     "metal": "Approved",
@@ -393,7 +393,7 @@
     "stage": "NPI",
     "sku": 14,
     "pic": "DUY",
-    "sw": "2026/W15 - 2026/W17",
+    "sw": "2027/W15 - 2027/W17",
     "drawing": "Pending Approval",
     "veneer": "Pending Approval",
     "metal": "Pending Approval",
@@ -613,7 +613,7 @@
   },
   {
     "name": "2026-KD-KNOX DALLAS SUITE",
-    "status": "OB",
+    "status": "SHIPPED",
     "customer": "KD",
     "type": "NON RH",
     "stage": "NPI",
@@ -624,9 +624,9 @@
     "veneer": "Approved",
     "metal": "Approved",
     "market": "US",
-    "total_val": 97273.0,
+    "total_val": 98457.81,
     "monthly": {
-      "2026/M10": 97273.0
+      "2026/M10": 98457.81
     }
   },
   {
@@ -642,10 +642,10 @@
     "veneer": "Approved",
     "metal": "Approved",
     "market": "US",
-    "total_val": 207390.0,
+    "total_val": 211564.94,
     "monthly": {
-      "2026/M11": 150161.0,
-      "2026/M12": 57229.0
+      "2026/M11": 148976.37,
+      "2026/M12": 62588.57
     }
   },
   {
@@ -656,9 +656,9 @@
     "stage": "NPI",
     "sku": 3,
     "pic": "PHONG",
-    "sw": "TBC - TBC",
-    "drawing": "In Progress",
-    "veneer": "In Progress",
+    "sw": "2026/W52 - 2026/W52",
+    "drawing": "Approved",
+    "veneer": "Approved",
     "metal": "TBC",
     "market": "US",
     "total_val": 2680.0,
@@ -727,7 +727,7 @@
     "stage": "NPI",
     "sku": 117,
     "pic": "TBC",
-    "sw": "2026/W14 - 2026/W14",
+    "sw": "2027/W40 - 2027/W52",
     "drawing": "Approved",
     "veneer": "Approved",
     "metal": "TBC",
@@ -954,7 +954,7 @@
     "stage": "NPD",
     "sku": 21,
     "pic": "BIEN",
-    "sw": "2026/W46 - 2026/W49",
+    "sw": "2026/W46 - 2026/W51",
     "drawing": "In Progress",
     "veneer": "In Progress",
     "metal": "In Progress",
@@ -1027,7 +1027,7 @@
     "stage": "NPI",
     "sku": 0,
     "pic": "TBC",
-    "sw": "2026/W37 - 2026/W39",
+    "sw": "2027/W37 - 2027/W39",
     "drawing": "Not Started",
     "veneer": "TBC",
     "metal": "TBC",
@@ -1579,7 +1579,7 @@
     "market": "US",
     "total_val": 2843.6,
     "monthly": {
-      "2026/M09": 2843.6
+      "2026/M10": 2843.6
     }
   },
   {
@@ -1767,9 +1767,9 @@
     "sku": 15,
     "pic": "DUNG",
     "sw": "2026/W46 - 2026/W46",
-    "drawing": "Pending Approval",
+    "drawing": "Approved",
     "veneer": "Approved",
-    "metal": "Pending Approval",
+    "metal": "Approved",
     "market": "US",
     "total_val": 32385.58,
     "monthly": {
@@ -1784,10 +1784,10 @@
     "stage": "NPI",
     "sku": 12,
     "pic": "DUNG",
-    "sw": "2026/W29 - 2026/W34",
+    "sw": "2027/W29 - 2027/W34",
     "drawing": "Not Started",
     "veneer": "Not Started",
-    "metal": "Pending Approval",
+    "metal": "Not Started",
     "market": "US",
     "total_val": 543005.0,
     "monthly": {
@@ -2185,8 +2185,8 @@
     "pic": "TRAN",
     "sw": "2027/W10 - 2027/W10",
     "drawing": "In Progress",
-    "veneer": "TBC",
-    "metal": "TBC",
+    "veneer": "In Progress",
+    "metal": "In Progress",
     "market": "US",
     "total_val": 2908.0,
     "monthly": {
@@ -2240,8 +2240,8 @@
     "pic": "DUNG",
     "sw": "2027/W05 - 2027/W05",
     "drawing": "In Progress",
-    "veneer": "Not Started",
-    "metal": "TBC",
+    "veneer": "In Progress",
+    "metal": "In Progress",
     "market": "US",
     "total_val": 77770.73,
     "monthly": {
@@ -2294,14 +2294,14 @@
     "stage": "NPI",
     "sku": 50,
     "pic": "PHONG",
-    "sw": "2027/W36 - 2027/W36",
-    "drawing": "Not Started",
-    "veneer": "Not Started",
+    "sw": "2027/W24 - 2027/W26",
+    "drawing": "In Progress",
+    "veneer": "In Progress",
     "metal": "Not Started",
     "market": "US",
     "total_val": 358530.94,
     "monthly": {
-      "2027/M09": 358530.94
+      "2027/M06": 358530.94
     }
   },
   {

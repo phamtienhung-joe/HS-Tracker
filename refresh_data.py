@@ -1,6 +1,6 @@
 """Automated Data Refresh for index.html (Official GitHub version).
 
-Reads directly from the master tracker in COMMERCIAL WORKSPACE - 1.5_TRACKERS,
+Reads directly from the master tracker in COMMERCIAL WORKSPACE - 0.0 SALE_FORECAST,
 filters out 'KA' and 'LOCAL', updates data payload inside index.html,
 and preserves the self-contained standalone structure for GitHub / GitHub Pages.
 """
@@ -14,7 +14,7 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-MASTER_PATH = r"C:\Users\hung.phamtien\Rochdale Spears Co\COMMERCIAL WORKSPACE - 1.5_TRACKERS\HS GENERAL TRACKER.xlsx"
+MASTER_PATH = r"C:\Users\hung.phamtien\Rochdale Spears Co\COMMERCIAL WORKSPACE - 0.0 SALE_FORECAST\HS GENERAL TRACKER.xlsx"
 LOCAL_PATH = "HS GENERAL TRACKER.xlsx"
 
 if os.path.exists(MASTER_PATH):
