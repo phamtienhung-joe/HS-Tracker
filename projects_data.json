@@ -28,16 +28,16 @@
     "stage": "NPI",
     "sku": 27,
     "pic": "BIEN",
-    "sw": "2027/W24 - 2027/W35",
+    "sw": "2027/W16 - 2027/W26",
     "drawing": "Not Started",
     "veneer": "Not Started",
     "metal": "Not Started",
     "market": "BS",
     "total_val": 2936224.52,
     "monthly": {
-      "2027/M06": 1000000.0,
-      "2027/M07": 1000000.0,
-      "2027/M08": 936224.52
+      "2027/M04": 1000000.0,
+      "2027/M05": 1000000.0,
+      "2027/M06": 936224.52
     }
   },
   {
@@ -894,7 +894,7 @@
   },
   {
     "name": "2026-SPECTRUM-OTMB VANITY",
-    "status": "OB",
+    "status": "SHIPPED",
     "customer": "SPECTRUM",
     "type": "NON RH",
     "stage": "NPD",
@@ -1073,7 +1073,7 @@
   },
   {
     "name": "2026-SPECTRUM-PROJECT 550",
-    "status": "OB",
+    "status": "SHIPPED",
     "customer": "SPECTRUM",
     "type": "NON RH",
     "stage": "NPD",
@@ -1441,7 +1441,7 @@
   },
   {
     "name": "2026-RH-MONTAUK YACHT CLUB",
-    "status": "DROPPED",
+    "status": "CANCELLED",
     "customer": "RH",
     "type": "RH",
     "stage": "NPD",
@@ -1572,7 +1572,7 @@
     "stage": "NPD",
     "sku": 3,
     "pic": "BIEN",
-    "sw": "2026/W39 - 2026/W39",
+    "sw": "2026/W43 - 2026/W43",
     "drawing": "Approved",
     "veneer": "Approved",
     "metal": "Approved",
@@ -1624,7 +1624,7 @@
     "stage": "NPI",
     "sku": 2,
     "pic": "DUY",
-    "sw": "2027/W03 - 2027/W03",
+    "sw": "2027/W05 - 2027/W05",
     "drawing": "Pending Approval",
     "veneer": "Pending Approval",
     "metal": "TBC",
@@ -1694,7 +1694,7 @@
     "stage": "NPI",
     "sku": 2,
     "pic": "DUY",
-    "sw": "2027/W02 - 2027/W02",
+    "sw": "2027/W05 - 2027/W05",
     "drawing": "Pending Approval",
     "veneer": "Pending Approval",
     "metal": "TBC",
@@ -1993,7 +1993,7 @@
   },
   {
     "name": "2026-BISCAYNE-SLPS - SUGAR LAND, PUBLIC SPACE",
-    "status": "CANCELLED",
+    "status": "REJECTED",
     "customer": "BISCAYNE",
     "type": "NON RH",
     "stage": "NPI",
@@ -2269,7 +2269,7 @@
   },
   {
     "name": "2026-SPECTRUM-PROJECT 550 POCKET DOORS",
-    "status": "NOR",
+    "status": "FC",
     "customer": "SPECTRUM",
     "type": "NON RH",
     "stage": "NPD",
@@ -2280,26 +2280,9 @@
     "veneer": "In Progress",
     "metal": "TBC",
     "market": "US",
-    "total_val": 730.3,
+    "total_val": 42563.3,
     "monthly": {
-      "2026/M11": 730.3
-    }
-  },
-  {
-    "name": "2026-SPECTRUM-PROJECT 550 POCKET DOORS",
-    "status": "FC",
-    "customer": "SPECTRUM",
-    "type": "NON RH",
-    "stage": "NPI",
-    "sku": 2,
-    "pic": "PHONG",
-    "sw": "TBC - TBC",
-    "drawing": "Not Started",
-    "veneer": "Not Started",
-    "metal": "TBC",
-    "market": "US",
-    "total_val": 41833.0,
-    "monthly": {
+      "2026/M11": 730.3,
       "2027/M04": 41833.0
     }
   },
