@@ -118,3 +118,52 @@ if os.path.exists('package.json'):
         print("Updated dist/ bundle for Cloudflare Pages")
     except Exception as e:
         pass
+
+
+# 7. Extract NPD Analysis sheet (for Page 4 - NPD Conversion)
+npd_file = pd.read_excel(EXCEL_FILE, sheet_name='NPD Analysis', header=16, nrows=60)
+npd_file = npd_file[npd_file['Project Name (Short)'].notna()]
+
+npd_records = []
+npd_index = {}
+for _, r in npd_file.iterrows():
+    outcome = clean(r['Outcome'])
+    if outcome not in ('Won', 'In Progress', 'Lost'):
+        continue
+    rec = {
+        'name': clean(r['Project Name (Short)']),
+        'type': clean(r['Project Type']),
+        'customer': clean(r['Customer']),
+        'pic': clean(r['PIC']),
+        'npd_status': clean(r['NPD Status']),
+        'npi_status': clean(r['NPI Status']),
+        'outcome': outcome,
+        'proto_val': float(pd.to_numeric(r['NPD Prototype Value'], errors='coerce') or 0),
+        'npi_val': float(pd.to_numeric(r['Total NPI Break Value'], errors='coerce') or 0),
+    }
+    npd_records.append(rec)
+    npd_index[(rec['name'], rec['npd_status'], rec['npi_status'])] = rec
+
+with open('npd_data.json', 'w', encoding='utf-8') as f:
+    json.dump(npd_records, f, ensure_ascii=False, indent=2)
+print(f"Exported {len(npd_records)} NPD records to npd_data.json")
+
+# Inject NPD payload into standalone HTML files
+with open('index.html', 'r', encoding='utf-8') as f:
+    html_npd = f.read()
+npd_payload = 'const npdProjects = ' + json.dumps(npd_records, ensure_ascii=False, separators=(',', ':')) + ';'
+if 'const npdProjects = ' in html_npd:
+    html_npd = re.sub(r'const npdProjects = \[.*?\];', npd_payload, html_npd, flags=re.DOTALL)
+    with open('index.html', 'w', encoding='utf-8') as f:
+        f.write(html_npd)
+    print("Updated npdProjects payload in index.html")
+
+for js_path in ['src/main.js', 'main.js']:
+    if os.path.exists(js_path):
+        with open(js_path, 'r', encoding='utf-8') as f:
+            js = f.read()
+        js = re.sub(r'const rawProjects = \[.*?\];', payload_str, js, flags=re.DOTALL)
+        if 'const npdProjects = ' in js:
+            js = re.sub(r'const npdProjects = \[.*?\];', npd_payload, js, flags=re.DOTALL)
+        with open(js_path, 'w', encoding='utf-8') as f:
+            f.write(js)

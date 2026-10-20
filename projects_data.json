@@ -368,6 +368,24 @@
     }
   },
   {
+    "name": "2026-RH-SNAKE RIVER LODGE BLUEFLAG",
+    "status": "OB",
+    "customer": "RH",
+    "type": "RH",
+    "stage": "NPI",
+    "sku": 1,
+    "pic": "DUY",
+    "sw": "2027/W05 - 2027/W05",
+    "drawing": "Approved",
+    "veneer": "Approved",
+    "metal": "Approved",
+    "market": "US",
+    "total_val": 3080.0,
+    "monthly": {
+      "2027/M01": 3080.0
+    }
+  },
+  {
     "name": "2025-RH-TRUMP LAS VEGAS PENTHOUSES",
     "status": "OB",
     "customer": "RH",
@@ -380,9 +398,9 @@
     "veneer": "Approved",
     "metal": "Approved",
     "market": "US",
-    "total_val": 535191.0,
+    "total_val": 558793.0,
     "monthly": {
-      "2027/M01": 535191.0
+      "2027/M01": 558793.0
     }
   },
   {
@@ -642,15 +660,15 @@
     "veneer": "Approved",
     "metal": "Approved",
     "market": "US",
-    "total_val": 211564.94,
+    "total_val": 208884.94,
     "monthly": {
       "2026/M11": 148976.37,
-      "2026/M12": 62588.57
+      "2026/M12": 59908.57
     }
   },
   {
     "name": "2026-KD-KNOX DALLAS INSPECTION COVERS",
-    "status": "NOR",
+    "status": "OB",
     "customer": "KD",
     "type": "NON RH",
     "stage": "NPI",
@@ -1377,9 +1395,9 @@
     "veneer": "In Progress",
     "metal": "In Progress",
     "market": "US",
-    "total_val": 36622.71,
+    "total_val": 37522.0,
     "monthly": {
-      "2027/M03": 36622.71
+      "2027/M03": 37522.0
     }
   },
   {
@@ -1466,14 +1484,14 @@
     "stage": "NPI",
     "sku": 5,
     "pic": "DUNG",
-    "sw": "2026/W41 - 2026/W41",
+    "sw": "2026/W45 - 2026/W45",
     "drawing": "Approved",
     "veneer": "Approved",
     "metal": "Approved",
     "market": "US",
     "total_val": 22890.48,
     "monthly": {
-      "2026/M10": 22890.48
+      "2026/M11": 22890.48
     }
   },
   {
@@ -1914,9 +1932,9 @@
     "veneer": "Approved",
     "metal": "TBC",
     "market": "UK",
-    "total_val": 14883.84,
+    "total_val": 15139.0,
     "monthly": {
-      "2026/M12": 14883.84
+      "2026/M12": 15139.0
     }
   },
   {

@@ -23,31 +23,36 @@
     --theme-purple: #5C2D91;
     --theme-purple-light: #F3EDF9;
     --theme-teal: #038387;
+    --theme-red: #A80000;
+    --theme-red-light: #FDE7E9;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
   body { background-color: var(--theme-bg); color: var(--theme-text); height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
   /* Application Header */
   .app-header { background-color: #2B2B2B; color: white; padding: 0 16px; height: 48px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; border-bottom: 1px solid #404040; flex-shrink: 0; }
   .app-header-left { display: flex; align-items: center; gap: 12px; }
   .app-logo { display: flex; align-items: center; gap: 8px; font-weight: 600; color: white; text-decoration: none; }
-  .app-logo-icon { width: 22px; height: 22px; background: var(--theme-gold); border-radius: 4px; display: flex; align-items: flex-end; padding: 3px 2px; gap: 2px; }
-  .app-logo-icon span { background: #2B2B2B; border-radius: 1px; display: inline-block; }
-  .app-logo-icon span:nth-child(1) { width: 4px; height: 7px; }
-  .app-logo-icon span:nth-child(2) { width: 4px; height: 11px; }
-  .app-logo-icon span:nth-child(3) { width: 4px; height: 16px; }
+  .app-logo-badge { background: var(--theme-gold); color: #2B2B2B; font-weight: 800; font-size: 11px; padding: 3px 6px; border-radius: 4px; letter-spacing: 0.5px; }
   .app-workspace-tag { color: #A6A6A6; padding-left: 8px; border-left: 1px solid #505050; }
   .app-report-title { font-weight: 600; font-size: 14px; color: #FFFFFF; }
-  .app-header-right { display: flex; align-items: center; gap: 14px; }
+  .app-header-right { display: flex; align-items: center; gap: 10px; }
   .app-btn-ghost { background: transparent; border: 1px solid transparent; color: #E1DFDD; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; }
   .app-btn-ghost:hover { background: rgba(255,255,255,0.1); color: white; }
   .badge-refresh { background: #3B3A39; padding: 4px 10px; border-radius: 12px; font-size: 11px; color: #C8C6C4; display: flex; align-items: center; gap: 6px; }
   .badge-refresh::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #107C41; }
 
   /* Toolbar */
-  .app-toolbar { background: #FFFFFF; border-bottom: 1px solid var(--theme-border); padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--theme-text-muted); flex-shrink: 0; }
+  .app-toolbar { background: #FFFFFF; border-bottom: 1px solid var(--theme-border); padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--theme-text-muted); flex-shrink: 0; gap: 16px; }
   .app-breadcrumbs span.active { color: var(--theme-navy); font-weight: 600; }
+  .toolbar-search-wrap { position: relative; display: flex; align-items: center; }
+  .toolbar-search { padding: 5px 26px 5px 28px; border: 1px solid #D1D5DB; border-radius: 14px; font-size: 12px; width: 260px; outline: none; background: #F8F9FA; transition: border-color 0.15s, background 0.15s; }
+  .toolbar-search:focus { border-color: var(--theme-blue); background: #FFFFFF; }
+  .toolbar-search-icon { position: absolute; left: 9px; font-size: 11px; color: #9CA3AF; pointer-events: none; }
+  .toolbar-search-clear { position: absolute; right: 6px; border: none; background: transparent; cursor: pointer; color: #9CA3AF; font-size: 13px; line-height: 1; padding: 2px 4px; display: none; }
+  .toolbar-search-clear.visible { display: block; }
+  .toolbar-search-clear:hover { color: var(--theme-navy); }
 
   /* Viewport */
   .app-main-viewport { flex: 1; overflow-y: auto; padding: 16px 20px; background: #F0F2F5; }
@@ -61,32 +66,55 @@
   .slicer-btn { padding: 4px 12px; font-size: 12px; border: none; background: transparent; cursor: pointer; border-radius: 3px; font-weight: 500; color: #4B5563; }
   .slicer-btn.active { background: var(--theme-blue); color: white; font-weight: 600; }
 
-  /* Top Executive KPI Cards (Idea 1) */
-  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-  .kpi-card { background: white; border-radius: 6px; padding: 14px 16px; border: 1px solid var(--theme-border); border-left: 4px solid var(--theme-navy); box-shadow: 0 1px 3px rgba(0,0,0,0.03); cursor: pointer; transition: transform 0.15s; }
+  /* Active Filter Chips */
+  .chip-bar { display: none; align-items: center; flex-wrap: wrap; gap: 6px; padding: 8px 16px; background: #F8F9FA; border: 1px dashed #D0D7DE; border-radius: 6px; font-size: 11.5px; }
+  .chip-bar.visible { display: flex; }
+  .chip-bar-label { font-weight: 700; color: var(--theme-navy); text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.3px; margin-right: 2px; }
+  .filter-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--theme-blue-light); color: #005A9E; border: 1px solid #BFDDF3; border-radius: 12px; padding: 3px 5px 3px 10px; font-size: 11px; font-weight: 600; }
+  .filter-chip .chip-x { border: none; background: #FFFFFF; color: #005A9E; border-radius: 50%; width: 15px; height: 15px; line-height: 1; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+  .filter-chip .chip-x:hover { background: #005A9E; color: #FFFFFF; }
+  .chip-clear-all { border: 1px solid #D0D7DE; background: #FFFFFF; color: #4B5563; border-radius: 12px; padding: 3px 10px; font-size: 11px; font-weight: 600; cursor: pointer; }
+  .chip-clear-all:hover { background: var(--theme-navy); color: #FFFFFF; border-color: var(--theme-navy); }
+
+  /* Top Executive KPI Cards */
+  .kpi-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .kpi-card { background: white; border-radius: 6px; padding: 10px 12px; border: 1px solid var(--theme-border); border-left: 4px solid var(--theme-navy); box-shadow: 0 1px 3px rgba(0,0,0,0.03); cursor: pointer; transition: transform 0.15s; min-width: 0; }
+  .kpi-value { font-size: 22px; font-weight: 700; color: var(--theme-navy); margin: 4px 0 2px 0; }
+  .kpi-title { font-size: 10.5px; }
+  .kpi-meta { font-size: 10.5px; }
   .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
   .kpi-card.shipped { border-left-color: var(--theme-green); }
   .kpi-card.ob { border-left-color: var(--theme-blue); }
   .kpi-card.nor { border-left-color: var(--theme-amber); }
   .kpi-card.fc { border-left-color: var(--theme-purple); }
   .kpi-card.total { border-left-color: var(--theme-navy); }
-  .kpi-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--theme-text-muted); display: flex; justify-content: space-between; }
-  .kpi-badge { font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: 600; }
+  .kpi-card.won { border-left-color: var(--theme-green); }
+  .kpi-card.wip { border-left-color: var(--theme-amber); }
+  .kpi-card.lost { border-left-color: var(--theme-red); }
+  .kpi-card.rate { border-left-color: var(--theme-teal); }
+  .kpi-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--theme-text-muted); display: flex; justify-content: space-between; gap: 6px; }
+  .kpi-badge { font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+  .kpi-title { flex-wrap: wrap; }
+  .kpi-meta span { overflow: hidden; text-overflow: ellipsis; }
   .kpi-card.shipped .kpi-badge { background: var(--theme-green-light); color: var(--theme-green); }
   .kpi-card.ob .kpi-badge { background: var(--theme-blue-light); color: var(--theme-blue); }
   .kpi-card.nor .kpi-badge { background: var(--theme-amber-light); color: var(--theme-amber); }
   .kpi-card.fc .kpi-badge { background: var(--theme-purple-light); color: var(--theme-purple); }
   .kpi-card.total .kpi-badge { background: #E9ECEF; color: var(--theme-navy); }
+  .kpi-card.won .kpi-badge { background: var(--theme-green-light); color: var(--theme-green); }
+  .kpi-card.wip .kpi-badge { background: var(--theme-amber-light); color: var(--theme-amber); }
+  .kpi-card.lost .kpi-badge { background: var(--theme-red-light); color: var(--theme-red); }
+  .kpi-card.rate .kpi-badge { background: #E0F2F1; color: var(--theme-teal); }
   .kpi-value { font-size: 24px; font-weight: 700; color: var(--theme-navy); margin: 6px 0 2px 0; }
-  .kpi-meta { font-size: 11px; color: var(--theme-text-muted); display: flex; justify-content: space-between; }
+  .kpi-meta { font-size: 11px; color: var(--theme-text-muted); display: flex; justify-content: space-between; gap: 6px; }
 
   /* Visual Cards */
   .visual-card { background: white; border-radius: 6px; border: 1px solid var(--theme-border); padding: 16px; }
-  .visual-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #F0F0F0; }
+  .visual-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #F0F0F0; gap: 12px; flex-wrap: wrap; }
   .visual-title { font-size: 14px; font-weight: 700; color: var(--theme-navy); }
   .visual-subtitle { font-size: 11px; color: var(--theme-text-muted); font-weight: normal; margin-left: 6px; }
 
-  /* Monthly Matrix Table (Idea 1) */
+  /* Monthly Matrix Table */
   .matrix-table { width: 100%; border-collapse: collapse; font-size: 12px; }
   .matrix-table th { background: #F8F9FA; color: var(--theme-navy); font-weight: 600; text-align: center; padding: 8px 4px; border: 1px solid #E5E7EB; font-size: 11px; }
   .matrix-table th.col-rowheader { text-align: left; padding-left: 12px; width: 180px; }
@@ -95,6 +123,8 @@
   .matrix-table td.cell-rowheader { text-align: left; padding-left: 12px; font-weight: 600; }
   .matrix-table td.cell-total { font-weight: 700; background: #FAFBFD; }
   .matrix-table tr.row-grandtotal { background: #F1F4F9; font-weight: 700; border-top: 2px solid var(--theme-navy); }
+  .matrix-table tbody tr:hover td { background: #F6F8FB; }
+  .matrix-table tbody tr.grand-row:hover td { background: #F1F4F9; }
   .cell-bar-container { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
   .cell-bar-wrap { width: 100%; height: 4px; background: #EAEAEA; border-radius: 2px; overflow: hidden; }
   .cell-bar-fill { height: 100%; border-radius: 2px; }
@@ -103,7 +133,7 @@
   .fill-nor { background: var(--theme-amber); }
   .fill-fc { background: var(--theme-purple); }
 
-  /* Hand-drawn brackets representation from Idea 1 */
+  /* Hand-drawn brackets representation */
   .timeline-bracket-row { display: grid; grid-template-columns: 180px repeat(12, 1fr) 110px; gap: 0; margin-top: 6px; padding: 6px 0; font-size: 10px; border-top: 1px dashed #D0D7DE; }
   .bracket-box { text-align: center; padding: 4px 6px; border-radius: 4px; font-weight: 600; font-size: 11px; }
   .bracket-shipped { grid-column: 2 / span 9; background: #E7F6ED; color: #0E6235; border: 1px solid #A3D9B5; }
@@ -112,50 +142,27 @@
   /* Dual Grid */
   .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .hbar-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-  .hbar-item { display: grid; grid-template-columns: 140px 1fr 100px; align-items: center; gap: 12px; font-size: 12px; }
+  .hbar-item { display: grid; grid-template-columns: 140px 1fr 110px; align-items: center; gap: 12px; font-size: 12px; padding: 2px 4px; border-radius: 4px; }
+  .hbar-item.clickable { cursor: pointer; }
+  .hbar-item.clickable:hover { background: #F3F6FA; }
+  .hbar-item.active-filter { background: #EFF6FC; outline: 1px solid #99C8EE; }
   .hbar-name { font-weight: 600; color: var(--theme-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .hbar-track { height: 16px; background: #F0F2F5; border-radius: 3px; overflow: hidden; }
-  .hbar-fill { height: 100%; border-radius: 3px; }
-  .hbar-val { text-align: right; font-weight: 600; color: var(--theme-navy); }
+  .hbar-fill { height: 100%; border-radius: 3px; transition: width 0.3s ease; }
 
   /* Idea 2 Gantt Table Container & Sticky Header */
-  .gantt-table-container {
-    overflow: auto;
-    max-height: 560px;
-    border: 1px solid #E0E0E0;
-    border-radius: 4px;
-    background: #FFFFFF;
-    position: relative;
-  }
-  .gantt-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 11.5px;
-  }
-  .gantt-table th {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: #F4F6F9;
-    color: var(--theme-navy);
-    padding: 8px 6px;
-    border-bottom: 2px solid #CBD5E1;
-    border-right: 1px solid #E0E0E0;
-    text-align: left;
-    font-weight: 600;
-    font-size: 11px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-  }
+  .gantt-table-container { overflow: auto; max-height: 560px; border: 1px solid #E0E0E0; border-radius: 4px; background: #FFFFFF; position: relative; }
+  .gantt-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 11.5px; }
+  .gantt-table th { position: sticky; top: 0; z-index: 10; background: #F4F6F9; color: var(--theme-navy); padding: 8px 6px; border-bottom: 2px solid #CBD5E1; border-right: 1px solid #E0E0E0; text-align: left; font-weight: 600; font-size: 11px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
   .gantt-table th.th-center { text-align: center; }
-  .gantt-table td {
-    border-bottom: 1px solid #E5E7EB;
-    border-right: 1px solid #E5E7EB;
-    padding: 6px 6px;
-    vertical-align: middle;
-    background: #FFFFFF;
-  }
+  .gantt-table th.sortable { cursor: pointer; user-select: none; }
+  .gantt-table th.sortable:hover { background: #E8EDF4; }
+  .gantt-table th .sort-arrow { font-size: 9px; margin-left: 3px; color: #9CA3AF; }
+  .gantt-table th .sort-arrow.active { color: var(--theme-blue); }
+  .gantt-table td { border-bottom: 1px solid #E5E7EB; border-right: 1px solid #E5E7EB; padding: 6px 6px; vertical-align: middle; background: #FFFFFF; }
+  .gantt-table tbody tr { cursor: pointer; }
   .gantt-table tr:hover td { background: #F9FAFB; }
+  .gantt-table tr.row-selected td { background: #EFF6FC !important; }
   .status-tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; text-align: center; }
   .tag-shipped { background: #E7F6ED; color: #107C41; }
   .tag-ob { background: #EFF6FC; color: #0078D4; }
@@ -163,17 +170,38 @@
   .tag-fc { background: #F3EDF9; color: #5C2D91; }
   .tag-pipeline { background: #E1DFDD; color: #323130; }
   .tag-on-hold { background: #FDE7E9; color: #A80000; }
+  .tag-removed { background: #E1DFDD; color: #605E5C; }
+  .tag-won { background: #E7F6ED; color: #107C41; }
+  .tag-progress { background: #FFF4CE; color: #8A6D3B; }
+  .tag-lost { background: #FDE7E9; color: #A80000; }
 
   .gantt-bar-cell { padding: 3px !important; text-align: center; min-width: 46px; }
-  .gantt-active-block { color: white; font-size: 9.5px; font-weight: 600; padding: 4px 2px; border-radius: 3px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+  .gantt-active-block { color: white; font-size: 9.5px; font-weight: 600; padding: 4px 2px; border-radius: 3px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); cursor: pointer; }
+  .gantt-active-block:hover { filter: brightness(1.12); }
   .gantt-active-block.st-shipped { background: var(--theme-green); }
   .gantt-active-block.st-ob { background: var(--theme-blue); }
   .gantt-active-block.st-nor { background: var(--theme-amber); }
   .gantt-active-block.st-fc { background: var(--theme-purple); }
 
-  .milestone-pill { display: inline-flex; align-items: center; font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #F3F4F6; color: #4B5563; font-weight: 500; }
+  .milestone-pill { display: inline-flex; align-items: center; font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #F3F4F6; color: #4B5563; font-weight: 500; white-space: nowrap; }
   .milestone-pill.approved { background: #E7F6ED; color: #107C41; font-weight: 600; }
   .milestone-pill.in-progress { background: #FFF4CE; color: #8A6D3B; }
+
+  /* NPD Outcome Breakdown */
+  .outcome-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .outcome-tile { border: 1px solid #E5E7EB; border-radius: 6px; padding: 12px 14px; background: #FCFDFE; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .outcome-tile:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  .outcome-tile.outcome-active { outline: 2px solid var(--theme-blue); }
+  .outcome-tile.won { border-top: 3px solid var(--theme-green); }
+  .outcome-tile.progress { border-top: 3px solid var(--theme-amber); }
+  .outcome-tile.lost { border-top: 3px solid var(--theme-red); }
+  .outcome-tile-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #4B5563; }
+  .outcome-tile-val { font-size: 20px; font-weight: 700; color: var(--theme-navy); margin: 6px 0 4px 0; }
+  .outcome-tile-track { height: 8px; background: #EEF0F3; border-radius: 4px; overflow: hidden; }
+  .outcome-tile-fill { height: 100%; border-radius: 4px; }
+
+  /* NPD sticky-data-table */
+  .gantt-table th.npd-outcome-th { min-width: 96px; }
 
   /* Page Tabs at Bottom */
   .app-footer-tabs { background: #2B2B2B; border-top: 1px solid #404040; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; height: 40px; font-size: 12px; flex-shrink: 0; }
@@ -183,40 +211,63 @@
   .nav-tab.active { background: var(--theme-canvas); color: var(--theme-navy); font-weight: 600; border-top: 2px solid var(--theme-gold); }
   .app-footer-controls { display: flex; align-items: center; gap: 12px; color: #8A8886; font-size: 11px; }
   .footer-divider-dim { opacity: 0.2; }
-  .author-watermark {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    letter-spacing: 0.2px;
-    color: #9CA3AF;
-    opacity: 0.22;
-    transition: opacity 0.25s ease, color 0.25s ease;
-    user-select: none;
-    cursor: default;
-    font-weight: 400;
-  }
-  .author-watermark:hover {
-    opacity: 0.8;
-    color: #E5E7EB;
-  }
-  .author-watermark svg {
-    flex-shrink: 0;
-    color: #D97757;
-  }
+  .author-watermark { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; letter-spacing: 0.2px; color: #9CA3AF; opacity: 0.22; transition: opacity 0.25s ease, color 0.25s ease; user-select: none; cursor: default; font-weight: 400; }
+  .author-watermark:hover { opacity: 0.8; color: #E5E7EB; }
+  .author-watermark svg { flex-shrink: 0; color: #D97757; }
 
   .page-view { display: none; }
   .page-view.active { display: flex; flex-direction: column; gap: 16px; }
 
   .search-input { padding: 5px 10px; border: 1px solid #D1D5DB; border-radius: 4px; font-size: 12px; width: 220px; outline: none; }
+  .search-input:focus { border-color: var(--theme-blue); }
 
+  /* Floating Tooltip */
+  .hst-tooltip { position: fixed; z-index: 9999; pointer-events: none; background: #1F2430; color: #F3F4F6; padding: 8px 12px; border-radius: 5px; font-size: 11px; line-height: 1.45; box-shadow: 0 6px 18px rgba(0,0,0,0.28); max-width: 290px; opacity: 0; transition: opacity 0.12s ease; border: 1px solid #39404F; }
+  .hst-tooltip.show { opacity: 1; }
+  .hst-tooltip .tip-head { font-weight: 700; color: #FFFFFF; margin-bottom: 3px; display: block; font-size: 11.5px; }
+  .hst-tooltip .tip-row { display: flex; justify-content: space-between; gap: 14px; }
+  .hst-tooltip .tip-label { color: #9CA3AF; }
+  .hst-tooltip .tip-val { font-weight: 600; color: #FFFFFF; }
+
+  /* Detail Modal */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.55); display: none; align-items: center; justify-content: center; z-index: 9000; padding: 24px; }
+  .modal-backdrop.open { display: flex; }
+  .modal-card { background: #FFFFFF; border-radius: 8px; max-width: 800px; width: 100%; max-height: 88vh; display: flex; flex-direction: column; box-shadow: 0 24px 60px rgba(0,0,0,0.32); overflow: hidden; animation: modalIn 0.16s ease-out; }
+  @keyframes modalIn { from { transform: scale(0.97); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-head { background: #1B365D; color: #FFFFFF; padding: 14px 20px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-shrink: 0; }
+  .modal-title { font-size: 15px; font-weight: 700; line-height: 1.3; }
+  .modal-sub { font-size: 11.5px; color: #B9C7DC; margin-top: 4px; }
+  .modal-close { background: rgba(255,255,255,0.12); border: none; color: #FFFFFF; width: 28px; height: 28px; border-radius: 4px; cursor: pointer; font-size: 16px; line-height: 1; flex-shrink: 0; }
+  .modal-close:hover { background: rgba(255,255,255,0.28); }
+  .modal-body { padding: 18px 20px; overflow-y: auto; }
+  .modal-section-title { font-size: 10.5px; font-weight: 700; text-transform: uppercase; color: var(--theme-text-muted); letter-spacing: 0.4px; margin: 16px 0 8px 0; }
+  .modal-section-title:first-child { margin-top: 0; }
+  .field-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 16px; }
+  .field-item { font-size: 12px; }
+  .field-label { font-size: 10px; text-transform: uppercase; color: #9CA3AF; font-weight: 700; letter-spacing: 0.3px; }
+  .field-value { font-weight: 600; color: var(--theme-navy); margin-top: 2px; word-break: break-word; }
+  .month-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .month-chip { background: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 5px; padding: 5px 9px; font-size: 11px; font-weight: 600; color: var(--theme-navy); }
+  .month-chip.hi { background: #EFF6FC; border-color: #BFDDF3; color: #005A9E; }
+  .sibling-card { border: 1px solid #E5E7EB; border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: background 0.15s; }
+  .sibling-card:hover { background: #F8FAFC; border-color: #BFDDF3; }
+  .sibling-card.current { background: #EFF6FC; border-color: #99C8EE; cursor: default; }
+  .sibling-name { font-size: 12px; font-weight: 600; color: var(--theme-navy); }
+  .sibling-meta { font-size: 10.5px; color: var(--theme-text-muted); margin-top: 2px; }
+  .modal-foot { border-top: 1px solid #E5E7EB; padding: 10px 20px; display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; background: #FAFBFC; }
+  .btn-primary { background: var(--theme-blue); color: #FFFFFF; border: none; border-radius: 4px; padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .btn-primary:hover { background: #0063B1; }
+  .btn-secondary { background: #FFFFFF; color: #4B5563; border: 1px solid #D1D5DB; border-radius: 4px; padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .btn-secondary:hover { background: #F3F4F6; }
+  .empty-state { text-align: center; padding: 26px 12px; color: #9CA3AF; font-size: 12px; }
 </style>
 </head>
+
 <body>
 
   <!-- Top Ribbon -->
   <header class="app-header">
-        <div class="app-header-left">
+    <div class="app-header-left">
       <div class="app-logo">
         <div class="app-logo-badge">RSC</div>
         <span style="font-weight: 700; letter-spacing: 0.3px;">Rochdale Spears</span>
@@ -224,22 +275,24 @@
       <span style="color: #605E5C; margin: 0 4px;">/</span>
       <span class="app-workspace-tag">Hospitality Division (HS)</span>
       <span style="color: #605E5C; margin: 0 4px;">/</span>
-      <span class="app-report-title">Order Book (OB) & Forecast (FC) Executive Dashboard</span>
+      <span class="app-report-title">Order Book (OB) &amp; Forecast (FC) Executive Dashboard</span>
     </div>
     <div class="app-header-right">
       <div class="badge-refresh">Data Source: HS GENERAL TRACKER | Refreshed: Oct 20, 2026</div>
-      <button class="app-btn-ghost" onclick="resetFilters()">↺ Reset Filters</button>
-      <button class="app-btn-ghost" onclick="window.print()">⎙ Print / Save PDF</button>
-      
     </div>
   </header>
 
-  <!-- Context Toolbar -->
+  <!-- Context Toolbar with Global Search -->
   <div class="app-toolbar">
     <div class="app-breadcrumbs">
       <span>Rochdale Spears Co.</span> &gt;
       <span>Hospitality Division (HS)</span> &gt;
       <span class="active" id="toolbar-page-title">1. Executive Overview (OB vs FC)</span>
+    </div>
+    <div class="toolbar-search-wrap">
+      <span class="toolbar-search-icon">🔍</span>
+      <input type="text" id="global-search" class="toolbar-search" placeholder="Search project, customer, PIC, market..." oninput="onGlobalSearch(this.value)">
+      <button id="global-search-clear" class="toolbar-search-clear" onclick="clearGlobalSearch()" title="Clear search">&times;</button>
     </div>
   </div>
 
@@ -288,7 +341,14 @@
         </div>
       </section>
 
-      <!-- KPI Ribbon (Idea 1 Top Cards) -->
+      <!-- Active Filter Chips Row -->
+      <section class="chip-bar" id="chip-bar">
+        <span class="chip-bar-label">Active Filters:</span>
+        <div id="chip-container" style="display: inline-flex; flex-wrap: wrap; gap: 6px;"></div>
+        <button class="chip-clear-all" onclick="resetFilters()">Clear all</button>
+      </section>
+
+      <!-- Top Executive KPI Cards (Idea 1 Top Cards) -->
       <section class="kpi-grid">
         <div class="kpi-card shipped" onclick="filterByCard('SHIPPED')">
           <div class="kpi-title">
@@ -307,10 +367,10 @@
             <span>Order Book (OB)</span>
             <span class="kpi-badge">Firm Confirmed</span>
           </div>
-          <div class="kpi-value" id="kpi-ob-val">$1.66M</div>
+          <div class="kpi-value" id="kpi-ob-val">$1.69M</div>
           <div class="kpi-meta">
-            <span id="kpi-ob-count">27 Projects</span>
-            <span style="color: var(--theme-blue);">PO & Deposit In Hand</span>
+            <span id="kpi-ob-count">29 Projects</span>
+            <span style="color: var(--theme-blue);">PO &amp; Deposit In Hand</span>
           </div>
         </div>
 
@@ -319,9 +379,9 @@
             <span>New Order Request (NOR)</span>
             <span class="kpi-badge">Order Pending</span>
           </div>
-          <div class="kpi-value" id="kpi-nor-val">$419.3K</div>
+          <div class="kpi-value" id="kpi-nor-val">$416.6K</div>
           <div class="kpi-meta">
-            <span id="kpi-nor-count">5 Projects</span>
+            <span id="kpi-nor-count">4 Projects</span>
             <span style="color: var(--theme-amber);">Pending Deposit / PO</span>
           </div>
         </div>
@@ -334,7 +394,7 @@
           <div class="kpi-value" id="kpi-fc-val">$19.93M</div>
           <div class="kpi-meta">
             <span id="kpi-fc-count">24 Projects</span>
-            <span style="color: var(--theme-purple);">Design & Quotation</span>
+            <span style="color: var(--theme-purple);">Design &amp; Quotation</span>
           </div>
         </div>
 
@@ -343,9 +403,9 @@
             <span>Active Pipeline Runway</span>
             <span class="kpi-badge">Total</span>
           </div>
-          <div class="kpi-value" id="kpi-total-val">$29.53M</div>
+          <div class="kpi-value" id="kpi-total-val">$29.55M</div>
           <div class="kpi-meta">
-            <span id="kpi-total-count">103 Projects Active</span>
+            <span id="kpi-total-count">104 Projects Active</span>
             <span style="color: var(--theme-navy);">Shipped + OB + NOR + FC</span>
           </div>
         </div>
@@ -356,12 +416,10 @@
         <section class="visual-card">
           <div class="visual-header">
             <div>
-              <span class="visual-title">
-                Monthly Order Status Runway (M01 - M12)
-              </span>
+              <span class="visual-title">Monthly Order Status Runway (M01 - M12)</span>
             </div>
             <div style="font-size: 11px; color: var(--theme-text-muted);">
-              Values in USD ($). Filter dynamically by Year and Project Type above.
+              Values in USD ($). Filter dynamically by Year and Project Type above. Click any category row to filter.
             </div>
           </div>
 
@@ -385,8 +443,7 @@
                   <th class="col-total">TOTAL ($)</th>
                 </tr>
               </thead>
-              <tbody id="matrix-body">
-              </tbody>
+              <tbody id="matrix-body"></tbody>
             </table>
           </div>
 
@@ -408,21 +465,18 @@
           <div class="visual-card">
             <div class="visual-header">
               <span class="visual-title">Commercial Account Mix (RH vs Non-RH)</span>
-              <span class="visual-subtitle">Portfolio Breakdown</span>
+              <span class="visual-subtitle">Click bar to filter Type</span>
             </div>
-            <div class="hbar-list" id="mix-list">
-            </div>
-            <div id="mix-footer" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #E5E7EB; font-size: 11.5px; color: var(--theme-text-muted); display: flex; justify-content: space-between;">
-            </div>
+            <div class="hbar-list" id="mix-list"></div>
+            <div id="mix-footer" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #E5E7EB; font-size: 11.5px; color: var(--theme-text-muted); display: flex; justify-content: space-between;"></div>
           </div>
 
           <div class="visual-card">
             <div class="visual-header">
               <span class="visual-title">Top 5 Hospitality Accounts</span>
-              <span class="visual-subtitle">By Total Pipeline Value</span>
+              <span class="visual-subtitle">Click bar to filter Customer</span>
             </div>
-            <div class="hbar-list" id="top5-list">
-            </div>
+            <div class="hbar-list" id="top5-list"></div>
           </div>
         </section>
       </div>
@@ -432,13 +486,12 @@
         <section class="visual-card">
           <div class="visual-header">
             <div>
-              <span class="visual-title">
-                Project Delivery Schedule & Production Milestones (By Project & Stage)
-              </span>
+              <span class="visual-title">Project Delivery Schedule &amp; Production Milestones (By Project &amp; Stage)</span>
+              <span class="visual-subtitle">Click any row to open full details &amp; sibling slices</span>
             </div>
-            <div style="display: flex; gap: 8px;">
-              <input type="text" id="project-search" class="search-input" placeholder="Search project or client..." oninput="filterProjects()">
-              <select id="stage-filter-select" class="search-input" style="width: 140px;" onchange="filterProjects()">
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" id="project-search" class="search-input" placeholder="Filter this table..." oninput="onPage2Search(this.value)">
+              <select id="stage-filter-select" class="search-input" style="width: 140px;" onchange="onStageSelectChange(this.value)">
                 <option value="All">All Stages (NPD/NPI)</option>
                 <option value="NPD">NPD Only</option>
                 <option value="NPI">NPI Only</option>
@@ -448,16 +501,16 @@
 
           <!-- Frozen Table Header Container -->
           <div class="gantt-table-container">
-            <table class="gantt-table">
+            <table class="gantt-table" id="gantt-schedule-table" style="min-width: 1560px;">
               <thead>
                 <tr>
-                  <th style="min-width: 210px;">PROJECT NAME & CLIENT</th>
-                  <th style="width: 55px;">TYPE</th>
-                  <th style="width: 55px;">STAGE</th>
-                  <th style="width: 75px;">STATUS</th>
-                  <th style="width: 85px; text-align: right;">VALUE ($)</th>
-                  <th style="width: 50px; text-align: center;">SKU</th>
-                  <th style="min-width: 110px;">SHIP WINDOW</th>
+                  <th style="min-width: 210px;" class="sortable" onclick="toggleSort('gantt', 'name')">PROJECT NAME &amp; CLIENT <span class="sort-arrow" id="gantt-sort-name">▲</span></th>
+                  <th style="min-width: 72px;" class="sortable" onclick="toggleSort('gantt', 'type')">TYPE <span class="sort-arrow" id="gantt-sort-type"></span></th>
+                  <th style="min-width: 62px;" class="sortable" onclick="toggleSort('gantt', 'stage')">STAGE <span class="sort-arrow" id="gantt-sort-stage"></span></th>
+                  <th style="min-width: 88px;" class="sortable" onclick="toggleSort('gantt', 'status')">STATUS <span class="sort-arrow" id="gantt-sort-status"></span></th>
+                  <th style="min-width: 92px; text-align: right;" class="sortable" onclick="toggleSort('gantt', 'total_val')">VALUE ($) <span class="sort-arrow" id="gantt-sort-total_val"></span></th>
+                  <th style="width: 50px; text-align: center;" class="sortable" onclick="toggleSort('gantt', 'sku')">SKU <span class="sort-arrow" id="gantt-sort-sku"></span></th>
+                  <th style="min-width: 132px;" class="sortable" onclick="toggleSort('gantt', 'sw')">SHIP WINDOW <span class="sort-arrow" id="gantt-sort-sw"></span></th>
                   <th class="th-center" style="width: 46px;">M01</th>
                   <th class="th-center" style="width: 46px;">M02</th>
                   <th class="th-center" style="width: 46px;">M03</th>
@@ -470,13 +523,12 @@
                   <th class="th-center" style="width: 46px;">M10</th>
                   <th class="th-center" style="width: 46px;">M11</th>
                   <th class="th-center" style="width: 46px;">M12</th>
-                  <th style="min-width: 85px;">DRAWINGS</th>
-                  <th style="min-width: 85px;">WOOD/VENEER</th>
-                  <th style="min-width: 65px;">PIC</th>
+                  <th style="min-width: 85px;" class="sortable" onclick="toggleSort('gantt', 'drawing')">DRAWINGS <span class="sort-arrow" id="gantt-sort-drawing"></span></th>
+                  <th style="min-width: 85px;" class="sortable" onclick="toggleSort('gantt', 'veneer')">WOOD/VENEER <span class="sort-arrow" id="gantt-sort-veneer"></span></th>
+                  <th style="min-width: 65px;" class="sortable" onclick="toggleSort('gantt', 'pic')">PIC <span class="sort-arrow" id="gantt-sort-pic"></span></th>
                 </tr>
               </thead>
-              <tbody id="gantt-body">
-              </tbody>
+              <tbody id="gantt-body"></tbody>
             </table>
           </div>
         </section>
@@ -486,27 +538,27 @@
       <div id="page-3" class="page-view">
         <section class="visual-card">
           <div class="visual-header">
-            <span class="visual-title">Hospitality Commercial Pipeline & Stage Funnel</span>
+            <span class="visual-title">Hospitality Commercial Pipeline &amp; Stage Funnel</span>
             <span class="visual-subtitle">Detailed Departmental Metrics</span>
           </div>
 
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;">
-            <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB;">
-              <div style="font-size: 11px; font-weight: 700; color: #4B5563; text-transform: uppercase;">1. Design & Costing</div>
+            <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB; cursor: pointer;" onclick="filterByCard('FC')" title="Filter to Forecast">
+              <div style="font-size: 11px; font-weight: 700; color: #4B5563; text-transform: uppercase;">1. Design &amp; Costing</div>
               <div style="font-size: 18px; font-weight: 700; color: var(--theme-purple); margin: 4px 0;" id="funnel-fc-val">$19.93M</div>
               <div style="font-size: 11px; color: var(--theme-text-muted);" id="funnel-fc-n">24 Forecast (FC) Projects</div>
             </div>
-            <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB;">
+            <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB; cursor: pointer;" onclick="filterByCard('NOR')" title="Filter to NOR">
               <div style="font-size: 11px; font-weight: 700; color: #4B5563; text-transform: uppercase;">2. Pre-Production</div>
               <div style="font-size: 18px; font-weight: 700; color: var(--theme-amber); margin: 4px 0;" id="funnel-nor-val">$419.3K</div>
               <div style="font-size: 11px; color: var(--theme-text-muted);" id="funnel-nor-n">Waiting for PO / Deposit (NOR)</div>
             </div>
-            <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB;">
+            <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB; cursor: pointer;" onclick="filterByCard('OB')" title="Filter to Order Book">
               <div style="font-size: 11px; font-weight: 700; color: #4B5563; text-transform: uppercase;">3. Production Backlog</div>
               <div style="font-size: 18px; font-weight: 700; color: var(--theme-blue); margin: 4px 0;" id="funnel-ob-val">$1.66M</div>
               <div style="font-size: 11px; color: var(--theme-text-muted);" id="funnel-ob-n">Confirmed Order Book (OB)</div>
             </div>
-            <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB;">
+            <div style="background: #F8F9FA; padding: 12px; border-radius: 6px; border: 1px solid #E5E7EB; cursor: pointer;" onclick="filterByCard('SHIPPED')" title="Filter to Shipped">
               <div style="font-size: 11px; font-weight: 700; color: #4B5563; text-transform: uppercase;">4. Shipped / Fulfilled</div>
               <div style="font-size: 18px; font-weight: 700; color: var(--theme-green); margin: 4px 0;" id="funnel-sh-val">$7.52M</div>
               <div style="font-size: 11px; color: var(--theme-text-muted);" id="funnel-sh-n">Delivered Revenue FY2026</div>
@@ -515,16 +567,178 @@
 
           <div class="dual-grid">
             <div style="border: 1px solid #E5E7EB; border-radius: 6px; padding: 14px;">
-              <h4 style="font-size: 13px; color: var(--theme-navy); margin-bottom: 10px;">Market Distribution (Destination)</h4>
-              <div class="hbar-list" id="market-list">
-              </div>
+              <h4 style="font-size: 13px; color: var(--theme-navy); margin-bottom: 10px;">Market Distribution (Destination) <span style="font-size: 11px; font-weight: normal; color: var(--theme-text-muted);">· Click to filter</span></h4>
+              <div class="hbar-list" id="market-list"></div>
             </div>
 
             <div style="border: 1px solid #E5E7EB; border-radius: 6px; padding: 14px;">
-              <h4 style="font-size: 13px; color: var(--theme-navy); margin-bottom: 10px;">PIC Workload Distribution</h4>
-              <div class="hbar-list" id="pic-list">
+              <h4 style="font-size: 13px; color: var(--theme-navy); margin-bottom: 10px;">PIC Workload Distribution <span style="font-size: 11px; font-weight: normal; color: var(--theme-text-muted);">· Click to filter</span></h4>
+              <div class="hbar-list" id="pic-list"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- PAGE 4: NPD ANALYSIS (NEW) -->
+      <div id="page-4" class="page-view">
+        <!-- NPD Conversion KPI Banner -->
+        <section class="kpi-grid">
+          <div class="kpi-card total" onclick="filterByNpdOutcome('All')">
+            <div class="kpi-title">
+              <span>Total NPD Projects</span>
+              <span class="kpi-badge">All Prototypes</span>
+            </div>
+            <div class="kpi-value" id="npd-kpi-total">36</div>
+            <div class="kpi-meta">
+              <span id="npd-kpi-total-proto">$335.3K Prototype Value</span>
+              <span style="color: var(--theme-navy);">100% Cohort</span>
+            </div>
+          </div>
+
+          <div class="kpi-card won" onclick="filterByNpdOutcome('Won')">
+            <div class="kpi-title">
+              <span>Won</span>
+              <span class="kpi-badge">✓ Converted</span>
+            </div>
+            <div class="kpi-value" id="npd-kpi-won" style="color: var(--theme-green);">15</div>
+            <div class="kpi-meta">
+              <span id="npd-kpi-won-proto">$164.8K Prototype Value</span>
+              <span style="color: var(--theme-green);" id="npd-kpi-won-rate">41.7% of total</span>
+            </div>
+          </div>
+
+          <div class="kpi-card wip" onclick="filterByNpdOutcome('In Progress')">
+            <div class="kpi-title">
+              <span>In Progress</span>
+              <span class="kpi-badge">⏳ Prototyping</span>
+            </div>
+            <div class="kpi-value" id="npd-kpi-wip" style="color: var(--theme-amber);">15</div>
+            <div class="kpi-meta">
+              <span id="npd-kpi-wip-proto">$115.0K Prototype Value</span>
+              <span style="color: var(--theme-amber);">Active development</span>
+            </div>
+          </div>
+
+          <div class="kpi-card lost" onclick="filterByNpdOutcome('Lost')">
+            <div class="kpi-title">
+              <span>Lost</span>
+              <span class="kpi-badge">✗ Dropped / Cancel</span>
+            </div>
+            <div class="kpi-value" id="npd-kpi-lost" style="color: var(--theme-red);">6</div>
+            <div class="kpi-meta">
+              <span id="npd-kpi-lost-proto">$55.5K Prototype Value</span>
+              <span style="color: var(--theme-red);">16.7% of total</span>
+            </div>
+          </div>
+
+          <div class="kpi-card rate" onclick="filterByNpdOutcome('All')">
+            <div class="kpi-title">
+              <span>Win Rate &amp; NPI Backlog</span>
+              <span class="kpi-badge">Conversion</span>
+            </div>
+            <div class="kpi-value" id="npd-kpi-rate" style="color: var(--theme-teal);">41.7%</div>
+            <div class="kpi-meta">
+              <span>Won NPI Value:</span>
+              <strong style="color: var(--theme-navy);" id="npd-kpi-won-npi">$11.33M</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Outcome Breakdown Section -->
+        <section class="visual-card">
+          <div class="visual-header">
+            <div>
+              <span class="visual-title">NPD Outcome Breakdown &amp; Value Realization</span>
+              <span class="visual-subtitle">Project-level view of prototype success in converting to commercial NPI production</span>
+            </div>
+            <div style="font-size: 11px; color: var(--theme-text-muted);">
+              Click any outcome tile to filter the conversion table
+            </div>
+          </div>
+
+          <div class="outcome-grid" id="outcome-tiles-grid">
+            <div class="outcome-tile won" id="otile-won" onclick="filterByNpdOutcome('Won')">
+              <div class="outcome-tile-head">
+                <span>Won (Converted to NPI)</span>
+                <span id="otile-won-count" style="color: var(--theme-green); font-weight: 700;">15 Projects (41.7%)</span>
+              </div>
+              <div class="outcome-tile-val" id="otile-won-val">$164.8K <span style="font-size: 12px; font-weight: normal; color: var(--theme-text-muted);">prototype value</span></div>
+              <div class="outcome-tile-track">
+                <div class="outcome-tile-fill" id="otile-won-fill" style="width: 49.2%; background: var(--theme-green);"></div>
+              </div>
+              <div style="margin-top: 6px; font-size: 11px; color: var(--theme-text-muted); display: flex; justify-content: space-between;">
+                <span>Converted NPI Volume:</span>
+                <strong style="color: var(--theme-navy);" id="otile-won-npi">$11.33M</strong>
               </div>
             </div>
+
+            <div class="outcome-tile progress" id="otile-progress" onclick="filterByNpdOutcome('In Progress')">
+              <div class="outcome-tile-head">
+                <span>In Progress (Active Prototypes)</span>
+                <span id="otile-wip-count" style="color: #8A6D3B; font-weight: 700;">15 Projects (41.7%)</span>
+              </div>
+              <div class="outcome-tile-val" id="otile-wip-val">$115.0K <span style="font-size: 12px; font-weight: normal; color: var(--theme-text-muted);">prototype value</span></div>
+              <div class="outcome-tile-track">
+                <div class="outcome-tile-fill" id="otile-wip-fill" style="width: 34.3%; background: var(--theme-amber);"></div>
+              </div>
+              <div style="margin-top: 6px; font-size: 11px; color: var(--theme-text-muted); display: flex; justify-content: space-between;">
+                <span>Potential Pipeline:</span>
+                <strong style="color: var(--theme-navy);" id="otile-wip-npi">$3.04M</strong>
+              </div>
+            </div>
+
+            <div class="outcome-tile lost" id="otile-lost" onclick="filterByNpdOutcome('Lost')">
+              <div class="outcome-tile-head">
+                <span>Lost (Dropped / Cancelled)</span>
+                <span id="otile-lost-count" style="color: var(--theme-red); font-weight: 700;">6 Projects (16.7%)</span>
+              </div>
+              <div class="outcome-tile-val" id="otile-lost-val">$55.5K <span style="font-size: 12px; font-weight: normal; color: var(--theme-text-muted);">prototype value</span></div>
+              <div class="outcome-tile-track">
+                <div class="outcome-tile-fill" id="otile-lost-fill" style="width: 16.5%; background: var(--theme-red);"></div>
+              </div>
+              <div style="margin-top: 6px; font-size: 11px; color: var(--theme-text-muted); display: flex; justify-content: space-between;">
+                <span>Unrealized NPI Value:</span>
+                <strong style="color: #9CA3AF;" id="otile-lost-npi">$8.18M</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- NPD Detail Table -->
+        <section class="visual-card">
+          <div class="visual-header">
+            <div>
+              <span class="visual-title">Project Detail &mdash; NPD to NPI Conversion Tracking</span>
+              <span class="visual-subtitle" id="npd-table-subtitle">Showing 36 prototype projects</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <select id="npd-outcome-select" class="search-input" style="width: 150px;" onchange="filterByNpdOutcome(this.value)">
+                <option value="All">All Outcomes (36)</option>
+                <option value="Won">Won (15)</option>
+                <option value="In Progress">In Progress (15)</option>
+                <option value="Lost">Lost (6)</option>
+              </select>
+              <input type="text" id="npd-search" class="search-input" placeholder="Search prototype..." oninput="onNpdSearch(this.value)">
+            </div>
+          </div>
+
+          <div class="gantt-table-container">
+            <table class="gantt-table" id="npd-detail-table" style="min-width: 1080px;">
+              <thead>
+                <tr>
+                  <th style="min-width: 230px;" class="sortable" onclick="toggleSort('npd', 'name')">PROJECT NAME (SHORT) <span class="sort-arrow" id="npd-sort-name">▲</span></th>
+                  <th style="width: 75px;" class="sortable" onclick="toggleSort('npd', 'type')">TYPE <span class="sort-arrow" id="npd-sort-type"></span></th>
+                  <th style="min-width: 175px;" class="sortable" onclick="toggleSort('npd', 'customer')">CUSTOMER <span class="sort-arrow" id="npd-sort-customer"></span></th>
+                  <th style="width: 65px;" class="sortable" onclick="toggleSort('npd', 'pic')">PIC <span class="sort-arrow" id="npd-sort-pic"></span></th>
+                  <th style="min-width: 88px;" class="sortable" onclick="toggleSort('npd', 'npd_status')">NPD STATUS <span class="sort-arrow" id="npd-sort-npd_status"></span></th>
+                  <th style="min-width: 96px;" class="sortable" onclick="toggleSort('npd', 'npi_status')">NPI STATUS <span class="sort-arrow" id="npd-sort-npi_status"></span></th>
+                  <th style="min-width: 100px; text-align: center;" class="sortable npd-outcome-th" onclick="toggleSort('npd', 'outcome')">OUTCOME <span class="sort-arrow" id="npd-sort-outcome"></span></th>
+                  <th style="min-width: 120px; text-align: right;" class="sortable" onclick="toggleSort('npd', 'proto_val')">PROTOTYPE ($) <span class="sort-arrow" id="npd-sort-proto_val"></span></th>
+                  <th style="min-width: 140px; text-align: right;" class="sortable" onclick="toggleSort('npd', 'npi_val')">WON NPI BREAK ($) <span class="sort-arrow" id="npd-sort-npi_val"></span></th>
+                </tr>
+              </thead>
+              <tbody id="npd-body"></tbody>
+            </table>
           </div>
         </section>
       </div>
@@ -532,17 +746,102 @@
     </div>
   </main>
 
+  <!-- Centered Project Detail Modal -->
+  <div class="modal-backdrop" id="detail-modal" onclick="onModalBackdropClick(event)">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="m-title">Project Name</div>
+          <div class="modal-sub" id="m-sub">Customer · Market · Type</div>
+        </div>
+        <button class="modal-close" onclick="closeModal()" title="Close (Esc)">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section-title">Core Commercial Attributes</div>
+        <div class="field-grid">
+          <div class="field-item">
+            <div class="field-label">Status</div>
+            <div class="field-value" id="m-status">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Stage</div>
+            <div class="field-value" id="m-stage">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Order Value ($)</div>
+            <div class="field-value" id="m-val" style="color: var(--theme-blue); font-size: 14px;">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Project SKU</div>
+            <div class="field-value" id="m-sku">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Person In Charge (PIC)</div>
+            <div class="field-value" id="m-pic">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Ship Window</div>
+            <div class="field-value" id="m-sw">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Market Destination</div>
+            <div class="field-value" id="m-market">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Customer Short</div>
+            <div class="field-value" id="m-customer">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Account Type</div>
+            <div class="field-value" id="m-type">-</div>
+          </div>
+        </div>
+
+        <div class="modal-section-title">Production Readiness &amp; Milestones</div>
+        <div class="field-grid">
+          <div class="field-item">
+            <div class="field-label">Drawings Status</div>
+            <div class="field-value" id="m-draw">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Wood / Veneer Status</div>
+            <div class="field-value" id="m-veneer">-</div>
+          </div>
+          <div class="field-item">
+            <div class="field-label">Metal Status</div>
+            <div class="field-value" id="m-metal">-</div>
+          </div>
+        </div>
+
+        <div class="modal-section-title">Monthly Delivery Distribution</div>
+        <div class="month-chip-row" id="m-monthly"></div>
+
+        <div class="modal-section-title" id="m-siblings-title">Related Project Slices (Same Project)</div>
+        <div id="m-siblings-list"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-secondary" onclick="closeModal()">Close (Esc)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Styled Cursor Tooltip -->
+  <div class="hst-tooltip" id="hst-tooltip"></div>
+
   <!-- Bottom Page Navigation Tabs -->
   <footer class="app-footer-tabs">
     <div class="tab-buttons">
       <button class="nav-tab active" id="tab-btn-1" onclick="switchPage(1, '1. Executive Overview (OB vs FC)')">
-        📊 1. Executive Summary (OB vs FC)
+        1. Executive Summary (OB vs FC)
       </button>
-      <button class="nav-tab" id="tab-btn-2" onclick="switchPage(2, '2. Project Schedule & Milestones')">
-        📅 2. Project Schedule & Milestones
+      <button class="nav-tab" id="tab-btn-2" onclick="switchPage(2, '2. Project Schedule &amp; Milestones')">
+        2. Project Schedule &amp; Milestones
       </button>
-      <button class="nav-tab" id="tab-btn-3" onclick="switchPage(3, '3. Commercial Portfolio & Pipeline')">
-        🏢 3. Commercial & Customer Portfolio
+      <button class="nav-tab" id="tab-btn-3" onclick="switchPage(3, '3. Commercial Portfolio &amp; Pipeline')">
+        3. Commercial &amp; Customer Portfolio
+      </button>
+      <button class="nav-tab" id="tab-btn-4" onclick="switchPage(4, '4. NPD Analysis')">
+        4. NPD Analysis
       </button>
     </div>
     <div class="app-footer-controls">
@@ -550,7 +849,7 @@
       <span>|</span>
       <span>Fit to Page</span>
       <span>|</span>
-      <span>Page <strong id="footer-page-num" style="color: white;">1</strong> of 3</span>
+      <span>Page <strong id="footer-page-num" style="color: white;">1</strong> of 4</span>
       <span class="footer-divider-dim">|</span>
       <div class="author-watermark" title="made by Joe - Hung Pham">
         <svg class="claude-spark-icon" viewBox="0 0 16 16" width="11" height="11" fill="currentColor">
@@ -561,31 +860,53 @@
     </div>
   </footer>
 
-  <script>
-const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":26,"pic":"TRINH","sw":"2026/W22 - 2026/W34","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"BS","total_val":2454227.83,"monthly":{"2026/M05":153379.0,"2026/M06":1004676.0,"2026/M07":969712.83,"2026/M08":326460.0}},{"name":"2026-RH-GRAND HYATT BAHA MAR-PHASE 2","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":27,"pic":"BIEN","sw":"2027/W16 - 2027/W26","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"BS","total_val":2936224.52,"monthly":{"2027/M04":1000000.0,"2027/M05":1000000.0,"2027/M06":936224.52}},{"name":"2025-RH-FOX HARBOR","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":26,"pic":"TUYET","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"CA","total_val":102220.55,"monthly":{"2026/M04":30383.55,"2026/M01":71837.0}},{"name":"2025-RH-RH CASSIA CONDO","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":50,"pic":"TRINH","sw":"2026/W30 - 2026/W36","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1161167.0,"monthly":{"2026/M07":269518.0,"2026/M08":760037.0,"2026/M09":131612.0}},{"name":"2025-RH-MAIN STREET BOUTIQUE HOTEL","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":9,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":54061.6,"monthly":{"2026/M04":54061.6}},{"name":"2025-RH-CHICAGO PENDRY","status":"REMOVED","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"In Progress","veneer":"TBC","metal":"TBC","market":"US","total_val":135705.0,"monthly":{"2026/M10":135705.0}},{"name":"2026-RH-CIA O&O GUESTROOMS","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":12,"pic":"DUNG","sw":"2027/W27 - 2027/W28","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":143556.09,"monthly":{"2027/M07":143556.09}},{"name":"2026-RH-HA STUDIO PICO/WILKINS","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TU ANH","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":12309.0,"monthly":{"2026/M06":12309.0}},{"name":"2026-RH-HA STUDIO PICO/WILKINS-REODER","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"DUY","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3454.0,"monthly":{"2026/M11":3454.0}},{"name":"2026-RH-NAMA LISBON","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":11,"pic":"DUY","sw":"2026/W37 - 2026/W37","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"PT","total_val":74720.0,"monthly":{"2026/M09":74720.0}},{"name":"2026-RH-NAMA LISBON","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":11,"pic":"DUY","sw":"2026/W44 - 2026/W44","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"PT","total_val":127455.0,"monthly":{"2026/M10":127455.0}},{"name":"2026-RH-NAMA LISBON-PUBLIC SPACE","status":"NOR","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"DUY","sw":"2027/W04 - 2027/W04","drawing":"In Progress","veneer":"Approved","metal":"TBC","market":"PT","total_val":2190.15,"monthly":{"2027/M01":2190.15}},{"name":"2026-RH-RANCHO VALENCIA","status":"PIPELINE","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TRINH","sw":"TBC - TBC","drawing":"Pending Approval","veneer":"Approved","metal":"TBC","market":"US","total_val":14520.0,"monthly":{}},{"name":"2026-RH-RH CONTRACT (LARA CHAIR 25)","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"THU","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":4200.0,"monthly":{"2026/M03":4200.0}},{"name":"2025-RH-RH TRUMP SUITES NYC","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":1,"pic":"DUONG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1234.86,"monthly":{"2026/M06":1234.86}},{"name":"2024-RH-TRUMP DORAL","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TUYET","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1375.5,"monthly":{"2026/M07":1375.5}},{"name":"2026-RH-RH TRUMP SUITES NYC","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":24,"pic":"TBC","sw":"2027/W19 - 2027/W26","drawing":"Pending Approval","veneer":"Approved","metal":"Approved","market":"US","total_val":1074318.51,"monthly":{"2027/M05":537160.0,"2027/M06":537158.51}},{"name":"2026-RH-ROSEWOOD CALISTOGA","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":6,"pic":"BIEN","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1046.75,"monthly":{"2026/M06":1046.75}},{"name":"2025-RH-ROSEWOOD CALISTOGA","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":38,"pic":"BIEN","sw":"2026/W45 - 2026/W50","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":311473.76,"monthly":{"2026/M11":239023.0,"2026/M12":72450.76}},{"name":"2026-RH-SNAKE RIVER LODGE BLUEFLAG","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":12,"pic":"DUY","sw":"2026/W32 - 2026/W35","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":203436.49,"monthly":{"2026/M08":203436.49}},{"name":"2025-RH-TRUMP LAS VEGAS PENTHOUSES","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":36,"pic":"BIEN","sw":"2027/W02 - 2027/W05","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":535191.0,"monthly":{"2027/M01":535191.0}},{"name":"2026-RH-RITZ DOVE MOUNTAIN","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":14,"pic":"DUY","sw":"2027/W15 - 2027/W17","drawing":"Pending Approval","veneer":"Pending Approval","metal":"Pending Approval","market":"US","total_val":228581.0,"monthly":{"2027/M04":228581.0}},{"name":"2026-RH-MAYBOURNE_ONE WALL STREET NY","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TU ANH","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":1672.0,"monthly":{"2026/M04":1672.0}},{"name":"2024-RH-ST. REGIS KANAI","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":18,"pic":"TRINH","sw":"2026/W31 - 2026/W32","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"MX","total_val":164002.14,"monthly":{"2026/M07":110307.0,"2026/M08":53695.14}},{"name":"2026-RH-CIA O&O GUESTROOMS","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":12,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":12000.06,"monthly":{"2026/M06":12000.06}},{"name":"2026-COSMIC REALTY-250 FIFTH AVENUE HOTEL","status":"SHIPPED","customer":"COSMIC REALTY","type":"NON RH","stage":"NPI","sku":17,"pic":"THU","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":53035.8,"monthly":{"2026/M04":1908.8,"2026/M02":51127.0}},{"name":"2026-L&S-ELYSEE HOTEL","status":"SHIPPED","customer":"L&S","type":"NON RH","stage":"NPI","sku":22,"pic":"THAO","sw":"2026/W32 - 2026/W37","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":172960.83,"monthly":{"2026/M08":89785.84,"2026/M09":83174.99}},{"name":"2026-L&S-FAENA TULLUM (FTMX)","status":"FC","customer":"L&S","type":"NON RH","stage":"NPI","sku":16,"pic":"TBC","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"MX","total_val":1160820.0,"monthly":{"2027/M10":1160820.0}},{"name":"2025-FLEETWOOD -FOUR SEASON JACKSONVILLE","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":25,"pic":"TU ANH","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":198022.11,"monthly":{"2026/M04":56748.11,"2026/M05":87190.0,"2026/M06":54084.0}},{"name":"2026-FLEETWOOD -HARD ROCK LAS VEGAS WEST TOWER","status":"DROPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":94,"pic":"THAO","sw":"TBC - TBC","drawing":"In Progress","veneer":"Approved","metal":"Pending Approval","market":"US","total_val":3218808.0,"monthly":{"2027/M01":1072936.0,"2027/M02":500000.0,"2027/M03":1072936.0,"2027/M04":572936.0}},{"name":"2025-FLEETWOOD -HWVP PHASE 2","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":7,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":7015.5,"monthly":{"2026/M04":7015.5}},{"name":"2026-THE PARKER-JAMES NY NOMAD","status":"CANCELLED","customer":"THE PARKER","type":"NON RH","stage":"NPI","sku":1,"pic":"SANG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3167.51,"monthly":{"2026/M05":3167.51}},{"name":"2025-KD-KNOX DALLAS","status":"SHIPPED","customer":"KD","type":"NON RH","stage":"NPI","sku":30,"pic":"DUONG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":187373.64,"monthly":{"2026/M03":22782.88,"2026/M04":68348.76,"2026/M09":96242.0}},{"name":"2026-KD-KNOX DALLAS SUITE","status":"SHIPPED","customer":"KD","type":"NON RH","stage":"NPI","sku":50,"pic":"PHONG","sw":"2026/W39 - 2026/W52","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":98457.81,"monthly":{"2026/M10":98457.81}},{"name":"2025-KD-KNOX DALLAS SUITE","status":"OB","customer":"KD","type":"NON RH","stage":"NPI","sku":50,"pic":"PHONG","sw":"2026/W39 - 2026/W52","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":211564.94,"monthly":{"2026/M11":148976.37,"2026/M12":62588.57}},{"name":"2026-KD-KNOX DALLAS INSPECTION COVERS","status":"NOR","customer":"KD","type":"NON RH","stage":"NPI","sku":3,"pic":"PHONG","sw":"2026/W52 - 2026/W52","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":2680.0,"monthly":{"2026/M12":2680.0}},{"name":"2026-AHMADIAH-MARRIOTT KHOBAR","status":"REMOVED","customer":"AHMADIAH","type":"NON RH","stage":"NPI","sku":35,"pic":"THU","sw":"TBC - TBC","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"SA","total_val":0.0,"monthly":{}},{"name":"2025-MOHI-MOHI APPELLATION","status":"SHIPPED","customer":"MOHI","type":"NON RH","stage":"NPI","sku":28,"pic":"TUYET","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":357775.0,"monthly":{"2026/M05":178386.0,"2026/M06":179389.0}},{"name":"2026-MOHI-MOHI APPELLATION","status":"SHIPPED","customer":"MOHI","type":"NON RH","stage":"NPI","sku":13,"pic":"DUY","sw":"2026/W39 - 2026/W41","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":100243.0,"monthly":{"2026/M10":100243.0}},{"name":"2025-L&S-RITZ CARLTON COTTON BAY","status":"FC","customer":"L&S","type":"NON RH","stage":"NPI","sku":117,"pic":"TBC","sw":"2027/W40 - 2027/W52","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"BS","total_val":3134000.0,"monthly":{"2027/M10":1044666.67,"2027/M11":1044666.67,"2027/M12":1044666.67}},{"name":"2025-PLUS CORPORATION-SOHO HOUSE TOKYO","status":"SHIPPED","customer":"PLUS CORPORATION","type":"NON RH","stage":"NPI","sku":48,"pic":"THAO","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"JP","total_val":24012.0,"monthly":{"2026/M03":21344.0,"2026/M05":2668.0}},{"name":"2026-SPECTRUM-1122 MADISON","status":"SHIPPED","customer":"SPECTRUM","type":"NON RH","stage":"NPI","sku":20,"pic":"THAO","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":93065.0,"monthly":{"2026/M07":93065.0}},{"name":"2026-TRIMA-JRH","status":"SHIPPED","customer":"TRIMA","type":"NON RH","stage":"NPI","sku":4,"pic":"DUONG","sw":"2026/W29 - 2026/W36","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"JM","total_val":1035310.67,"monthly":{"2026/M07":525145.2,"2026/M08":471952.96,"2026/M09":38212.51}},{"name":"2026-BROOKFIELD-PARK HYATT VANCOUVER","status":"SHIPPED","customer":"BROOKFIELD","type":"NON RH","stage":"NPD","sku":9,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"In Progress","market":"CA","total_val":14470.66,"monthly":{"2026/M05":14470.66}},{"name":"2026-BROOKFIELD-PARK HYATT VANCOUVER","status":"DROPPED","customer":"BROOKFIELD","type":"NON RH","stage":"NPI","sku":9,"pic":"DUNG","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"CA","total_val":802234.0,"monthly":{"2027/M05":401117.0,"2027/M06":401117.0}},{"name":"2025-FLEETWOOD -W-HOTEL-LAS-VEGAS","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPD","sku":12,"pic":"NHI","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":15271.3,"monthly":{"2026/M03":15271.3,"2026/M09":0.0}},{"name":"2025-FLEETWOOD -W-HOTEL-LAS-VEGAS","status":"FC","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":12,"pic":"BIEN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"US","total_val":3466407.0,"monthly":{"2027/M05":1155469.0,"2027/M06":1155469.0,"2027/M07":1155469.0}},{"name":"2026-L&S-HARD ROCK SAN JUAN","status":"ON HOLD","customer":"L&S","type":"NON RH","stage":"NPD","sku":16,"pic":"THAO","sw":"2026/W42 - 2026/W44","drawing":"In Progress","veneer":"Pending Approval","metal":"Pending Approval","market":"US","total_val":1506614.04,"monthly":{"2026/M09":6614.04,"2027/M09":750000.0,"2027/M10":750000.0}},{"name":"2026-SPECTRUM-OTMB VANITY","status":"SHIPPED","customer":"SPECTRUM","type":"NON RH","stage":"NPD","sku":4,"pic":"DUNG","sw":"2026/W37 - 2026/W40","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3273.0,"monthly":{"2026/M08":3273.0}},{"name":"2026-SPECTRUM-OTMB VANITY","status":"FC","customer":"SPECTRUM","type":"NON RH","stage":"NPI","sku":4,"pic":"DUNG","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":179782.0,"monthly":{"2027/M03":179782.0}},{"name":"2026-AYALA-KHOBAR HILTON CANOPY HOTEL","status":"SHIPPED","customer":"AYALA","type":"NON RH","stage":"NPD","sku":9,"pic":"BIEN","sw":"2026/W35 - 2026/W35","drawing":"In Progress","veneer":"In Progress","metal":"Pending Approval","market":"SA","total_val":7901.24,"monthly":{"2026/M08":7901.24}},{"name":"2026-BENJAMIN-HACIENDA HOTEL LISBON PORTUGAL","status":"OB","customer":"BENJAMIN","type":"NON RH","stage":"NPD","sku":21,"pic":"BIEN","sw":"2026/W46 - 2026/W51","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"PT","total_val":32000.0,"monthly":{"2026/M12":32000.0}},{"name":"2026-BENJAMIN-HACIENDA HOTEL LISBON PORTUGAL","status":"FC","customer":"BENJAMIN","type":"NON RH","stage":"NPI","sku":122,"pic":"BIEN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"PT","total_val":596794.0,"monthly":{"2027/M06":596794.0}},{"name":"2026-WOODHAUS-KNOX HENDERSON","status":"SHIPPED","customer":"WOODHAUS","type":"NON RH","stage":"NPI","sku":12,"pic":"DUY","sw":"2026/W32 - 2026/W32","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":22198.0,"monthly":{"2026/M08":22198.0}},{"name":"2026-TRIMA-JOIA TIERRA DEL SOL","status":"PIPELINE","customer":"TRIMA","type":"NON RH","stage":"NPI","sku":0,"pic":"THAO","sw":"TBC - TBC","drawing":"Not Started","veneer":"TBC","metal":"TBC","market":"AR","total_val":2263628.0,"monthly":{"2027/M07":1131814.0,"2027/M08":1131814.0}},{"name":"2026-RH-RED SEA","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":0,"pic":"TBC","sw":"2027/W37 - 2027/W39","drawing":"Not Started","veneer":"TBC","metal":"TBC","market":"SA","total_val":1000000.0,"monthly":{"2027/M09":1000000.0}},{"name":"2026-RH-VICEROY SUGAR BEACH - ASH WOOD VERSION","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":18,"pic":"BIEN","sw":"2026/W39 - 2026/W39","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"LC","total_val":149029.0,"monthly":{"2026/M09":149029.0}},{"name":"TBC-L&S-SILVERSANDS GRAND ANSE","status":"REJECTED","customer":"L&S","type":"NON RH","stage":"NPI","sku":55,"pic":"THAO","sw":"TBC - TBC","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"Grenada (Caribbean)","total_val":371262.0,"monthly":{}},{"name":"2026-SPECTRUM-PROJECT 550","status":"SHIPPED","customer":"SPECTRUM","type":"NON RH","stage":"NPD","sku":4,"pic":"DUNG","sw":"2026/W37 - 2026/W40","drawing":"Approved","veneer":"Approved","metal":"In Progress","market":"US","total_val":6938.58,"monthly":{"2026/M08":6938.58}},{"name":"2026-SPECTRUM-PROJECT 550","status":"FC","customer":"SPECTRUM","type":"NON RH","stage":"NPI","sku":30,"pic":"DUNG","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":361028.77,"monthly":{"2027/M04":361028.77}},{"name":"2026-FLEETWOOD -AUBERGE HOUSTON MR","status":"CANCELLED","customer":"FLEETWOOD","type":"NON RH","stage":"NPD","sku":4,"pic":"DUNG","sw":"ON HOLD - ON HOLD","drawing":"Pending Approval","veneer":"Approved","metal":"In Progress","market":"US","total_val":722063.67,"monthly":{"2026/M09":15040.19}},{"name":"2026-RH-AWH TOPNOTCH","status":"ON HOLD","customer":"RH","type":"RH","stage":"NPD","sku":17,"pic":"DUY","sw":"2026/W50 - 2026/W52","drawing":"Pending Approval","veneer":"Pending Approval","metal":"Pending Approval","market":"US","total_val":563394.1,"monthly":{"2026/M12":31219.1,"2027/M05":532175.0}},{"name":"2026-FLEETWOOD -SPANISH BAY CLUB","status":"OB","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":15,"pic":"THAO","sw":"2026/W45 - 2026/W48","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":64112.41,"monthly":{"2026/M11":64112.41}},{"name":"2026-FLEETWOOD -HWVP PHASE 2","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":7,"pic":"SHIPPED","sw":"TBC - TBC","drawing":"Approved","veneer":"TBC","metal":"TBC","market":"US","total_val":1601.0,"monthly":{"2026/M01":1601.0}},{"name":"2026-KD-KNOX DALLAS","status":"SHIPPED","customer":"KD","type":"NON RH","stage":"NPI","sku":30,"pic":"SHIPPED","sw":"TBC - TBC","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":395880.94,"monthly":{"2026/M01":362480.94,"2026/M02":33400.0}},{"name":"2026-PLUS CORPORATION-SOHO HOUSE TOKYO","status":"SHIPPED","customer":"PLUS CORPORATION","type":"NON RH","stage":"NPI","sku":48,"pic":"SHIPPED","sw":"TBC - TBC","drawing":"Approved","veneer":"TBC","metal":"TBC","market":"Japan","total_val":104927.0,"monthly":{"2026/M01":24407.0,"2026/M02":80520.0}},{"name":"2026-RH-RH BRANDYWINE","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"SHIPPED","sw":"TBC - TBC","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":5432.2,"monthly":{"2026/M01":5432.2}},{"name":"2026-BROOKFIELD-RITZ CARLTON PHILADELPHIA","status":"SHIPPED","customer":"BROOKFIELD","type":"NON RH","stage":"NPD","sku":6,"pic":"DUNG","sw":"2026/W29 - 2026/W29","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":13583.73,"monthly":{"2026/M07":13583.73}},{"name":"2026-RH-CUSTOM MIYU TABLES","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":5,"pic":"BIEN","sw":"2026/W29 - 2026/W29","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":5617.6,"monthly":{"2026/M07":5617.6}},{"name":"2026-RH-GRAND HYATT DENVER","status":"OB","customer":"RH","type":"RH","stage":"NPD","sku":2,"pic":"DUY","sw":"2026/W44 - 2026/W44","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":5542.32,"monthly":{"2026/M10":5542.32}},{"name":"2026-RH-COMPETITIVE EDGE","status":"PIPELINE","customer":"RH","type":"RH","stage":"NPI","sku":3,"pic":"TBC","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"US","total_val":847691.0,"monthly":{}},{"name":"2026-FLEETWOOD -WALDORF ASTORIA DEER VALLEY","status":"PIPELINE","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":13,"pic":"THAO","sw":"TBC - TBC","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"US","total_val":5665882.98,"monthly":{"2027/M06":1133176.6,"2027/M07":1133176.6,"2027/M08":1133176.6,"2027/M09":1133176.6,"2027/M10":1133176.6}},{"name":"2026-FLEETWOOD -PEBBLE BEACH CASA PALMERO","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":2,"pic":"THAO","sw":"2026/W41 - 2026/W41","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":13541.25,"monthly":{"2026/M10":13541.25}},{"name":"2026-RH-SUNRIVER RESORT","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":1,"pic":"BIEN","sw":"2026/W27 - 2026/W27","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1017.32,"monthly":{"2026/M06":1017.32}},{"name":"2026-RH-SUNRIVER RESORT","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":8,"pic":"PHONG","sw":"2027/W13 - 2027/W14","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":36622.71,"monthly":{"2027/M03":36622.71}},{"name":"2026-BROOKFIELD-RITZ CARLTON PHILADELPHIA","status":"DROPPED","customer":"BROOKFIELD","type":"NON RH","stage":"NPI","sku":11,"pic":"DUNG","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":1985000.0,"monthly":{"2027/M01":400000.0,"2027/M03":792500.0,"2027/M04":792500.0}},{"name":"2026-AYALA-KHOBAR HILTON CANOPY HOTEL","status":"FC","customer":"AYALA","type":"NON RH","stage":"NPI","sku":9,"pic":"BIEN","sw":"2027/W10 - 2027/W13","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"SA","total_val":897832.0,"monthly":{"2027/M04":897832.0}},{"name":"2026-TRIMA-ASIATICO RESTAURANT","status":"SHIPPED","customer":"TRIMA","type":"NON RH","stage":"NPI","sku":32,"pic":"TRINH","sw":"2026/W35 - 2026/W40","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"JM","total_val":168430.26,"monthly":{"2026/M08":46234.26,"2026/M09":122196.0}},{"name":"2026-RH-MONTAUK YACHT CLUB","status":"CANCELLED","customer":"RH","type":"RH","stage":"NPD","sku":5,"pic":"BIEN","sw":"2026/W33 - 2026/W33","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":1112433.68,"monthly":{"2026/M08":12433.68,"2027/M06":1100000.0}},{"name":"2026-HBA-HILTON PASADENA","status":"OB","customer":"HBA","type":"NON RH","stage":"NPI","sku":5,"pic":"DUNG","sw":"2026/W41 - 2026/W41","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":22890.48,"monthly":{"2026/M10":22890.48}},{"name":"2026-FLEETWOOD -FAIRMONT HOTEL WINNIPEG","status":"REMOVED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":32,"pic":"THAO","sw":"TBC - TBC","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"CA","total_val":79655.52,"monthly":{}},{"name":"2026-L&S-THE STANDARD MIAMI HOTEL","status":"OB","customer":"L&S","type":"NON RH","stage":"NPI","sku":24,"pic":"DUNG","sw":"2026/W46 - 2026/W49","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":48791.87,"monthly":{"2026/M11":48791.87}},{"name":"2026-RH-KINDERED KEYSTONE RESORT","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"DUY","sw":"2026/W36 - 2026/W36","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":1142.75,"monthly":{"2026/M08":1142.75}},{"name":"2026-HBA-MARRIOTT GUYANA PUBLIC AREAS","status":"ON HOLD","customer":"HBA","type":"NON RH","stage":"NPI","sku":3,"pic":"DUY","sw":"2026/W42 - 2026/W42","drawing":"Pending Approval","veneer":"Pending Approval","metal":"TBC","market":"GY","total_val":25129.08,"monthly":{"2026/M10":25129.08}},{"name":"2026-RH-BELGROVE VILLAS","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TRAN","sw":"2026/W39 - 2026/W39","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":13398.0,"monthly":{"2026/M09":13398.0}},{"name":"2026-BISCAYNE-PARK_AVENUE_HOTEL","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":3,"pic":"BIEN","sw":"2026/W43 - 2026/W43","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":2843.6,"monthly":{"2026/M10":2843.6}},{"name":"TBC-BISCAYNE-PARK_AVENUE_HOTEL","status":"PIPELINE","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":17,"pic":"BIEN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":780835.84,"monthly":{}},{"name":"2026-RH-CAUDWELL","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"BIEN","sw":"2026/W30 - 2026/W30","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":499.5,"monthly":{"2026/M07":499.5}},{"name":"2026-RH-FOUR SEASONS  DENVER","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"DUY","sw":"2027/W05 - 2027/W05","drawing":"Pending Approval","veneer":"Pending Approval","metal":"TBC","market":"US","total_val":4003.5,"monthly":{"2027/M01":4003.5}},{"name":"2026-RH-MUNISH","status":"ON HOLD","customer":"RH","type":"RH","stage":"NPD","sku":1,"pic":"DUY","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"TBC","total_val":0.0,"monthly":{}},{"name":"2026-RH-MAUNA LANI","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"DUY","sw":"2026/W02 - 2026/W02","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3240.0,"monthly":{"2027/M01":3240.0}},{"name":"2026-RH-GOLDEN PEAK","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"BIEN","sw":"2026/W31 - 2026/W31","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"TBC","total_val":1466.0,"monthly":{"2026/M07":1466.0}},{"name":"2026-RH-CUSTOM BEDS FOR EU","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"DUY","sw":"2027/W05 - 2027/W05","drawing":"Pending Approval","veneer":"Pending Approval","metal":"TBC","market":"EU","total_val":8455.52,"monthly":{"2027/M01":8455.52}},{"name":"2026-BWG -MUSE POINT APARTMENT","status":"SHIPPED","customer":"BWG","type":"NON RH","stage":"NPD","sku":9,"pic":"DUONG","sw":"2026/W38 - 2026/W38","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"AU","total_val":0.0,"monthly":{"2026/M09":0.0}},{"name":"2026-RH-DANCING BEAR","status":"OB","customer":"RH","type":"RH","stage":"NPD","sku":17,"pic":"DUY","sw":"2026/W43 - 2026/W43","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":33810.54,"monthly":{"2026/M11":33810.54}},{"name":"2026-RH-DANCING BEAR","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":18,"pic":"DUY","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"In Progress","market":"US","total_val":299970.29,"monthly":{"2027/M05":299970.29}},{"name":"2026-RH-FOOTES REST","status":"OB","customer":"RH","type":"RH","stage":"NPD","sku":15,"pic":"DUNG","sw":"2026/W46 - 2026/W46","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":32385.58,"monthly":{"2026/M11":32385.58}},{"name":"2026-RH-FOOTES REST","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":12,"pic":"DUNG","sw":"2027/W29 - 2027/W34","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":543005.0,"monthly":{"2027/M07":271502.5,"2027/M08":271502.5}},{"name":"2026-RH-RITZ CABO VILLA","status":"PIPELINE","customer":"RH","type":"RH","stage":"NPI","sku":4,"pic":"TRAN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"Mexico","total_val":9809.0,"monthly":{}},{"name":"2026-FLEETWOOD -BDNY","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPD","sku":3,"pic":"THAO","sw":"2026/W40 - 2026/W40","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":0.0,"monthly":{"2026/M09":0.0}},{"name":"2026-RH-AHS ONE CANAL CRESENT","status":"REMOVED","customer":"RH","type":"RH","stage":"NPI","sku":4,"pic":"BIEN","sw":"2026/W37 - 2026/W37","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"US","total_val":0.0,"monthly":{"2026/M09":0.0}},{"name":"2026-RH-1419 MONUMENT HOTEL","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TRAN","sw":"2026/W49 - 2026/W49","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":6068.79,"monthly":{"2026/M12":6068.79}},{"name":"2026-SH-OAKLEY COURT MINI BAR BRIEF","status":"OB","customer":"SH","type":"NON RH","stage":"NPD","sku":1,"pic":"PHONG","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":2230.98,"monthly":{"2026/M10":2230.98}},{"name":"2026-SH-OAKLEY COURT MINI BAR BRIEF","status":"FC","customer":"SH","type":"NON RH","stage":"NPI","sku":4,"pic":"PHONG","sw":"2027/W15 - 2027/W16","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"UK","total_val":210727.22,"monthly":{"2027/M03":210727.22}},{"name":"2026-AG-8 EATON LANE","status":"OB","customer":"AG","type":"NON RH","stage":"NPI","sku":7,"pic":"TRAN","sw":"2026/W49 - 2026/W49","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":14883.84,"monthly":{"2026/M12":14883.84}},{"name":"2026-AG-BOARDROOM FURNITURE","status":"OB","customer":"AG","type":"NON RH","stage":"NPI","sku":2,"pic":"TRAN","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":10410.0,"monthly":{"2026/M11":10410.0}},{"name":"2026-AG-CHARTER STREET TABLES","status":"OB","customer":"AG","type":"NON RH","stage":"NPI","sku":5,"pic":"TRAN","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":17615.42,"monthly":{"2026/M11":17615.42}},{"name":"2026-RH-DEER VALLEY","status":"PIPELINE","customer":"RH","type":"RH","stage":"NPI","sku":4,"pic":"DUY","sw":"TBC - TBC","drawing":"Pending Approval","veneer":"Pending Approval","metal":"Pending Approval","market":"US","total_val":47893.86,"monthly":{"2028/M03":47893.86}},{"name":"2026-RH-ALTERRA_DEER VALLEY","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":0,"pic":"DUY","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"In Progress","market":"US","total_val":228194.0,"monthly":{"2027/M06":228194.0}},{"name":"2026-BISCAYNE-SLPS - SUGAR LAND, PUBLIC SPACE","status":"REJECTED","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":28,"pic":"HONG","sw":"2027/W01 - 2027/W05","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":156985.76,"monthly":{"2027/M01":156985.76}},{"name":"2026-BISCAYNE-SLPSC","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":35,"pic":"DUNG","sw":"2027/W01 - 2027/W04","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":83963.21,"monthly":{"2027/M01":83963.21}},{"name":"2026-FLEETWOOD -MGM BELLAGIO","status":"OB","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":1,"pic":"TRAN","sw":"2026/W49 - 2026/W49","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3202.0,"monthly":{"2026/M12":3202.0}},{"name":"2026-RH-FOUR SEASON DUBROVNIK","status":"ON HOLD","customer":"RH","type":"RH","stage":"NPD","sku":32,"pic":"DUONG","sw":"2026/W50 - 2026/W52","drawing":"In Progress","veneer":"TBC","metal":"TBC","market":"EU","total_val":1488143.52,"monthly":{"2026/M12":13804.52,"2027/M11":737169.5,"2027/M12":737169.5}},{"name":"2026-BISCAYNE-AGV MODEL ROOM","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":15,"pic":"TRAN","sw":"2027/W03 - 2027/W03","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":17279.0,"monthly":{"2027/M01":17279.0}},{"name":"2026-BISCAYNE-AGV MODEL ROOM-EXTRA","status":"REJECTED","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":7,"pic":"TRAN","sw":"2027/W01 - 2027/W02","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":7473.0,"monthly":{"2027/M01":7473.0}},{"name":"2026-BISCAYNE-AGSR - ARIZONA GRAND SUITES - MODEL ROOM","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":16,"pic":"TRAN","sw":"2027/W03 - 2027/W03","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":11993.0,"monthly":{"2027/M01":11993.0}},{"name":"2026-BISCAYNE-AGSR - ARIZONA GRAND SUITES - EXTRA","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":6,"pic":"TRAN","sw":"2027/W03 - 2027/W03","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":4270.12,"monthly":{"2027/M01":4270.12}},{"name":"2026-BISCAYNE-AGSR - ARIZONA GRAND SUITES - MODEL ROOM","status":"FC","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":0,"pic":"TRAN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":3000000.0,"monthly":{"2027/M05":1000000.0,"2027/M06":1000000.0,"2027/M07":1000000.0}},{"name":"2026-BISCAYNE-SPA","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":5,"pic":"TRAN","sw":"2027/W04 - 2027/W04","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":8153.75,"monthly":{"2027/M01":8153.75}},{"name":"2026-BISCAYNE-OLY PA","status":"NOR","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":1,"pic":"TRAN","sw":"2027/W10 - 2027/W10","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":2908.0,"monthly":{"2027/M03":2908.0}},{"name":"2026-MJM-CABIN PROJECT","status":"CANCELLED","customer":"MJM","type":"NON RH","stage":"NPI","sku":3,"pic":"PHONG","sw":"2027/W04 - 2027/W04","drawing":"In Progress","veneer":"TBC","metal":"TBC","market":"US","total_val":371000.0,"monthly":{"2027/M01":185500.0,"2027/M03":185500.0}},{"name":"2026-RH-OPS-0069737 TRIBECA CONDOS - VANITIES","status":"ON HOLD","customer":"RH","type":"RH","stage":"NPD","sku":2,"pic":"DUY","sw":"2026/W50 - 2026/W50","drawing":"In Progress","veneer":"Not Started","metal":"In Progress","market":"US","total_val":42732.35,"monthly":{"2026/M12":4632.56}},{"name":"2026-MV-CLEVELAND CLINIC","status":"NOR","customer":"MV","type":"NON RH","stage":"NPI","sku":27,"pic":"DUNG","sw":"2027/W05 - 2027/W05","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":77770.73,"monthly":{"2027/M01":27000.0,"2027/M03":50770.73}},{"name":"2026-RH-MONTAGE PENDRY BARBADOS","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"DUY","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":5839.56,"monthly":{"2026/M11":5839.56}},{"name":"2026-SPECTRUM-PROJECT 550 POCKET DOORS","status":"FC","customer":"SPECTRUM","type":"NON RH","stage":"NPD","sku":1,"pic":"PHONG","sw":"2026/W48 - 2026/W48","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":42563.3,"monthly":{"2026/M11":730.3,"2027/M04":41833.0}},{"name":"2026-RH- FOUR SEASONS LAS VEGAS","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":50,"pic":"PHONG","sw":"2027/W24 - 2027/W26","drawing":"In Progress","veneer":"In Progress","metal":"Not Started","market":"US","total_val":358530.94,"monthly":{"2027/M06":358530.94}},{"name":"2026-RH-LAKE OCONEE TENTS","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":7,"pic":"DUNG","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":38935.43,"monthly":{"2027/M04":38935.43}},{"name":"2026-BISCAYNE-MCO","status":"NOR","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":2,"pic":"TRAN","sw":"2027/W10 - 2027/W12","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":333776.0,"monthly":{"2027/M03":333776.0}},{"name":"TBC-FAIRFIELD-WASHINGTON-DUKE","status":"PIPELINE","customer":"FAIRFIELD","type":"NON RH","stage":"NPI","sku":3,"pic":"BIEN","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":291481.96,"monthly":{}},{"name":"2026-FAIRFIELD-WASHINGTON-DUKE","status":"FC","customer":"FAIRFIELD","type":"NON RH","stage":"NPD","sku":3,"pic":"BIEN","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":0.0,"monthly":{"2027/M01":0.0}},{"name":"2026-MONDO-LEXINGTON HOTEL","status":"FC","customer":"MONDO","type":"NON RH","stage":"NPD","sku":11,"pic":"BIEN","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":14973.54,"monthly":{"2027/M01":14973.54}}];
+<script>
 
+    const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":26,"pic":"TRINH","sw":"2026/W22 - 2026/W34","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"BS","total_val":2454227.83,"monthly":{"2026/M05":153379.0,"2026/M06":1004676.0,"2026/M07":969712.83,"2026/M08":326460.0}},{"name":"2026-RH-GRAND HYATT BAHA MAR-PHASE 2","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":27,"pic":"BIEN","sw":"2027/W16 - 2027/W26","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"BS","total_val":2936224.52,"monthly":{"2027/M04":1000000.0,"2027/M05":1000000.0,"2027/M06":936224.52}},{"name":"2025-RH-FOX HARBOR","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":26,"pic":"TUYET","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"CA","total_val":102220.55,"monthly":{"2026/M04":30383.55,"2026/M01":71837.0}},{"name":"2025-RH-RH CASSIA CONDO","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":50,"pic":"TRINH","sw":"2026/W30 - 2026/W36","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1161167.0,"monthly":{"2026/M07":269518.0,"2026/M08":760037.0,"2026/M09":131612.0}},{"name":"2025-RH-MAIN STREET BOUTIQUE HOTEL","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":9,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":54061.6,"monthly":{"2026/M04":54061.6}},{"name":"2025-RH-CHICAGO PENDRY","status":"REMOVED","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"In Progress","veneer":"TBC","metal":"TBC","market":"US","total_val":135705.0,"monthly":{"2026/M10":135705.0}},{"name":"2026-RH-CIA O&O GUESTROOMS","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":12,"pic":"DUNG","sw":"2027/W27 - 2027/W28","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":143556.09,"monthly":{"2027/M07":143556.09}},{"name":"2026-RH-HA STUDIO PICO/WILKINS","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TU ANH","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":12309.0,"monthly":{"2026/M06":12309.0}},{"name":"2026-RH-HA STUDIO PICO/WILKINS-REODER","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"DUY","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3454.0,"monthly":{"2026/M11":3454.0}},{"name":"2026-RH-NAMA LISBON","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":11,"pic":"DUY","sw":"2026/W37 - 2026/W37","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"PT","total_val":74720.0,"monthly":{"2026/M09":74720.0}},{"name":"2026-RH-NAMA LISBON","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":11,"pic":"DUY","sw":"2026/W44 - 2026/W44","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"PT","total_val":127455.0,"monthly":{"2026/M10":127455.0}},{"name":"2026-RH-NAMA LISBON-PUBLIC SPACE","status":"NOR","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"DUY","sw":"2027/W04 - 2027/W04","drawing":"In Progress","veneer":"Approved","metal":"TBC","market":"PT","total_val":2190.15,"monthly":{"2027/M01":2190.15}},{"name":"2026-RH-RANCHO VALENCIA","status":"PIPELINE","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TRINH","sw":"TBC - TBC","drawing":"Pending Approval","veneer":"Approved","metal":"TBC","market":"US","total_val":14520.0,"monthly":{}},{"name":"2026-RH-RH CONTRACT (LARA CHAIR 25)","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"THU","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":4200.0,"monthly":{"2026/M03":4200.0}},{"name":"2025-RH-RH TRUMP SUITES NYC","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":1,"pic":"DUONG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1234.86,"monthly":{"2026/M06":1234.86}},{"name":"2024-RH-TRUMP DORAL","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TUYET","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1375.5,"monthly":{"2026/M07":1375.5}},{"name":"2026-RH-RH TRUMP SUITES NYC","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":24,"pic":"TBC","sw":"2027/W19 - 2027/W26","drawing":"Pending Approval","veneer":"Approved","metal":"Approved","market":"US","total_val":1074318.51,"monthly":{"2027/M05":537160.0,"2027/M06":537158.51}},{"name":"2026-RH-ROSEWOOD CALISTOGA","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":6,"pic":"BIEN","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1046.75,"monthly":{"2026/M06":1046.75}},{"name":"2025-RH-ROSEWOOD CALISTOGA","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":38,"pic":"BIEN","sw":"2026/W45 - 2026/W50","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":311473.76,"monthly":{"2026/M11":239023.0,"2026/M12":72450.76}},{"name":"2026-RH-SNAKE RIVER LODGE BLUEFLAG","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":12,"pic":"DUY","sw":"2026/W32 - 2026/W35","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":203436.49,"monthly":{"2026/M08":203436.49}},{"name":"2026-RH-SNAKE RIVER LODGE BLUEFLAG","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"DUY","sw":"2027/W05 - 2027/W05","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3080.0,"monthly":{"2027/M01":3080.0}},{"name":"2025-RH-TRUMP LAS VEGAS PENTHOUSES","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":36,"pic":"BIEN","sw":"2027/W02 - 2027/W05","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":558793.0,"monthly":{"2027/M01":558793.0}},{"name":"2026-RH-RITZ DOVE MOUNTAIN","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":14,"pic":"DUY","sw":"2027/W15 - 2027/W17","drawing":"Pending Approval","veneer":"Pending Approval","metal":"Pending Approval","market":"US","total_val":228581.0,"monthly":{"2027/M04":228581.0}},{"name":"2026-RH-MAYBOURNE_ONE WALL STREET NY","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TU ANH","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":1672.0,"monthly":{"2026/M04":1672.0}},{"name":"2024-RH-ST. REGIS KANAI","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":18,"pic":"TRINH","sw":"2026/W31 - 2026/W32","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"MX","total_val":164002.14,"monthly":{"2026/M07":110307.0,"2026/M08":53695.14}},{"name":"2026-RH-CIA O&O GUESTROOMS","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":12,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":12000.06,"monthly":{"2026/M06":12000.06}},{"name":"2026-COSMIC REALTY-250 FIFTH AVENUE HOTEL","status":"SHIPPED","customer":"COSMIC REALTY","type":"NON RH","stage":"NPI","sku":17,"pic":"THU","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":53035.8,"monthly":{"2026/M04":1908.8,"2026/M02":51127.0}},{"name":"2026-L&S-ELYSEE HOTEL","status":"SHIPPED","customer":"L&S","type":"NON RH","stage":"NPI","sku":22,"pic":"THAO","sw":"2026/W32 - 2026/W37","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":172960.83,"monthly":{"2026/M08":89785.84,"2026/M09":83174.99}},{"name":"2026-L&S-FAENA TULLUM (FTMX)","status":"FC","customer":"L&S","type":"NON RH","stage":"NPI","sku":16,"pic":"TBC","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"MX","total_val":1160820.0,"monthly":{"2027/M10":1160820.0}},{"name":"2025-FLEETWOOD -FOUR SEASON JACKSONVILLE","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":25,"pic":"TU ANH","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":198022.11,"monthly":{"2026/M04":56748.11,"2026/M05":87190.0,"2026/M06":54084.0}},{"name":"2026-FLEETWOOD -HARD ROCK LAS VEGAS WEST TOWER","status":"DROPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":94,"pic":"THAO","sw":"TBC - TBC","drawing":"In Progress","veneer":"Approved","metal":"Pending Approval","market":"US","total_val":3218808.0,"monthly":{"2027/M01":1072936.0,"2027/M02":500000.0,"2027/M03":1072936.0,"2027/M04":572936.0}},{"name":"2025-FLEETWOOD -HWVP PHASE 2","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":7,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":7015.5,"monthly":{"2026/M04":7015.5}},{"name":"2026-THE PARKER-JAMES NY NOMAD","status":"CANCELLED","customer":"THE PARKER","type":"NON RH","stage":"NPI","sku":1,"pic":"SANG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3167.51,"monthly":{"2026/M05":3167.51}},{"name":"2025-KD-KNOX DALLAS","status":"SHIPPED","customer":"KD","type":"NON RH","stage":"NPI","sku":30,"pic":"DUONG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":187373.64,"monthly":{"2026/M03":22782.88,"2026/M04":68348.76,"2026/M09":96242.0}},{"name":"2026-KD-KNOX DALLAS SUITE","status":"SHIPPED","customer":"KD","type":"NON RH","stage":"NPI","sku":50,"pic":"PHONG","sw":"2026/W39 - 2026/W52","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":98457.81,"monthly":{"2026/M10":98457.81}},{"name":"2025-KD-KNOX DALLAS SUITE","status":"OB","customer":"KD","type":"NON RH","stage":"NPI","sku":50,"pic":"PHONG","sw":"2026/W39 - 2026/W52","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":208884.94,"monthly":{"2026/M11":148976.37,"2026/M12":59908.57}},{"name":"2026-KD-KNOX DALLAS INSPECTION COVERS","status":"OB","customer":"KD","type":"NON RH","stage":"NPI","sku":3,"pic":"PHONG","sw":"2026/W52 - 2026/W52","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":2680.0,"monthly":{"2026/M12":2680.0}},{"name":"2026-AHMADIAH-MARRIOTT KHOBAR","status":"REMOVED","customer":"AHMADIAH","type":"NON RH","stage":"NPI","sku":35,"pic":"THU","sw":"TBC - TBC","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"SA","total_val":0.0,"monthly":{}},{"name":"2025-MOHI-MOHI APPELLATION","status":"SHIPPED","customer":"MOHI","type":"NON RH","stage":"NPI","sku":28,"pic":"TUYET","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":357775.0,"monthly":{"2026/M05":178386.0,"2026/M06":179389.0}},{"name":"2026-MOHI-MOHI APPELLATION","status":"SHIPPED","customer":"MOHI","type":"NON RH","stage":"NPI","sku":13,"pic":"DUY","sw":"2026/W39 - 2026/W41","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":100243.0,"monthly":{"2026/M10":100243.0}},{"name":"2025-L&S-RITZ CARLTON COTTON BAY","status":"FC","customer":"L&S","type":"NON RH","stage":"NPI","sku":117,"pic":"TBC","sw":"2027/W40 - 2027/W52","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"BS","total_val":3134000.0,"monthly":{"2027/M10":1044666.67,"2027/M11":1044666.67,"2027/M12":1044666.67}},{"name":"2025-PLUS CORPORATION-SOHO HOUSE TOKYO","status":"SHIPPED","customer":"PLUS CORPORATION","type":"NON RH","stage":"NPI","sku":48,"pic":"THAO","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"JP","total_val":24012.0,"monthly":{"2026/M03":21344.0,"2026/M05":2668.0}},{"name":"2026-SPECTRUM-1122 MADISON","status":"SHIPPED","customer":"SPECTRUM","type":"NON RH","stage":"NPI","sku":20,"pic":"THAO","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":93065.0,"monthly":{"2026/M07":93065.0}},{"name":"2026-TRIMA-JRH","status":"SHIPPED","customer":"TRIMA","type":"NON RH","stage":"NPI","sku":4,"pic":"DUONG","sw":"2026/W29 - 2026/W36","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"JM","total_val":1035310.67,"monthly":{"2026/M07":525145.2,"2026/M08":471952.96,"2026/M09":38212.51}},{"name":"2026-BROOKFIELD-PARK HYATT VANCOUVER","status":"SHIPPED","customer":"BROOKFIELD","type":"NON RH","stage":"NPD","sku":9,"pic":"DUNG","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"In Progress","market":"CA","total_val":14470.66,"monthly":{"2026/M05":14470.66}},{"name":"2026-BROOKFIELD-PARK HYATT VANCOUVER","status":"DROPPED","customer":"BROOKFIELD","type":"NON RH","stage":"NPI","sku":9,"pic":"DUNG","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"CA","total_val":802234.0,"monthly":{"2027/M05":401117.0,"2027/M06":401117.0}},{"name":"2025-FLEETWOOD -W-HOTEL-LAS-VEGAS","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPD","sku":12,"pic":"NHI","sw":"2026/W14 - 2026/W14","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":15271.3,"monthly":{"2026/M03":15271.3,"2026/M09":0.0}},{"name":"2025-FLEETWOOD -W-HOTEL-LAS-VEGAS","status":"FC","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":12,"pic":"BIEN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"US","total_val":3466407.0,"monthly":{"2027/M05":1155469.0,"2027/M06":1155469.0,"2027/M07":1155469.0}},{"name":"2026-L&S-HARD ROCK SAN JUAN","status":"ON HOLD","customer":"L&S","type":"NON RH","stage":"NPD","sku":16,"pic":"THAO","sw":"2026/W42 - 2026/W44","drawing":"In Progress","veneer":"Pending Approval","metal":"Pending Approval","market":"US","total_val":1506614.04,"monthly":{"2026/M09":6614.04,"2027/M09":750000.0,"2027/M10":750000.0}},{"name":"2026-SPECTRUM-OTMB VANITY","status":"SHIPPED","customer":"SPECTRUM","type":"NON RH","stage":"NPD","sku":4,"pic":"DUNG","sw":"2026/W37 - 2026/W40","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3273.0,"monthly":{"2026/M08":3273.0}},{"name":"2026-SPECTRUM-OTMB VANITY","status":"FC","customer":"SPECTRUM","type":"NON RH","stage":"NPI","sku":4,"pic":"DUNG","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":179782.0,"monthly":{"2027/M03":179782.0}},{"name":"2026-AYALA-KHOBAR HILTON CANOPY HOTEL","status":"SHIPPED","customer":"AYALA","type":"NON RH","stage":"NPD","sku":9,"pic":"BIEN","sw":"2026/W35 - 2026/W35","drawing":"In Progress","veneer":"In Progress","metal":"Pending Approval","market":"SA","total_val":7901.24,"monthly":{"2026/M08":7901.24}},{"name":"2026-BENJAMIN-HACIENDA HOTEL LISBON PORTUGAL","status":"OB","customer":"BENJAMIN","type":"NON RH","stage":"NPD","sku":21,"pic":"BIEN","sw":"2026/W46 - 2026/W51","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"PT","total_val":32000.0,"monthly":{"2026/M12":32000.0}},{"name":"2026-BENJAMIN-HACIENDA HOTEL LISBON PORTUGAL","status":"FC","customer":"BENJAMIN","type":"NON RH","stage":"NPI","sku":122,"pic":"BIEN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"PT","total_val":596794.0,"monthly":{"2027/M06":596794.0}},{"name":"2026-WOODHAUS-KNOX HENDERSON","status":"SHIPPED","customer":"WOODHAUS","type":"NON RH","stage":"NPI","sku":12,"pic":"DUY","sw":"2026/W32 - 2026/W32","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":22198.0,"monthly":{"2026/M08":22198.0}},{"name":"2026-TRIMA-JOIA TIERRA DEL SOL","status":"PIPELINE","customer":"TRIMA","type":"NON RH","stage":"NPI","sku":0,"pic":"THAO","sw":"TBC - TBC","drawing":"Not Started","veneer":"TBC","metal":"TBC","market":"AR","total_val":2263628.0,"monthly":{"2027/M07":1131814.0,"2027/M08":1131814.0}},{"name":"2026-RH-RED SEA","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":0,"pic":"TBC","sw":"2027/W37 - 2027/W39","drawing":"Not Started","veneer":"TBC","metal":"TBC","market":"SA","total_val":1000000.0,"monthly":{"2027/M09":1000000.0}},{"name":"2026-RH-VICEROY SUGAR BEACH - ASH WOOD VERSION","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":18,"pic":"BIEN","sw":"2026/W39 - 2026/W39","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"LC","total_val":149029.0,"monthly":{"2026/M09":149029.0}},{"name":"TBC-L&S-SILVERSANDS GRAND ANSE","status":"REJECTED","customer":"L&S","type":"NON RH","stage":"NPI","sku":55,"pic":"THAO","sw":"TBC - TBC","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"Grenada (Caribbean)","total_val":371262.0,"monthly":{}},{"name":"2026-SPECTRUM-PROJECT 550","status":"SHIPPED","customer":"SPECTRUM","type":"NON RH","stage":"NPD","sku":4,"pic":"DUNG","sw":"2026/W37 - 2026/W40","drawing":"Approved","veneer":"Approved","metal":"In Progress","market":"US","total_val":6938.58,"monthly":{"2026/M08":6938.58}},{"name":"2026-SPECTRUM-PROJECT 550","status":"FC","customer":"SPECTRUM","type":"NON RH","stage":"NPI","sku":30,"pic":"DUNG","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":361028.77,"monthly":{"2027/M04":361028.77}},{"name":"2026-FLEETWOOD -AUBERGE HOUSTON MR","status":"CANCELLED","customer":"FLEETWOOD","type":"NON RH","stage":"NPD","sku":4,"pic":"DUNG","sw":"ON HOLD - ON HOLD","drawing":"Pending Approval","veneer":"Approved","metal":"In Progress","market":"US","total_val":722063.67,"monthly":{"2026/M09":15040.19}},{"name":"2026-RH-AWH TOPNOTCH","status":"ON HOLD","customer":"RH","type":"RH","stage":"NPD","sku":17,"pic":"DUY","sw":"2026/W50 - 2026/W52","drawing":"Pending Approval","veneer":"Pending Approval","metal":"Pending Approval","market":"US","total_val":563394.1,"monthly":{"2026/M12":31219.1,"2027/M05":532175.0}},{"name":"2026-FLEETWOOD -SPANISH BAY CLUB","status":"OB","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":15,"pic":"THAO","sw":"2026/W45 - 2026/W48","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":64112.41,"monthly":{"2026/M11":64112.41}},{"name":"2026-FLEETWOOD -HWVP PHASE 2","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":7,"pic":"SHIPPED","sw":"TBC - TBC","drawing":"Approved","veneer":"TBC","metal":"TBC","market":"US","total_val":1601.0,"monthly":{"2026/M01":1601.0}},{"name":"2026-KD-KNOX DALLAS","status":"SHIPPED","customer":"KD","type":"NON RH","stage":"NPI","sku":30,"pic":"SHIPPED","sw":"TBC - TBC","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":395880.94,"monthly":{"2026/M01":362480.94,"2026/M02":33400.0}},{"name":"2026-PLUS CORPORATION-SOHO HOUSE TOKYO","status":"SHIPPED","customer":"PLUS CORPORATION","type":"NON RH","stage":"NPI","sku":48,"pic":"SHIPPED","sw":"TBC - TBC","drawing":"Approved","veneer":"TBC","metal":"TBC","market":"Japan","total_val":104927.0,"monthly":{"2026/M01":24407.0,"2026/M02":80520.0}},{"name":"2026-RH-RH BRANDYWINE","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"SHIPPED","sw":"TBC - TBC","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":5432.2,"monthly":{"2026/M01":5432.2}},{"name":"2026-BROOKFIELD-RITZ CARLTON PHILADELPHIA","status":"SHIPPED","customer":"BROOKFIELD","type":"NON RH","stage":"NPD","sku":6,"pic":"DUNG","sw":"2026/W29 - 2026/W29","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":13583.73,"monthly":{"2026/M07":13583.73}},{"name":"2026-RH-CUSTOM MIYU TABLES","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":5,"pic":"BIEN","sw":"2026/W29 - 2026/W29","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":5617.6,"monthly":{"2026/M07":5617.6}},{"name":"2026-RH-GRAND HYATT DENVER","status":"OB","customer":"RH","type":"RH","stage":"NPD","sku":2,"pic":"DUY","sw":"2026/W44 - 2026/W44","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":5542.32,"monthly":{"2026/M10":5542.32}},{"name":"2026-RH-COMPETITIVE EDGE","status":"PIPELINE","customer":"RH","type":"RH","stage":"NPI","sku":3,"pic":"TBC","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"US","total_val":847691.0,"monthly":{}},{"name":"2026-FLEETWOOD -WALDORF ASTORIA DEER VALLEY","status":"PIPELINE","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":13,"pic":"THAO","sw":"TBC - TBC","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"US","total_val":5665882.98,"monthly":{"2027/M06":1133176.6,"2027/M07":1133176.6,"2027/M08":1133176.6,"2027/M09":1133176.6,"2027/M10":1133176.6}},{"name":"2026-FLEETWOOD -PEBBLE BEACH CASA PALMERO","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":2,"pic":"THAO","sw":"2026/W41 - 2026/W41","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":13541.25,"monthly":{"2026/M10":13541.25}},{"name":"2026-RH-SUNRIVER RESORT","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPD","sku":1,"pic":"BIEN","sw":"2026/W27 - 2026/W27","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":1017.32,"monthly":{"2026/M06":1017.32}},{"name":"2026-RH-SUNRIVER RESORT","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":8,"pic":"PHONG","sw":"2027/W13 - 2027/W14","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":37522.0,"monthly":{"2027/M03":37522.0}},{"name":"2026-BROOKFIELD-RITZ CARLTON PHILADELPHIA","status":"DROPPED","customer":"BROOKFIELD","type":"NON RH","stage":"NPI","sku":11,"pic":"DUNG","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":1985000.0,"monthly":{"2027/M01":400000.0,"2027/M03":792500.0,"2027/M04":792500.0}},{"name":"2026-AYALA-KHOBAR HILTON CANOPY HOTEL","status":"FC","customer":"AYALA","type":"NON RH","stage":"NPI","sku":9,"pic":"BIEN","sw":"2027/W10 - 2027/W13","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"SA","total_val":897832.0,"monthly":{"2027/M04":897832.0}},{"name":"2026-TRIMA-ASIATICO RESTAURANT","status":"SHIPPED","customer":"TRIMA","type":"NON RH","stage":"NPI","sku":32,"pic":"TRINH","sw":"2026/W35 - 2026/W40","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"JM","total_val":168430.26,"monthly":{"2026/M08":46234.26,"2026/M09":122196.0}},{"name":"2026-RH-MONTAUK YACHT CLUB","status":"CANCELLED","customer":"RH","type":"RH","stage":"NPD","sku":5,"pic":"BIEN","sw":"2026/W33 - 2026/W33","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":1112433.68,"monthly":{"2026/M08":12433.68,"2027/M06":1100000.0}},{"name":"2026-HBA-HILTON PASADENA","status":"OB","customer":"HBA","type":"NON RH","stage":"NPI","sku":5,"pic":"DUNG","sw":"2026/W45 - 2026/W45","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":22890.48,"monthly":{"2026/M11":22890.48}},{"name":"2026-FLEETWOOD -FAIRMONT HOTEL WINNIPEG","status":"REMOVED","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":32,"pic":"THAO","sw":"TBC - TBC","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"CA","total_val":79655.52,"monthly":{}},{"name":"2026-L&S-THE STANDARD MIAMI HOTEL","status":"OB","customer":"L&S","type":"NON RH","stage":"NPI","sku":24,"pic":"DUNG","sw":"2026/W46 - 2026/W49","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":48791.87,"monthly":{"2026/M11":48791.87}},{"name":"2026-RH-KINDERED KEYSTONE RESORT","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"DUY","sw":"2026/W36 - 2026/W36","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":1142.75,"monthly":{"2026/M08":1142.75}},{"name":"2026-HBA-MARRIOTT GUYANA PUBLIC AREAS","status":"ON HOLD","customer":"HBA","type":"NON RH","stage":"NPI","sku":3,"pic":"DUY","sw":"2026/W42 - 2026/W42","drawing":"Pending Approval","veneer":"Pending Approval","metal":"TBC","market":"GY","total_val":25129.08,"monthly":{"2026/M10":25129.08}},{"name":"2026-RH-BELGROVE VILLAS","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TRAN","sw":"2026/W39 - 2026/W39","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":13398.0,"monthly":{"2026/M09":13398.0}},{"name":"2026-BISCAYNE-PARK_AVENUE_HOTEL","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":3,"pic":"BIEN","sw":"2026/W43 - 2026/W43","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":2843.6,"monthly":{"2026/M10":2843.6}},{"name":"TBC-BISCAYNE-PARK_AVENUE_HOTEL","status":"PIPELINE","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":17,"pic":"BIEN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":780835.84,"monthly":{}},{"name":"2026-RH-CAUDWELL","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"BIEN","sw":"2026/W30 - 2026/W30","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":499.5,"monthly":{"2026/M07":499.5}},{"name":"2026-RH-FOUR SEASONS  DENVER","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"DUY","sw":"2027/W05 - 2027/W05","drawing":"Pending Approval","veneer":"Pending Approval","metal":"TBC","market":"US","total_val":4003.5,"monthly":{"2027/M01":4003.5}},{"name":"2026-RH-MUNISH","status":"ON HOLD","customer":"RH","type":"RH","stage":"NPD","sku":1,"pic":"DUY","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"TBC","total_val":0.0,"monthly":{}},{"name":"2026-RH-MAUNA LANI","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"DUY","sw":"2026/W02 - 2026/W02","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3240.0,"monthly":{"2027/M01":3240.0}},{"name":"2026-RH-GOLDEN PEAK","status":"SHIPPED","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"BIEN","sw":"2026/W31 - 2026/W31","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"TBC","total_val":1466.0,"monthly":{"2026/M07":1466.0}},{"name":"2026-RH-CUSTOM BEDS FOR EU","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":2,"pic":"DUY","sw":"2027/W05 - 2027/W05","drawing":"Pending Approval","veneer":"Pending Approval","metal":"TBC","market":"EU","total_val":8455.52,"monthly":{"2027/M01":8455.52}},{"name":"2026-BWG -MUSE POINT APARTMENT","status":"SHIPPED","customer":"BWG","type":"NON RH","stage":"NPD","sku":9,"pic":"DUONG","sw":"2026/W38 - 2026/W38","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"AU","total_val":0.0,"monthly":{"2026/M09":0.0}},{"name":"2026-RH-DANCING BEAR","status":"OB","customer":"RH","type":"RH","stage":"NPD","sku":17,"pic":"DUY","sw":"2026/W43 - 2026/W43","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":33810.54,"monthly":{"2026/M11":33810.54}},{"name":"2026-RH-DANCING BEAR","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":18,"pic":"DUY","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"In Progress","market":"US","total_val":299970.29,"monthly":{"2027/M05":299970.29}},{"name":"2026-RH-FOOTES REST","status":"OB","customer":"RH","type":"RH","stage":"NPD","sku":15,"pic":"DUNG","sw":"2026/W46 - 2026/W46","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":32385.58,"monthly":{"2026/M11":32385.58}},{"name":"2026-RH-FOOTES REST","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":12,"pic":"DUNG","sw":"2027/W29 - 2027/W34","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":543005.0,"monthly":{"2027/M07":271502.5,"2027/M08":271502.5}},{"name":"2026-RH-RITZ CABO VILLA","status":"PIPELINE","customer":"RH","type":"RH","stage":"NPI","sku":4,"pic":"TRAN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"TBC","market":"Mexico","total_val":9809.0,"monthly":{}},{"name":"2026-FLEETWOOD -BDNY","status":"SHIPPED","customer":"FLEETWOOD","type":"NON RH","stage":"NPD","sku":3,"pic":"THAO","sw":"2026/W40 - 2026/W40","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":0.0,"monthly":{"2026/M09":0.0}},{"name":"2026-RH-AHS ONE CANAL CRESENT","status":"REMOVED","customer":"RH","type":"RH","stage":"NPI","sku":4,"pic":"BIEN","sw":"2026/W37 - 2026/W37","drawing":"TBC","veneer":"TBC","metal":"TBC","market":"US","total_val":0.0,"monthly":{"2026/M09":0.0}},{"name":"2026-RH-1419 MONUMENT HOTEL","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"TRAN","sw":"2026/W49 - 2026/W49","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":6068.79,"monthly":{"2026/M12":6068.79}},{"name":"2026-SH-OAKLEY COURT MINI BAR BRIEF","status":"OB","customer":"SH","type":"NON RH","stage":"NPD","sku":1,"pic":"PHONG","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":2230.98,"monthly":{"2026/M10":2230.98}},{"name":"2026-SH-OAKLEY COURT MINI BAR BRIEF","status":"FC","customer":"SH","type":"NON RH","stage":"NPI","sku":4,"pic":"PHONG","sw":"2027/W15 - 2027/W16","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"UK","total_val":210727.22,"monthly":{"2027/M03":210727.22}},{"name":"2026-AG-8 EATON LANE","status":"OB","customer":"AG","type":"NON RH","stage":"NPI","sku":7,"pic":"TRAN","sw":"2026/W49 - 2026/W49","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":15139.0,"monthly":{"2026/M12":15139.0}},{"name":"2026-AG-BOARDROOM FURNITURE","status":"OB","customer":"AG","type":"NON RH","stage":"NPI","sku":2,"pic":"TRAN","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":10410.0,"monthly":{"2026/M11":10410.0}},{"name":"2026-AG-CHARTER STREET TABLES","status":"OB","customer":"AG","type":"NON RH","stage":"NPI","sku":5,"pic":"TRAN","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"UK","total_val":17615.42,"monthly":{"2026/M11":17615.42}},{"name":"2026-RH-DEER VALLEY","status":"PIPELINE","customer":"RH","type":"RH","stage":"NPI","sku":4,"pic":"DUY","sw":"TBC - TBC","drawing":"Pending Approval","veneer":"Pending Approval","metal":"Pending Approval","market":"US","total_val":47893.86,"monthly":{"2028/M03":47893.86}},{"name":"2026-RH-ALTERRA_DEER VALLEY","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":0,"pic":"DUY","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"In Progress","market":"US","total_val":228194.0,"monthly":{"2027/M06":228194.0}},{"name":"2026-BISCAYNE-SLPS - SUGAR LAND, PUBLIC SPACE","status":"REJECTED","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":28,"pic":"HONG","sw":"2027/W01 - 2027/W05","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":156985.76,"monthly":{"2027/M01":156985.76}},{"name":"2026-BISCAYNE-SLPSC","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":35,"pic":"DUNG","sw":"2027/W01 - 2027/W04","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":83963.21,"monthly":{"2027/M01":83963.21}},{"name":"2026-FLEETWOOD -MGM BELLAGIO","status":"OB","customer":"FLEETWOOD","type":"NON RH","stage":"NPI","sku":1,"pic":"TRAN","sw":"2026/W49 - 2026/W49","drawing":"Approved","veneer":"Approved","metal":"Approved","market":"US","total_val":3202.0,"monthly":{"2026/M12":3202.0}},{"name":"2026-RH-FOUR SEASON DUBROVNIK","status":"ON HOLD","customer":"RH","type":"RH","stage":"NPD","sku":32,"pic":"DUONG","sw":"2026/W50 - 2026/W52","drawing":"In Progress","veneer":"TBC","metal":"TBC","market":"EU","total_val":1488143.52,"monthly":{"2026/M12":13804.52,"2027/M11":737169.5,"2027/M12":737169.5}},{"name":"2026-BISCAYNE-AGV MODEL ROOM","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":15,"pic":"TRAN","sw":"2027/W03 - 2027/W03","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":17279.0,"monthly":{"2027/M01":17279.0}},{"name":"2026-BISCAYNE-AGV MODEL ROOM-EXTRA","status":"REJECTED","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":7,"pic":"TRAN","sw":"2027/W01 - 2027/W02","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":7473.0,"monthly":{"2027/M01":7473.0}},{"name":"2026-BISCAYNE-AGSR - ARIZONA GRAND SUITES - MODEL ROOM","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":16,"pic":"TRAN","sw":"2027/W03 - 2027/W03","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":11993.0,"monthly":{"2027/M01":11993.0}},{"name":"2026-BISCAYNE-AGSR - ARIZONA GRAND SUITES - EXTRA","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":6,"pic":"TRAN","sw":"2027/W03 - 2027/W03","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":4270.12,"monthly":{"2027/M01":4270.12}},{"name":"2026-BISCAYNE-AGSR - ARIZONA GRAND SUITES - MODEL ROOM","status":"FC","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":0,"pic":"TRAN","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":3000000.0,"monthly":{"2027/M05":1000000.0,"2027/M06":1000000.0,"2027/M07":1000000.0}},{"name":"2026-BISCAYNE-SPA","status":"OB","customer":"BISCAYNE","type":"NON RH","stage":"NPD","sku":5,"pic":"TRAN","sw":"2027/W04 - 2027/W04","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":8153.75,"monthly":{"2027/M01":8153.75}},{"name":"2026-BISCAYNE-OLY PA","status":"NOR","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":1,"pic":"TRAN","sw":"2027/W10 - 2027/W10","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":2908.0,"monthly":{"2027/M03":2908.0}},{"name":"2026-MJM-CABIN PROJECT","status":"CANCELLED","customer":"MJM","type":"NON RH","stage":"NPI","sku":3,"pic":"PHONG","sw":"2027/W04 - 2027/W04","drawing":"In Progress","veneer":"TBC","metal":"TBC","market":"US","total_val":371000.0,"monthly":{"2027/M01":185500.0,"2027/M03":185500.0}},{"name":"2026-RH-OPS-0069737 TRIBECA CONDOS - VANITIES","status":"ON HOLD","customer":"RH","type":"RH","stage":"NPD","sku":2,"pic":"DUY","sw":"2026/W50 - 2026/W50","drawing":"In Progress","veneer":"Not Started","metal":"In Progress","market":"US","total_val":42732.35,"monthly":{"2026/M12":4632.56}},{"name":"2026-MV-CLEVELAND CLINIC","status":"NOR","customer":"MV","type":"NON RH","stage":"NPI","sku":27,"pic":"DUNG","sw":"2027/W05 - 2027/W05","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":77770.73,"monthly":{"2027/M01":27000.0,"2027/M03":50770.73}},{"name":"2026-RH-MONTAGE PENDRY BARBADOS","status":"OB","customer":"RH","type":"RH","stage":"NPI","sku":1,"pic":"DUY","sw":"2026/W47 - 2026/W47","drawing":"Approved","veneer":"Approved","metal":"TBC","market":"US","total_val":5839.56,"monthly":{"2026/M11":5839.56}},{"name":"2026-SPECTRUM-PROJECT 550 POCKET DOORS","status":"FC","customer":"SPECTRUM","type":"NON RH","stage":"NPD","sku":1,"pic":"PHONG","sw":"2026/W48 - 2026/W48","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":42563.3,"monthly":{"2026/M11":730.3,"2027/M04":41833.0}},{"name":"2026-RH- FOUR SEASONS LAS VEGAS","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":50,"pic":"PHONG","sw":"2027/W24 - 2027/W26","drawing":"In Progress","veneer":"In Progress","metal":"Not Started","market":"US","total_val":358530.94,"monthly":{"2027/M06":358530.94}},{"name":"2026-RH-LAKE OCONEE TENTS","status":"FC","customer":"RH","type":"RH","stage":"NPI","sku":7,"pic":"DUNG","sw":"TBC - TBC","drawing":"Not Started","veneer":"Not Started","metal":"Not Started","market":"US","total_val":38935.43,"monthly":{"2027/M04":38935.43}},{"name":"2026-BISCAYNE-MCO","status":"NOR","customer":"BISCAYNE","type":"NON RH","stage":"NPI","sku":2,"pic":"TRAN","sw":"2027/W10 - 2027/W12","drawing":"In Progress","veneer":"In Progress","metal":"In Progress","market":"US","total_val":333776.0,"monthly":{"2027/M03":333776.0}},{"name":"TBC-FAIRFIELD-WASHINGTON-DUKE","status":"PIPELINE","customer":"FAIRFIELD","type":"NON RH","stage":"NPI","sku":3,"pic":"BIEN","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":291481.96,"monthly":{}},{"name":"2026-FAIRFIELD-WASHINGTON-DUKE","status":"FC","customer":"FAIRFIELD","type":"NON RH","stage":"NPD","sku":3,"pic":"BIEN","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":0.0,"monthly":{"2027/M01":0.0}},{"name":"2026-MONDO-LEXINGTON HOTEL","status":"FC","customer":"MONDO","type":"NON RH","stage":"NPD","sku":11,"pic":"BIEN","sw":"TBC - TBC","drawing":"In Progress","veneer":"In Progress","metal":"TBC","market":"US","total_val":14973.54,"monthly":{"2027/M01":14973.54}}];
+    const npdProjects = [{"name":"AGSR - ARIZONA GRAND SUITES - MODEL ROOM","type":"NON RH","customer":"BISCAYNE HOSPITALITY","pic":"TRAN","npd_status":"OB","npi_status":"FC","outcome":"Won","proto_val":11993.0,"npi_val":3000000.0},{"name":"CIA O&O GUESTROOMS","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"DUNG","npd_status":"SHIPPED","npi_status":"FC","outcome":"Won","proto_val":12000.06,"npi_val":143556.08999999997},{"name":"DANCING BEAR","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"DUY","npd_status":"OB","npi_status":"FC","outcome":"Won","proto_val":33810.54,"npi_val":299970.29},{"name":"ELYSEE HOTEL","type":"NON RH","customer":"LANG & SCHWANDER LLC","pic":"THAO","npd_status":"SHIPPED","npi_status":"SHIPPED","outcome":"Won","proto_val":3015.9900000000002,"npi_val":169944.84000000003},{"name":"FOOTES REST","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"DUNG","npd_status":"OB","npi_status":"FC","outcome":"Won","proto_val":32385.58,"npi_val":543005.0},{"name":"HACIENDA HOTEL LISBON PORTUGAL","type":"NON RH","customer":"BENJAMIN WEST","pic":"BIEN","npd_status":"OB","npi_status":"FC","outcome":"Won","proto_val":32000.0,"npi_val":596794.0},{"name":"KHOBAR HILTON CANOPY HOTEL","type":"NON RH","customer":"AYALA INTERNATIONAL","pic":"BIEN","npd_status":"SHIPPED","npi_status":"FC","outcome":"Won","proto_val":7901.24,"npi_val":897832.0},{"name":"OAKLEY COURT MINI BAR BRIEF","type":"NON RH","customer":"SOHO HOUSE","pic":"PHONG","npd_status":"OB","npi_status":"FC","outcome":"Won","proto_val":2230.98,"npi_val":210727.22},{"name":"OTMB VANITY","type":"NON RH","customer":"SPECTRUM KITCHENS","pic":"DUNG","npd_status":"SHIPPED","npi_status":"FC","outcome":"Won","proto_val":3273.0,"npi_val":179782.0},{"name":"PROJECT 550","type":"NON RH","customer":"SPECTRUM KITCHENS","pic":"DUNG","npd_status":"SHIPPED","npi_status":"FC","outcome":"Won","proto_val":6938.58,"npi_val":361028.77},{"name":"PROJECT 550 POCKET DOORS","type":"NON RH","customer":"SPECTRUM KITCHENS","pic":"PHONG","npd_status":"FC","npi_status":"FC","outcome":"Won","proto_val":730.3,"npi_val":41833.0},{"name":"RH TRUMP SUITES NYC","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"DUONG","npd_status":"SHIPPED","npi_status":"FC","outcome":"Won","proto_val":1234.86,"npi_val":1074318.51},{"name":"ROSEWOOD CALISTOGA","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"BIEN","npd_status":"SHIPPED","npi_status":"OB","outcome":"Won","proto_val":1046.75,"npi_val":311473.76000000007},{"name":"SUNRIVER RESORT","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"BIEN","npd_status":"SHIPPED","npi_status":"OB","outcome":"Won","proto_val":1017.32,"npi_val":37522.0},{"name":"W-HOTEL-LAS-VEGAS","type":"NON RH","customer":"FLEETWOOD FURNITURE","pic":"NHI, BIEN","npd_status":"SHIPPED","npi_status":"FC","outcome":"Won","proto_val":15271.3,"npi_val":3466407.0},{"name":"AGSR - ARIZONA GRAND SUITES - EXTRA","type":"NON RH","customer":"BISCAYNE HOSPITALITY","pic":"TRAN","npd_status":"OB","npi_status":"No NPI yet","outcome":"In Progress","proto_val":4270.120000000001,"npi_val":0.0},{"name":"AGV MODEL ROOM","type":"NON RH","customer":"BISCAYNE HOSPITALITY","pic":"TRAN","npd_status":"OB","npi_status":"No NPI yet","outcome":"In Progress","proto_val":17279.0,"npi_val":0.0},{"name":"AWH TOPNOTCH","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"DUY","npd_status":"ON HOLD","npi_status":"ON HOLD","outcome":"In Progress","proto_val":31219.1,"npi_val":532175.0},{"name":"BDNY","type":"NON RH","customer":"FLEETWOOD FURNITURE","pic":"THAO","npd_status":"SHIPPED","npi_status":"No NPI yet","outcome":"In Progress","proto_val":0.0,"npi_val":0.0},{"name":"CUSTOM MIYU TABLES","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"BIEN","npd_status":"SHIPPED","npi_status":"No NPI yet","outcome":"In Progress","proto_val":5617.6,"npi_val":0.0},{"name":"FOUR SEASON DUBROVNIK","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"DUONG","npd_status":"ON HOLD","npi_status":"ON HOLD","outcome":"In Progress","proto_val":13804.520000000004,"npi_val":1474339.0},{"name":"GRAND HYATT DENVER","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"DUY","npd_status":"OB","npi_status":"No NPI yet","outcome":"In Progress","proto_val":5542.32,"npi_val":0.0},{"name":"HARD ROCK SAN JUAN","type":"NON RH","customer":"LANG & SCHWANDER LLC","pic":"THAO","npd_status":"ON HOLD","npi_status":"ON HOLD","outcome":"In Progress","proto_val":6614.04,"npi_val":1500000.0},{"name":"LEXINGTON HOTEL","type":"NON RH","customer":"MONDO CONTRACT","pic":"BIEN","npd_status":"FC","npi_status":"No NPI yet","outcome":"In Progress","proto_val":14973.54,"npi_val":0.0},{"name":"MUNISH","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"DUY","npd_status":"ON HOLD","npi_status":"No NPI yet","outcome":"In Progress","proto_val":0.0,"npi_val":0.0},{"name":"MUSE POINT APARTMENT","type":"NON RH","customer":"BLACKWELL GROUP LLC","pic":"DUONG","npd_status":"SHIPPED","npi_status":"No NPI yet","outcome":"In Progress","proto_val":0.0,"npi_val":0.0},{"name":"OPS-0069737 TRIBECA CONDOS - VANITIES","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"DUY","npd_status":"ON HOLD","npi_status":"ON HOLD","outcome":"In Progress","proto_val":4632.56,"npi_val":38099.78999999999},{"name":"PARK_AVENUE_HOTEL","type":"NON RH","customer":"BISCAYNE HOSPITALITY","pic":"BIEN","npd_status":"OB","npi_status":"PIPELINE","outcome":"In Progress","proto_val":2843.6000000000004,"npi_val":780835.8400000001},{"name":"SPA","type":"NON RH","customer":"BISCAYNE HOSPITALITY","pic":"TRAN","npd_status":"OB","npi_status":"No NPI yet","outcome":"In Progress","proto_val":8153.75,"npi_val":0.0},{"name":"WASHINGTON-DUKE","type":"NON RH","customer":"FAIRFIELD","pic":"BIEN","npd_status":"FC","npi_status":"PIPELINE","outcome":"In Progress","proto_val":0.0,"npi_val":291481.96},{"name":"AUBERGE HOUSTON MR","type":"NON RH","customer":"FLEETWOOD FURNITURE","pic":"DUNG","npd_status":"CANCELLED","npi_status":"CANCELLED","outcome":"Lost","proto_val":15040.19,"npi_val":707023.48},{"name":"CABIN PROJECT","type":"NON RH","customer":"MJM","pic":"PHONG","npd_status":"TBC","npi_status":"CANCELLED","outcome":"Lost","proto_val":0.0,"npi_val":371000.0},{"name":"HARD ROCK LAS VEGAS WEST TOWER","type":"NON RH","customer":"FLEETWOOD FURNITURE","pic":"THAO","npd_status":"TBC","npi_status":"DROPPED","outcome":"Lost","proto_val":0.0,"npi_val":3218808.0},{"name":"MONTAUK YACHT CLUB","type":"RH","customer":"RESTORATION HARDWARE_HS","pic":"BIEN","npd_status":"CANCELLED","npi_status":"CANCELLED","outcome":"Lost","proto_val":12433.68,"npi_val":1100000.0},{"name":"PARK HYATT VANCOUVER","type":"NON RH","customer":"BROOKFIELD PROPERTIES","pic":"DUNG","npd_status":"SHIPPED","npi_status":"DROPPED","outcome":"Lost","proto_val":14470.66,"npi_val":802234.0},{"name":"RITZ CARLTON PHILADELPHIA","type":"NON RH","customer":"BROOKFIELD PROPERTIES","pic":"DUNG","npd_status":"SHIPPED","npi_status":"DROPPED","outcome":"Lost","proto_val":13583.73,"npi_val":1985000.0}];
+
+    // Filter state
     let currentFilters = {
       year: 'All',
       type: 'All',
       stage: 'All',
-      status: 'All'
+      status: 'All',
+      search: '',
+      customer: 'All',
+      market: 'All',
+      pic: 'All',
+      npdOutcome: 'All'
     };
 
+    let currentPage = 1;
+
+    // Sorting state
+    const sortState = {
+      gantt: { key: 'default', dir: 'asc' },
+      npd: { key: 'default', dir: 'asc' }
+    };
+
+    // Page navigation
     function switchPage(pageNum, title) {
+      currentPage = pageNum;
       document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
 
-      document.getElementById('page-' + pageNum).classList.add('active');
-      document.getElementById('tab-btn-' + pageNum).classList.add('active');
+      const pEl = document.getElementById('page-' + pageNum);
+      const tEl = document.getElementById('tab-btn-' + pageNum);
+      if (pEl) pEl.classList.add('active');
+      if (tEl) tEl.classList.add('active');
       document.getElementById('toolbar-page-title').innerText = title;
       document.getElementById('footer-page-num').innerText = pageNum;
     }
 
+    // Slicer filters
     function setFilter(dim, val, btn) {
       currentFilters[dim] = val;
-      const parent = btn.parentElement;
-      parent.querySelectorAll('.slicer-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll('.slicer-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
       applyFilters();
     }
 
@@ -600,24 +921,151 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       applyFilters();
     }
 
+    function filterByNpdOutcome(outcome) {
+      currentFilters.npdOutcome = outcome;
+      const sel = document.getElementById('npd-outcome-select');
+      if (sel) sel.value = outcome;
+      // Also highlight outcome tiles
+      ['won', 'progress', 'lost'].forEach(k => {
+        const el = document.getElementById('otile-' + k);
+        if (el) el.classList.remove('outcome-active');
+      });
+      if (outcome === 'Won') document.getElementById('otile-won')?.classList.add('outcome-active');
+      else if (outcome === 'In Progress') document.getElementById('otile-progress')?.classList.add('outcome-active');
+      else if (outcome === 'Lost') document.getElementById('otile-lost')?.classList.add('outcome-active');
+      applyFilters();
+    }
+
+    function setDimensionFilter(dim, val) {
+      // Toggle if already selected
+      if (currentFilters[dim] === val) {
+        currentFilters[dim] = 'All';
+      } else {
+        currentFilters[dim] = val;
+      }
+      applyFilters();
+    }
+
     function resetFilters() {
-      currentFilters = { year: 'All', type: 'All', stage: 'All', status: 'All' };
+      currentFilters = {
+        year: 'All',
+        type: 'All',
+        stage: 'All',
+        status: 'All',
+        search: '',
+        customer: 'All',
+        market: 'All',
+        pic: 'All',
+        npdOutcome: 'All'
+      };
+      // Reset slicer UI buttons
       document.querySelectorAll('.slicer-pill-box').forEach(box => {
         box.querySelectorAll('.slicer-btn').forEach((b, idx) => {
           if (idx === 0) b.classList.add('active');
           else b.classList.remove('active');
         });
       });
+      const gs = document.getElementById('global-search');
+      if (gs) gs.value = '';
+      const gsc = document.getElementById('global-search-clear');
+      if (gsc) gsc.classList.remove('visible');
+      const ps = document.getElementById('project-search');
+      if (ps) ps.value = '';
+      const ss = document.getElementById('stage-filter-select');
+      if (ss) ss.value = 'All';
+      const nos = document.getElementById('npd-outcome-select');
+      if (nos) nos.value = 'All';
+      const nps = document.getElementById('npd-search');
+      if (nps) nps.value = '';
+      ['won', 'progress', 'lost'].forEach(k => {
+        document.getElementById('otile-' + k)?.classList.remove('outcome-active');
+      });
       applyFilters();
     }
 
-    function formatCurrency(val) {
-      if (val >= 1000000) return '$' + (val / 1000000).toFixed(2) + 'M';
-      if (val >= 1000) return '$' + (val / 1000).toFixed(1) + 'K';
-      return '$' + val.toFixed(0);
+    function clearFilter(dim) {
+      if (dim === 'search') {
+        clearGlobalSearch();
+        return;
+      }
+      if (dim === 'year' || dim === 'type' || dim === 'stage' || dim === 'status') {
+        const pillBox = document.getElementById('slicer-' + dim);
+        if (pillBox) {
+          pillBox.querySelectorAll('.slicer-btn').forEach((b, idx) => {
+            if (idx === 0) b.classList.add('active');
+            else b.classList.remove('active');
+          });
+        }
+      }
+      if (dim === 'npdOutcome') {
+        const sel = document.getElementById('npd-outcome-select');
+        if (sel) sel.value = 'All';
+        ['won', 'progress', 'lost'].forEach(k => {
+          document.getElementById('otile-' + k)?.classList.remove('outcome-active');
+        });
+      }
+      currentFilters[dim] = 'All';
+      applyFilters();
     }
 
-    // A record is a (project, status) slice; its monthly keys carry the year.
+    // Search handlers (synchronized)
+    function onGlobalSearch(val) {
+      currentFilters.search = val.trim();
+      const clearBtn = document.getElementById('global-search-clear');
+      if (clearBtn) {
+        if (val.trim()) clearBtn.classList.add('visible');
+        else clearBtn.classList.remove('visible');
+      }
+      const p2 = document.getElementById('project-search');
+      if (p2 && p2.value !== val) p2.value = val;
+      const p4 = document.getElementById('npd-search');
+      if (p4 && p4.value !== val) p4.value = val;
+      applyFilters();
+    }
+
+    function clearGlobalSearch() {
+      const gs = document.getElementById('global-search');
+      if (gs) gs.value = '';
+      onGlobalSearch('');
+    }
+
+    function onPage2Search(val) {
+      const gs = document.getElementById('global-search');
+      if (gs) gs.value = val;
+      onGlobalSearch(val);
+    }
+
+    function onNpdSearch(val) {
+      const gs = document.getElementById('global-search');
+      if (gs) gs.value = val;
+      onGlobalSearch(val);
+    }
+
+    function onStageSelectChange(val) {
+      currentFilters.stage = val;
+      const box = document.getElementById('slicer-stage');
+      if (box) {
+        box.querySelectorAll('.slicer-btn').forEach(b => {
+          if (b.innerText === val) b.classList.add('active');
+          else b.classList.remove('active');
+        });
+      }
+      applyFilters();
+    }
+
+    // Currency Formatter
+    function formatCurrency(val) {
+      if (val === undefined || val === null || isNaN(val)) return '$0';
+      if (Math.abs(val) >= 1000000) return '$' + (val / 1000000).toFixed(2) + 'M';
+      if (Math.abs(val) >= 1000) return '$' + (val / 1000).toFixed(1) + 'K';
+      return '$' + Math.round(val).toLocaleString();
+    }
+
+    function formatNumber(val) {
+      if (!val) return '0';
+      return Math.round(val).toLocaleString();
+    }
+
     function hasYear(p, yr) {
       return Object.keys(p.monthly).some(m => m.indexOf(yr + '/') === 0);
     }
@@ -631,17 +1079,75 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       return sum;
     }
 
+    // Active filter chips renderer
+    function renderFilterChips() {
+      const bar = document.getElementById('chip-bar');
+      const container = document.getElementById('chip-container');
+      if (!bar || !container) return;
+
+      const chips = [];
+      if (currentFilters.year !== 'All') chips.push({ dim: 'year', label: `Year: ${currentFilters.year}` });
+      if (currentFilters.type !== 'All') chips.push({ dim: 'type', label: `Type: ${currentFilters.type}` });
+      if (currentFilters.stage !== 'All') chips.push({ dim: 'stage', label: `Stage: ${currentFilters.stage}` });
+      if (currentFilters.status !== 'All') chips.push({ dim: 'status', label: `Status: ${currentFilters.status}` });
+      if (currentFilters.customer !== 'All') chips.push({ dim: 'customer', label: `Customer: ${currentFilters.customer}` });
+      if (currentFilters.market !== 'All') chips.push({ dim: 'market', label: `Market: ${currentFilters.market}` });
+      if (currentFilters.pic !== 'All') chips.push({ dim: 'pic', label: `PIC: ${currentFilters.pic}` });
+      if (currentFilters.npdOutcome !== 'All') chips.push({ dim: 'npdOutcome', label: `NPD Outcome: ${currentFilters.npdOutcome}` });
+      if (currentFilters.search) chips.push({ dim: 'search', label: `Search: "${currentFilters.search}"` });
+
+      if (chips.length === 0) {
+        bar.classList.remove('visible');
+        container.innerHTML = '';
+        return;
+      }
+
+      bar.classList.add('visible');
+      container.innerHTML = chips.map(c => `
+        <span class="filter-chip">
+          <span>${c.label}</span>
+          <button class="chip-x" onclick="clearFilter('${c.dim}')" title="Remove filter">&times;</button>
+        </span>
+      `).join('');
+    }
+
+    // Main Filter Engine
     function applyFilters() {
       const yr = currentFilters.year;
+      const q = currentFilters.search.toLowerCase();
+
+      // 1. Filter rawProjects (Detail_New records)
       const filtered = rawProjects.filter(p => {
         if (yr !== 'All' && !hasYear(p, yr)) return false;
         if (currentFilters.type === 'RH' && p.type !== 'RH') return false;
         if (currentFilters.type === 'NON RH' && p.type === 'RH') return false;
         if (currentFilters.stage !== 'All' && p.stage !== currentFilters.stage) return false;
         if (currentFilters.status !== 'All' && p.status !== currentFilters.status) return false;
+        if (currentFilters.customer !== 'All' && p.customer !== currentFilters.customer) return false;
+        if (currentFilters.market !== 'All' && p.market !== currentFilters.market) return false;
+        if (currentFilters.pic !== 'All' && p.pic !== currentFilters.pic) return false;
+        if (q) {
+          const hay = `${p.name} ${p.customer} ${p.pic} ${p.market} ${p.type} ${p.stage} ${p.status}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
         return true;
       });
 
+      // 2. Filter npdProjects (NPD Analysis records)
+      const filteredNpd = npdProjects.filter(p => {
+        if (currentFilters.type === 'RH' && p.type !== 'RH') return false;
+        if (currentFilters.type === 'NON RH' && p.type === 'RH') return false;
+        if (currentFilters.customer !== 'All' && p.customer !== currentFilters.customer && !p.customer.toUpperCase().includes(currentFilters.customer.toUpperCase())) return false;
+        if (currentFilters.pic !== 'All' && !p.pic.toUpperCase().includes(currentFilters.pic.toUpperCase())) return false;
+        if (currentFilters.npdOutcome !== 'All' && p.outcome !== currentFilters.npdOutcome) return false;
+        if (q) {
+          const hay = `${p.name} ${p.customer} ${p.pic} ${p.type} ${p.npd_status} ${p.npi_status} ${p.outcome}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      // Calculate Top Executive KPIs
       let shippedVal = 0, shippedCount = 0;
       let obVal = 0, obCount = 0;
       let norVal = 0, norCount = 0;
@@ -673,16 +1179,22 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       document.getElementById('kpi-total-val').innerText = formatCurrency(totalVal);
       document.getElementById('kpi-total-count').innerText = `${totalCount} Projects Active`;
 
+      // Render Active Filter Chips
+      renderFilterChips();
+
+      // Render Each Page
       renderMatrix(filtered);
       renderGantt(filtered);
       renderStatic(filtered, yr);
+      renderNpdAnalysis(filteredNpd);
     }
 
+    // PAGE 1: Static and Dual Grid
     function renderStatic(data, yr) {
       const targetYear = yr === '2027' ? '2027' : '2026';
       const val = p => recValue(p, yr);
 
-      // Operational flow brackets for the displayed year
+      // Operational flow brackets
       let shippedM0109 = 0, obM1012 = 0;
       data.forEach(p => {
         if (p.status === 'SHIPPED') {
@@ -708,13 +1220,16 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
         if (p.status === 'SHIPPED' || p.status === 'OB') active += v;
       });
       const share = t => tracked > 0 ? (t / tracked * 100) : 0;
+      const isRhActive = currentFilters.type === 'RH';
+      const isNonRhActive = currentFilters.type === 'NON RH';
+
       document.getElementById('mix-list').innerHTML = `
-        <div class="hbar-item">
+        <div class="hbar-item clickable ${isNonRhActive ? 'active-filter' : ''}" onclick="setDimensionFilter('type', 'NON RH')" onmouseenter="showTooltip(event, 'Non-RH Accounts', '${formatCurrency(nonRh)} (${share(nonRh).toFixed(1)}% of tracked volume) · Click to filter')" onmouseleave="hideTooltip()">
           <span class="hbar-name">Non-RH Accounts</span>
           <div class="hbar-track"><div class="hbar-fill" style="width: ${share(nonRh).toFixed(1)}%; background: var(--theme-navy);"></div></div>
           <span class="hbar-val">${formatCurrency(nonRh)} (${share(nonRh).toFixed(1)}%)</span>
         </div>
-        <div class="hbar-item">
+        <div class="hbar-item clickable ${isRhActive ? 'active-filter' : ''}" onclick="setDimensionFilter('type', 'RH')" onmouseenter="showTooltip(event, 'Restoration Hardware (RH)', '${formatCurrency(rh)} (${share(rh).toFixed(1)}% of tracked volume) · Click to filter')" onmouseleave="hideTooltip()">
           <span class="hbar-name">Restoration Hardware (RH)</span>
           <div class="hbar-track"><div class="hbar-fill" style="width: ${share(rh).toFixed(1)}%; background: #C5A059;"></div></div>
           <span class="hbar-val">${formatCurrency(rh)} (${share(rh).toFixed(1)}%)</span>
@@ -723,17 +1238,20 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
         <span>Total Tracked Volume: <strong>${formatCurrency(tracked)}</strong></span>
         <span>Active Orders (Shipped+OB): <strong>${formatCurrency(active)}</strong></span>`;
 
-      // Top 5 hospitality accounts
+      // Top 5 hospitality accounts (clickable)
       const accounts = {};
       data.forEach(p => { accounts[p.customer] = (accounts[p.customer] || 0) + val(p); });
       const top = Object.entries(accounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
       const topMax = top.length ? top[0][1] : 1;
-      document.getElementById('top5-list').innerHTML = top.map(([name, v], i) => `
-        <div class="hbar-item">
-          <span class="hbar-name">${name}</span>
-          <div class="hbar-track"><div class="hbar-fill" style="width: ${(v / topMax * 100).toFixed(1)}%; background: ${i === 0 ? '#C5A059' : 'var(--theme-navy)'};"></div></div>
-          <span class="hbar-val">${formatCurrency(v)}</span>
-        </div>`).join('');
+      document.getElementById('top5-list').innerHTML = top.map(([name, v], i) => {
+        const isAct = currentFilters.customer === name;
+        return `
+          <div class="hbar-item clickable ${isAct ? 'active-filter' : ''}" onclick="setDimensionFilter('customer', '${name.replace(/'/g, "\'")}')" onmouseenter="showTooltip(event, '${name.replace(/'/g, "\'")}', 'Total Volume: ${formatCurrency(v)} · Click to filter')" onmouseleave="hideTooltip()">
+            <span class="hbar-name">${name}</span>
+            <div class="hbar-track"><div class="hbar-fill" style="width: ${(v / topMax * 100).toFixed(1)}%; background: ${i === 0 ? '#C5A059' : 'var(--theme-navy)'};"></div></div>
+            <span class="hbar-val">${formatCurrency(v)}</span>
+          </div>`;
+      }).join('') || '<div class="empty-state">No accounts matching current filters</div>';
 
       // Pipeline funnel cards
       const funnel = [
@@ -749,7 +1267,7 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
         document.getElementById(idN).innerText = label(rows.length);
       });
 
-      // Market distribution
+      // Market distribution (clickable)
       const markets = {};
       data.forEach(p => { markets[p.market] = (markets[p.market] || 0) + 1; });
       const mk = Object.entries(markets).sort((a, b) => b[1] - a[1]);
@@ -758,26 +1276,35 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       if (restCount > 0) topMarkets.push(['Other', restCount]);
       const totalRows = data.length || 1;
       const mkColors = ['var(--theme-navy)', 'var(--theme-blue)', 'var(--theme-teal)', 'var(--theme-purple)', '#6B7280'];
-      document.getElementById('market-list').innerHTML = topMarkets.map(([name, n], i) => `
-        <div class="hbar-item">
-          <span class="hbar-name">${name}</span>
-          <div class="hbar-track"><div class="hbar-fill" style="width: ${(n / totalRows * 100).toFixed(0)}%; background: ${mkColors[i % mkColors.length]};"></div></div>
-          <span class="hbar-val">${n} Projects (${(n / totalRows * 100).toFixed(0)}%)</span>
-        </div>`).join('');
+      document.getElementById('market-list').innerHTML = topMarkets.map(([name, n], i) => {
+        const isAct = currentFilters.market === name;
+        const clickAction = name === 'Other' ? '' : `onclick="setDimensionFilter('market', '${name.replace(/'/g, "\'")}')"`;
+        const clickClass = name === 'Other' ? '' : 'clickable';
+        return `
+          <div class="hbar-item ${clickClass} ${isAct ? 'active-filter' : ''}" ${clickAction} onmouseenter="showTooltip(event, 'Market: ${name.replace(/'/g, "\'")}', '${n} Projects (${(n / totalRows * 100).toFixed(0)}%) · ${name === 'Other' ? 'Multiple markets' : 'Click to filter'}')" onmouseleave="hideTooltip()">
+            <span class="hbar-name">${name}</span>
+            <div class="hbar-track"><div class="hbar-fill" style="width: ${(n / totalRows * 100).toFixed(0)}%; background: ${mkColors[i % mkColors.length]};"></div></div>
+            <span class="hbar-val">${n} Projects (${(n / totalRows * 100).toFixed(0)}%)</span>
+          </div>`;
+      }).join('') || '<div class="empty-state">No market records</div>';
 
-      // PIC workload
+      // PIC workload (clickable)
       const pics = {};
       data.forEach(p => { pics[p.pic] = (pics[p.pic] || 0) + 1; });
-      const picTop = Object.entries(pics).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      const picTop = Object.entries(pics).sort((a, b) => b[1] - a[1]).slice(0, 6);
       const picMax = picTop.length ? picTop[0][1] : 1;
-      document.getElementById('pic-list').innerHTML = picTop.map(([name, n]) => `
-        <div class="hbar-item">
-          <span class="hbar-name">${name}</span>
-          <div class="hbar-track"><div class="hbar-fill" style="width: ${(n / picMax * 100).toFixed(0)}%; background: var(--theme-navy);"></div></div>
-          <span class="hbar-val">${n} Projects</span>
-        </div>`).join('');
+      document.getElementById('pic-list').innerHTML = picTop.map(([name, n]) => {
+        const isAct = currentFilters.pic === name;
+        return `
+          <div class="hbar-item clickable ${isAct ? 'active-filter' : ''}" onclick="setDimensionFilter('pic', '${name.replace(/'/g, "\'")}')" onmouseenter="showTooltip(event, 'PIC: ${name.replace(/'/g, "\'")}', 'Managing ${n} Projects · Click to filter')" onmouseleave="hideTooltip()">
+            <span class="hbar-name">${name}</span>
+            <div class="hbar-track"><div class="hbar-fill" style="width: ${(n / picMax * 100).toFixed(0)}%; background: var(--theme-navy);"></div></div>
+            <span class="hbar-val">${n} Projects</span>
+          </div>`;
+      }).join('') || '<div class="empty-state">No PIC records</div>';
     }
 
+    // PAGE 1: Monthly Matrix Table
     function renderMatrix(data) {
       const tbody = document.getElementById('matrix-body');
       tbody.innerHTML = '';
@@ -798,6 +1325,12 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       categories.forEach(cat => {
         const row = document.createElement('tr');
         row.className = cat.cls;
+        row.style.cursor = 'pointer';
+        row.title = `Click to filter by ${cat.key}`;
+        row.onclick = (e) => {
+          // If clicked a cell, filter by that category
+          filterByCard(cat.key);
+        };
 
         let rowHtml = `<td class="cell-rowheader">${cat.label}</td>`;
         let catTotal = 0;
@@ -812,7 +1345,7 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
           monthlyGrandTotals[idx] += monthSum;
 
           const barPct = Math.min(100, (monthSum / 2000000) * 100);
-          rowHtml += `<td>
+          rowHtml += `<td class="mcell-clickable" onmouseenter="showTooltip(event, '${cat.key} · ${m}', 'Total: ${formatCurrency(monthSum)}') " onmouseleave="hideTooltip()">
             <div class="cell-bar-container">
               <span>${monthSum > 0 ? formatCurrency(monthSum) : '-'}</span>
               ${monthSum > 0 ? `<div class="cell-bar-wrap"><div class="cell-bar-fill ${cat.fillCls}" style="width: ${barPct}%;"></div></div>` : ''}
@@ -827,16 +1360,17 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       });
 
       const grandRow = document.createElement('tr');
-      grandRow.className = 'row-grandtotal';
+      grandRow.className = 'row-grandtotal grand-row';
       let grandHtml = `<td class="cell-rowheader">GRAND TOTAL ($)</td>`;
-      monthlyGrandTotals.forEach(val => {
-        grandHtml += `<td>${val > 0 ? formatCurrency(val) : '-'}</td>`;
+      monthlyGrandTotals.forEach((val, idx) => {
+        grandHtml += `<td onmouseenter="showTooltip(event, 'Grand Total · ${months[idx]}', '${formatCurrency(val)}')" onmouseleave="hideTooltip()">${val > 0 ? formatCurrency(val) : '-'}</td>`;
       });
-      grandHtml += `<td class="cell-total">${formatCurrency(overallGrandTotal)}</td>`;
+      grandHtml += `<td class="cell-total" onmouseenter="showTooltip(event, 'Runway Total', '${formatCurrency(overallGrandTotal)}')" onmouseleave="hideTooltip()">${formatCurrency(overallGrandTotal)}</td>`;
       grandRow.innerHTML = grandHtml;
       tbody.appendChild(grandRow);
     }
 
+    // Sorting Helpers
     function stageRank(stage) {
       const s = (stage || '').toUpperCase().trim();
       if (s === 'NPD') return 1;
@@ -859,26 +1393,64 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       return 99;
     }
 
-    function sortGanttRecords(list) {
-      return [...list].sort((a, b) => {
-        // 1. Sort by project name (same name sits next to each other)
-        const nameA = (a.name || '').toLowerCase().trim();
-        const nameB = (b.name || '').toLowerCase().trim();
-        const nameCmp = nameA.localeCompare(nameB, undefined, { numeric: true, sensitivity: 'base' });
-        if (nameCmp !== 0) return nameCmp;
+    function toggleSort(tableType, key) {
+      const current = sortState[tableType];
+      if (current.key === key) {
+        current.dir = current.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        current.key = key;
+        current.dir = 'asc';
+      }
+      updateSortArrows(tableType);
+      if (tableType === 'gantt') applyFilters();
+      if (tableType === 'npd') applyFilters();
+    }
 
-        // 2. Sort by stage (NPD then NPI)
-        const stageCmp = stageRank(a.stage) - stageRank(b.stage);
-        if (stageCmp !== 0) return stageCmp;
-
-        // 3. Sort by status (Ship -> OB -> NOR -> FC)
-        const statusCmp = statusRank(a.status) - statusRank(b.status);
-        if (statusCmp !== 0) return statusCmp;
-
-        return 0;
+    function updateSortArrows(tableType) {
+      const prefix = tableType + '-sort-';
+      const current = sortState[tableType];
+      document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => {
+        const k = el.id.replace(prefix, '');
+        if (k === current.key) {
+          el.innerText = current.dir === 'asc' ? '▲' : '▼';
+          el.classList.add('active');
+        } else {
+          el.innerText = '';
+          el.classList.remove('active');
+        }
       });
     }
 
+    function sortGanttRecords(list) {
+      const { key, dir } = sortState.gantt;
+      const factor = dir === 'desc' ? -1 : 1;
+
+      return [...list].sort((a, b) => {
+        if (key === 'default' || !key || key === 'name') {
+          const nameA = (a.name || '').toLowerCase().trim();
+          const nameB = (b.name || '').toLowerCase().trim();
+          const nameCmp = nameA.localeCompare(nameB, undefined, { numeric: true, sensitivity: 'base' });
+          if (nameCmp !== 0) return nameCmp * factor;
+
+          const stageCmp = stageRank(a.stage) - stageRank(b.stage);
+          if (stageCmp !== 0) return stageCmp;
+
+          const statusCmp = statusRank(a.status) - statusRank(b.status);
+          if (statusCmp !== 0) return statusCmp;
+          return 0;
+        }
+
+        if (key === 'total_val' || key === 'sku') {
+          return ((a[key] || 0) - (b[key] || 0)) * factor;
+        }
+
+        const valA = String(a[key] || '').toLowerCase().trim();
+        const valB = String(b[key] || '').toLowerCase().trim();
+        return valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' }) * factor;
+      });
+    }
+
+    // PAGE 2: Gantt Schedule Table
     function renderGantt(data) {
       const tbody = document.getElementById('gantt-body');
       tbody.innerHTML = '';
@@ -886,10 +1458,14 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       const targetYear = currentFilters.year === '2027' ? '2027' : '2026';
       const months = Array.from({length: 12}, (_, i) => `${targetYear}/M${String(i + 1).padStart(2, '0')}`);
 
-      // Sort by Project Name -> Stage (NPD then NPI) -> Status (Ship -> OB -> NOR -> FC)
       const sortedRows = sortGanttRecords(
         data.filter(p => recValue(p, currentFilters.year) > 0)
       );
+
+      if (sortedRows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="22" class="empty-state">No project records match the current filters. Click "Clear all" in the Active Filters row to reset.</td></tr>`;
+        return;
+      }
 
       sortedRows.forEach(p => {
         const tr = document.createElement('tr');
@@ -902,27 +1478,33 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
         else if (p.status === 'NOR') { statusClass = 'tag-nor'; ganttClass = 'st-nor'; }
         else if (p.status === 'FC') { statusClass = 'tag-fc'; ganttClass = 'st-fc'; }
         else if (p.status === 'ON HOLD') { statusClass = 'tag-on-hold'; ganttClass = 'st-nor'; }
+        else if (p.status === 'REMOVED') { statusClass = 'tag-removed'; ganttClass = 'st-fc'; }
 
         const subline = p.market && p.market !== 'TBC' ? `${p.customer} | ${p.market}` : p.customer;
+
+        tr.onclick = (e) => {
+          // Open detail modal when clicking row (unless clicking inside an inner button)
+          openProjectModal(p);
+        };
 
         let html = `
           <td>
             <div style="font-weight: 600; color: var(--theme-navy);">${p.name}</div>
-            <div style="font-size: 10.5px; color: var(--theme-text-muted);">${subline}</div>
+            <div style="font-size: 10.5px; color: var(--theme-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 230px;">${subline}</div>
           </td>
-          <td style="font-size: 11px; font-weight: 600;">${p.type}</td>
+          <td style="font-size: 11px; font-weight: 600; white-space: nowrap;">${p.type}</td>
           <td><span style="font-size: 10.5px; font-weight: 600; color: #4B5563;">${p.stage}</span></td>
           <td><span class="status-tag ${statusClass}">${p.status}</span></td>
           <td style="text-align: right; font-weight: 600;">${formatCurrency(displayVal)}</td>
           <td style="text-align: center;">${p.sku || '-'}</td>
-          <td style="font-size: 10.5px; color: #4B5563;">${p.sw}</td>
+          <td style="font-size: 10.5px; color: #4B5563; white-space: nowrap;">${p.sw}</td>
         `;
 
         months.forEach(m => {
           const val = p.monthly[m];
           if (val && val > 0) {
             html += `<td class="gantt-bar-cell">
-              <div class="gantt-active-block ${ganttClass}" title="${p.name} (${m}): ${formatCurrency(val)}">
+              <div class="gantt-active-block ${ganttClass}" onmouseenter="showTooltip(event, '${p.name.replace(/'/g, "\'")}', '${m}: ${formatCurrency(val)} · Status: ${p.status}')" onmouseleave="hideTooltip()">
                 ${formatCurrency(val)}
               </div>
             </td>`;
@@ -945,27 +1527,319 @@ const rawProjects = [{"name":"2026-RH-GRAND HYATT BAHA MAR","status":"SHIPPED","
       });
     }
 
-    function filterProjects() {
-      const query = document.getElementById('project-search').value.toLowerCase().trim();
-      const stageSelect = document.getElementById('stage-filter-select').value;
-      const yr = currentFilters.year;
+    // PAGE 4: NPD Analysis
+    function sortNpdRecords(list) {
+      const { key, dir } = sortState.npd;
+      const factor = dir === 'desc' ? -1 : 1;
 
-      const filtered = rawProjects.filter(p => {
-        if (yr !== 'All' && !hasYear(p, yr)) return false;
-        if (currentFilters.type === 'RH' && p.type !== 'RH') return false;
-        if (currentFilters.type === 'NON RH' && p.type === 'RH') return false;
-        if (currentFilters.status !== 'All' && p.status !== currentFilters.status) return false;
-        const matchesQuery = !query || p.name.toLowerCase().includes(query) || p.customer.toLowerCase().includes(query);
-        const matchesStage = stageSelect === 'All' || p.stage === stageSelect;
-        return matchesQuery && matchesStage;
+      return [...list].sort((a, b) => {
+        if (key === 'default' || !key || key === 'name') {
+          return (a.name || '').localeCompare(b.name || '', undefined, { numeric: true, sensitivity: 'base' }) * factor;
+        }
+        if (key === 'proto_val' || key === 'npi_val') {
+          return ((a[key] || 0) - (b[key] || 0)) * factor;
+        }
+        const valA = String(a[key] || '').toLowerCase().trim();
+        const valB = String(b[key] || '').toLowerCase().trim();
+        return valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' }) * factor;
       });
-
-      renderGantt(filtered);
     }
 
+    function renderNpdAnalysis(data) {
+      // 1. Calculate NPD conversion KPIs
+      const totalCount = data.length;
+      let wonCount = 0, wipCount = 0, lostCount = 0;
+      let totalProto = 0, wonProto = 0, wipProto = 0, lostProto = 0;
+      let wonNpi = 0, wipNpi = 0, lostNpi = 0;
+
+      data.forEach(p => {
+        totalProto += p.proto_val;
+        if (p.outcome === 'Won') {
+          wonCount++;
+          wonProto += p.proto_val;
+          wonNpi += p.npi_val;
+        } else if (p.outcome === 'In Progress') {
+          wipCount++;
+          wipProto += p.proto_val;
+          wipNpi += p.npi_val;
+        } else if (p.outcome === 'Lost') {
+          lostCount++;
+          lostProto += p.proto_val;
+          lostNpi += p.npi_val;
+        }
+      });
+
+      const winRate = totalCount > 0 ? (wonCount / totalCount * 100) : 0;
+      const wonProtoShare = totalProto > 0 ? (wonProto / totalProto * 100) : 0;
+      const wipProtoShare = totalProto > 0 ? (wipProto / totalProto * 100) : 0;
+      const lostProtoShare = totalProto > 0 ? (lostProto / totalProto * 100) : 0;
+
+      // Update KPI Cards
+      document.getElementById('npd-kpi-total').innerText = totalCount;
+      document.getElementById('npd-kpi-total-proto').innerText = `${formatCurrency(totalProto)} Prototype Value`;
+
+      document.getElementById('npd-kpi-won').innerText = wonCount;
+      document.getElementById('npd-kpi-won-proto').innerText = `${formatCurrency(wonProto)} Prototype Value`;
+      document.getElementById('npd-kpi-won-rate').innerText = `${winRate.toFixed(1)}% of total`;
+
+      document.getElementById('npd-kpi-wip').innerText = wipCount;
+      document.getElementById('npd-kpi-wip-proto').innerText = `${formatCurrency(wipProto)} Prototype Value`;
+
+      document.getElementById('npd-kpi-lost').innerText = lostCount;
+      document.getElementById('npd-kpi-lost-proto').innerText = `${formatCurrency(lostProto)} Prototype Value`;
+
+      document.getElementById('npd-kpi-rate').innerText = `${winRate.toFixed(1)}%`;
+      document.getElementById('npd-kpi-won-npi').innerText = formatCurrency(wonNpi);
+
+      // Update Outcome Breakdown Tiles
+      document.getElementById('otile-won-count').innerText = `${wonCount} Projects (${(totalCount ? (wonCount/totalCount*100) : 0).toFixed(1)}%)`;
+      document.getElementById('otile-won-val').innerHTML = `${formatCurrency(wonProto)} <span style="font-size: 12px; font-weight: normal; color: var(--theme-text-muted);">prototype value</span>`;
+      document.getElementById('otile-won-fill').style.width = `${wonProtoShare.toFixed(1)}%`;
+      document.getElementById('otile-won-npi').innerText = formatCurrency(wonNpi);
+
+      document.getElementById('otile-wip-count').innerText = `${wipCount} Projects (${(totalCount ? (wipCount/totalCount*100) : 0).toFixed(1)}%)`;
+      document.getElementById('otile-wip-val').innerHTML = `${formatCurrency(wipProto)} <span style="font-size: 12px; font-weight: normal; color: var(--theme-text-muted);">prototype value</span>`;
+      document.getElementById('otile-wip-fill').style.width = `${wipProtoShare.toFixed(1)}%`;
+      document.getElementById('otile-wip-npi').innerText = formatCurrency(wipNpi);
+
+      document.getElementById('otile-lost-count').innerText = `${lostCount} Projects (${(totalCount ? (lostCount/totalCount*100) : 0).toFixed(1)}%)`;
+      document.getElementById('otile-lost-val').innerHTML = `${formatCurrency(lostProto)} <span style="font-size: 12px; font-weight: normal; color: var(--theme-text-muted);">prototype value</span>`;
+      document.getElementById('otile-lost-fill').style.width = `${lostProtoShare.toFixed(1)}%`;
+      document.getElementById('otile-lost-npi').innerText = formatCurrency(lostNpi);
+
+      // Render NPD Detail Table
+      const tbody = document.getElementById('npd-body');
+      tbody.innerHTML = '';
+
+      const subTitle = document.getElementById('npd-table-subtitle');
+      if (subTitle) subTitle.innerText = `Showing ${data.length} prototype projects`;
+
+      const sortedRows = sortNpdRecords(data);
+      if (sortedRows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="empty-state">No NPD prototype records match current filters.</td></tr>`;
+        return;
+      }
+
+      sortedRows.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.style.cursor = 'pointer';
+
+        let outcomeClass = 'tag-progress';
+        if (p.outcome === 'Won') outcomeClass = 'tag-won';
+        else if (p.outcome === 'Lost') outcomeClass = 'tag-lost';
+
+        // Connect to detail modal
+        tr.onclick = () => {
+          // Find matching Detail_New record if available
+          const found = findMatchingDetailRecord(p);
+          if (found) {
+            openProjectModal(found);
+          } else {
+            // Open fallback modal using NPD record
+            openNpdModal(p);
+          }
+        };
+
+        tr.innerHTML = `
+          <td>
+            <div style="font-weight: 600; color: var(--theme-navy);">${p.name}</div>
+          </td>
+          <td style="font-size: 11px; font-weight: 600; white-space: nowrap;">${p.type}</td>
+          <td style="font-size: 11px;">${p.customer}</td>
+          <td style="font-weight: 600; color: var(--theme-navy); font-size: 11px;">${p.pic}</td>
+          <td><span style="font-size: 10.5px; font-weight: 600; color: #4B5563;">${p.npd_status || '-'}</span></td>
+          <td><span style="font-size: 10.5px; font-weight: 600; color: #4B5563;">${p.npi_status || '-'}</span></td>
+          <td style="text-align: center;"><span class="status-tag ${outcomeClass}">${p.outcome}</span></td>
+          <td style="text-align: right; font-weight: 600; color: ${p.proto_val > 0 ? 'inherit' : '#9CA3AF'};">${p.proto_val > 0 ? formatCurrency(p.proto_val) : '-'}</td>
+          <td style="text-align: right; font-weight: 700; color: ${p.npi_val > 0 ? 'var(--theme-navy)' : '#9CA3AF'};">${p.npi_val > 0 ? formatCurrency(p.npi_val) : '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function normName(s) {
+      if (!s) return '';
+      return String(s).toUpperCase()
+        .replace(/^(20\d\d|TBC)-[A-Z&\s\.]+-/, '')
+        .replace(/[^A-Z0-9]/g, '');
+    }
+
+    function findMatchingDetailRecord(npd) {
+      const k = normName(npd.name);
+      // First try exact normalized match + status
+      for (const p of rawProjects) {
+        if (normName(p.name) === k) return p;
+      }
+      // Partial startswith
+      for (const p of rawProjects) {
+        const pk = normName(p.name);
+        if (pk.startsWith(k) || k.startsWith(pk)) return p;
+      }
+      return null;
+    }
+
+    // Centered Detail Modal Engine
+    function openProjectModal(p) {
+      const modal = document.getElementById('detail-modal');
+      if (!modal) return;
+
+      document.getElementById('m-title').innerText = p.name;
+      document.getElementById('m-sub').innerText = `${p.customer} · Market: ${p.market || 'TBC'} · Type: ${p.type}`;
+
+      document.getElementById('m-status').innerHTML = `<span class="status-tag tag-${p.status.toLowerCase().replace(/\s+/g, '-')}">${p.status}</span>`;
+      document.getElementById('m-stage').innerText = p.stage || 'NPI';
+      document.getElementById('m-val').innerText = formatCurrency(p.total_val);
+      document.getElementById('m-sku').innerText = p.sku ? `${p.sku} SKUs` : '-';
+      document.getElementById('m-pic').innerText = p.pic || 'TBC';
+      document.getElementById('m-sw').innerText = p.sw || 'TBC';
+      document.getElementById('m-market').innerText = p.market || 'TBC';
+      document.getElementById('m-customer').innerText = p.customer || 'TBC';
+      document.getElementById('m-type').innerText = p.type || 'NON RH';
+
+      document.getElementById('m-draw').innerText = p.drawing || 'TBC';
+      document.getElementById('m-veneer').innerText = p.veneer || 'TBC';
+      document.getElementById('m-metal').innerText = p.metal || 'TBC';
+
+      // Monthly delivery chips
+      const mContainer = document.getElementById('m-monthly');
+      const mKeys = Object.keys(p.monthly || {}).sort();
+      if (mKeys.length === 0) {
+        mContainer.innerHTML = '<span style="font-size: 11px; color: #9CA3AF;">No monthly delivery breakdown specified</span>';
+      } else {
+        mContainer.innerHTML = mKeys.map(k => `
+          <span class="month-chip ${p.monthly[k] > 0 ? 'hi' : ''}">
+            <strong>${k}:</strong> ${formatCurrency(p.monthly[k])}
+          </span>
+        `).join('');
+      }
+
+      // Sibling slices: same project, ignoring the year/customer prefix so e.g.
+      // 2026-RH-ROSEWOOD CALISTOGA and 2025-RH-ROSEWOOD CALISTOGA group together.
+      const baseKey = normName(p.name);
+      const siblings = rawProjects.filter(o => normName(o.name) === baseKey);
+      const sibTitle = document.getElementById('m-siblings-title');
+      const sibList = document.getElementById('m-siblings-list');
+
+      if (siblings.length <= 1) {
+        sibTitle.style.display = 'none';
+        sibList.innerHTML = '';
+      } else {
+        sibTitle.style.display = 'block';
+        sibList.innerHTML = siblings.map(s => {
+          const isCurr = s === p;
+          return `
+            <div class="sibling-card ${isCurr ? 'current' : ''}" onclick="${isCurr ? '' : `openProjectModal(rawProjects[${rawProjects.indexOf(s)}])`}">
+              <div>
+                <div class="sibling-name">${s.name} <span class="status-tag tag-${s.status.toLowerCase().replace(/\s+/g, '-')}">${s.status}</span></div>
+                <div class="sibling-meta">Stage: ${s.stage} · Ship Window: ${s.sw}</div>
+              </div>
+              <div style="font-weight: 700; color: var(--theme-navy); font-size: 13px;">
+                ${formatCurrency(s.total_val)}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      modal.classList.add('open');
+    }
+
+    function openNpdModal(npd) {
+      const modal = document.getElementById('detail-modal');
+      if (!modal) return;
+
+      document.getElementById('m-title').innerText = npd.name;
+      document.getElementById('m-sub').innerText = `${npd.customer} · Type: ${npd.type}`;
+
+      document.getElementById('m-status').innerHTML = `<span class="status-tag tag-${npd.outcome.toLowerCase().replace(/\s+/g, '-')}">${npd.outcome}</span>`;
+      document.getElementById('m-stage').innerText = 'NPD';
+      document.getElementById('m-val').innerText = formatCurrency(npd.proto_val) + ' (Prototype Value)';
+      document.getElementById('m-sku').innerText = '-';
+      document.getElementById('m-pic').innerText = npd.pic || 'TBC';
+      document.getElementById('m-sw').innerText = '-';
+      document.getElementById('m-market').innerText = '-';
+      document.getElementById('m-customer').innerText = npd.customer || 'TBC';
+      document.getElementById('m-type').innerText = npd.type || 'NON RH';
+
+      document.getElementById('m-draw').innerText = 'NPD Prototype Tracking';
+      document.getElementById('m-veneer').innerText = `NPD Status: ${npd.npd_status}`;
+      document.getElementById('m-metal').innerText = `NPI Status: ${npd.npi_status}`;
+
+      document.getElementById('m-monthly').innerHTML = `
+        <span class="month-chip hi"><strong>NPD Prototype Value:</strong> ${formatCurrency(npd.proto_val)}</span>
+        ${npd.npi_val > 0 ? `<span class="month-chip hi"><strong>Won NPI Break Value:</strong> ${formatCurrency(npd.npi_val)}</span>` : ''}
+      `;
+
+      document.getElementById('m-siblings-title').style.display = 'none';
+      document.getElementById('m-siblings-list').innerHTML = '';
+
+      modal.classList.add('open');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('detail-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function onModalBackdropClick(e) {
+      if (e.target.id === 'detail-modal') closeModal();
+    }
+
+    // Styled Tooltip Engine
+    const tipEl = document.getElementById('hst-tooltip');
+    function showTooltip(e, head, detail) {
+      if (!tipEl) return;
+      tipEl.innerHTML = `<strong class="tip-head">${head}</strong><div class="tip-row"><span class="tip-label">${detail}</span></div>`;
+      tipEl.classList.add('show');
+      positionTooltip(e);
+    }
+
+    function positionTooltip(e) {
+      if (!tipEl) return;
+      const x = e.clientX + 14;
+      const y = e.clientY + 14;
+      tipEl.style.left = Math.min(x, window.innerWidth - 300) + 'px';
+      tipEl.style.top = Math.min(y, window.innerHeight - 100) + 'px';
+    }
+
+    function hideTooltip() {
+      if (!tipEl) return;
+      tipEl.classList.remove('show');
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      if (tipEl && tipEl.classList.contains('show')) positionTooltip(e);
+    });
+
+    // Keyboard Shortcuts (Esc closes modal, Left/Right arrow switches pages)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === 'ArrowRight' && !['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        const next = currentPage === 4 ? 1 : currentPage + 1;
+        const titles = [
+          '1. Executive Overview (OB vs FC)',
+          '2. Project Schedule & Milestones',
+          '3. Commercial & Customer Portfolio',
+          '4. NPD Analysis'
+        ];
+        switchPage(next, titles[next - 1]);
+      } else if (e.key === 'ArrowLeft' && !['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        const prev = currentPage === 1 ? 4 : currentPage - 1;
+        const titles = [
+          '1. Executive Overview (OB vs FC)',
+          '2. Project Schedule & Milestones',
+          '3. Commercial & Customer Portfolio',
+          '4. NPD Analysis'
+        ];
+        switchPage(prev, titles[prev - 1]);
+      }
+    });
+
+    // Initialize on page load
     applyFilters();
 
-  </script>
-  <!-- Watermark: made by Joe - Hung Pham | Assisted by Claude Opus 5.5 -->
+</script>
+<!-- Watermark: made by Joe - Hung Pham | Assisted by Claude Opus 5.5 -->
 </body>
 </html>

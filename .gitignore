@@ -4,3 +4,10 @@ dist
 logs/
 build_report.py
 hs_pbi_report_draft.html
+
+# Local build tooling & app-managed config
+_build/
+.claude/
+
+# Local preview copy (production build lives in index.html)
+preview.html
