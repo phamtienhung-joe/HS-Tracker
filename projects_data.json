@@ -739,7 +739,7 @@
   },
   {
     "name": "2025-L&S-RITZ CARLTON COTTON BAY",
-    "status": "FC",
+    "status": "PIPELINE",
     "customer": "L&S",
     "type": "NON RH",
     "stage": "NPI",
@@ -2409,5 +2409,21 @@
     "monthly": {
       "2027/M01": 14973.54
     }
+  },
+  {
+    "name": "2026-RH-CABOT HILLSIDE HOMES",
+    "status": "FC",
+    "customer": "RH",
+    "type": "RH",
+    "stage": "NPI",
+    "sku": 26,
+    "pic": "TBC",
+    "sw": "TBC - TBC",
+    "drawing": "TBC",
+    "veneer": "TBC",
+    "metal": "TBC",
+    "market": "US",
+    "total_val": 19342.43,
+    "monthly": {}
   }
 ]
