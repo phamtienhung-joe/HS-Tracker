@@ -1916,7 +1916,7 @@
     "market": "UK",
     "total_val": 210727.22,
     "monthly": {
-      "2027/M03": 210727.22
+      "2027/M04": 210727.22
     }
   },
   {
@@ -2261,10 +2261,28 @@
     "veneer": "In Progress",
     "metal": "In Progress",
     "market": "US",
-    "total_val": 77770.73,
+    "total_val": 70241.84,
     "monthly": {
       "2027/M01": 27000.0,
-      "2027/M03": 50770.73
+      "2027/M03": 43241.84
+    }
+  },
+  {
+    "name": "2026-MV-CLEVELAND CLINIC-PHASE 2",
+    "status": "FC",
+    "customer": "MV",
+    "type": "NON RH",
+    "stage": "NPI",
+    "sku": 29,
+    "pic": "DUNG",
+    "sw": "2027/W15 - 2027/W22",
+    "drawing": "In Progress",
+    "veneer": "In Progress",
+    "metal": "In Progress",
+    "market": "US",
+    "total_val": 169552.37,
+    "monthly": {
+      "2027/M05": 169552.37
     }
   },
   {
@@ -2295,7 +2313,7 @@
     "pic": "PHONG",
     "sw": "2026/W48 - 2026/W48",
     "drawing": "In Progress",
-    "veneer": "In Progress",
+    "veneer": "Approved",
     "metal": "TBC",
     "market": "US",
     "total_val": 42563.3,
@@ -2330,14 +2348,14 @@
     "stage": "NPI",
     "sku": 7,
     "pic": "DUNG",
-    "sw": "TBC - TBC",
+    "sw": "2027/W23 - 2027/W24",
     "drawing": "Not Started",
     "veneer": "Not Started",
     "metal": "Not Started",
     "market": "US",
     "total_val": 38935.43,
     "monthly": {
-      "2027/M04": 38935.43
+      "2027/M06": 38935.43
     }
   },
   {
@@ -2418,12 +2436,14 @@
     "stage": "NPI",
     "sku": 26,
     "pic": "TBC",
-    "sw": "TBC - TBC",
+    "sw": "2027/W25 - 2027/W26",
     "drawing": "TBC",
     "veneer": "TBC",
     "metal": "TBC",
     "market": "US",
     "total_val": 19342.43,
-    "monthly": {}
+    "monthly": {
+      "2027/M06": 19342.43
+    }
   }
 ]
