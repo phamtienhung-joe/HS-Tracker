@@ -12,3 +12,8 @@ _build/
 # Local preview copy (production build lives in index.html)
 preview.html
 .commandcode/
+*.xlsx
+*.jpg
+download
+sanitize_hs_tracker.py
+update_index_html.py
